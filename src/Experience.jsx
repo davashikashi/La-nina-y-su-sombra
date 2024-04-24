@@ -1,26 +1,22 @@
-import { MeshBasicNodeMaterial } from "three/examples/jsm/nodes/Nodes.js";
-import { OrbitControls } from "@react-three/drei";
-import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { OrbitControls, Text3D } from "@react-three/drei";
+import World from "./world/World";
+import Environments from "./Environment/Environments";
+import Lights from "./Lights/Lights";
+import Texts from "./Text/Texts";
+import Box from "./Box/Box";
+
+
 
 const Experience = () => {
-    const boxRef = useRef(null);
-
-    useFrame((state,delta) => {
-        boxRef.current.rotation.x +=1*delta;
-        boxRef.current.rotation.y +=1.5*delta;
-    });
 
     return (
         <>
-            <ambientLight intensity={0.5} />
-            <directionalLight position={[10, 10, 5]} intensity={2} />
-            <OrbitControls makeDefault/>
-            
-            <mesh ref={boxRef}>
-                <boxGeometry args={[1, 1, 1]} />
-                <meshStandardMaterial color="purple" />
-            </mesh>
+            <OrbitControls target={[0, 2, 42]} />
+            <Lights />
+            <Environments />
+            <Texts Position={[0, 5, 40]} Textto={"Reto Final"} color={"white"} />
+            <Texts Position={[0, 5, 35]} Textto={"segundo Reto Final"} color={"red"} />
+            <World />
         </>
     )
 
