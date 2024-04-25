@@ -1,7 +1,7 @@
 import { useGLTF } from "@react-three/drei"
 import Floor from "../Floor/Floor";
 import Walls from "../Walls/Walls";
-import Box from "../Box/Box";
+import { RigidBody } from "@react-three/rapier";
 
 export default function World(props) {
     //se nodes debe estar relacionado con el modelo glb
@@ -14,12 +14,24 @@ export default function World(props) {
 
 
     return (//se añade el modelo transformado de internet
+
         <group {...props} dispose={null}>
-            <Floor geometry={nodes.SecondFloor.geometry} TexturePath={FloorPATH} />
-            <Floor geometry={nodes.Floor.geometry} TexturePath={FloorPATH} />
-            <Walls geometry={nodes.Walls.geometry} TexturePath={WallsPATH} />
-            <Box position={[0,1,18]} />
+            <RigidBody type="fixed" colliders="trimesh">
+                <Floor geometry={nodes.SecondFloor.geometry} TexturePath={FloorPATH} />
+
+            </RigidBody>
+            <RigidBody type="fixed" colliders="cuboid">
+                <Floor geometry={nodes.Floor.geometry} TexturePath={FloorPATH} />
+
+            </RigidBody>
+            <RigidBody type="fixed" colliders="trimesh">
+                <Walls geometry={nodes.Walls.geometry} TexturePath={WallsPATH} />
+
+            </RigidBody>
+
         </group>
+
+
 
     )
 }

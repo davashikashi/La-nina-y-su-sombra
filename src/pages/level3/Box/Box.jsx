@@ -1,4 +1,5 @@
 import { useGLTF, useTexture } from "@react-three/drei"
+import { RigidBody } from "@react-three/rapier"
 import { RepeatWrapping } from "three"
 
 
@@ -16,28 +17,30 @@ export default function Box(props) {
     })
     console.log(nodes)
     //se hace el tiling de las texturas
-    propsBoxTexture.map.repeat.set(1,1);
+    propsBoxTexture.map.repeat.set(1, 1);
     propsBoxTexture.map.wrapS = propsBoxTexture.map.wrapT = RepeatWrapping;
 
-    propsBoxTexture.normalMap.repeat.set(1,1);
+    propsBoxTexture.normalMap.repeat.set(1, 1);
     propsBoxTexture.normalMap.wrapS = propsBoxTexture.normalMap.wrapT = RepeatWrapping;
 
-    propsBoxTexture.roughnessMap.repeat.set(1,1);
+    propsBoxTexture.roughnessMap.repeat.set(1, 1);
     propsBoxTexture.roughnessMap.wrapS = propsBoxTexture.roughnessMap.wrapT = RepeatWrapping;
 
-    propsBoxTexture.diplacementMap.repeat.set(1,1);
+    propsBoxTexture.diplacementMap.repeat.set(1, 1);
     propsBoxTexture.diplacementMap.wrapS = propsBoxTexture.diplacementMap.wrapT = RepeatWrapping;
 
 
     return (
-
-        <group {...props} dispose={null}>
-            <group>
-                <mesh castShadow position={props.position} geometry={nodes.Box.geometry}  >
-                    <meshStandardMaterial {...propsBoxTexture} />
-                </mesh>
+        <RigidBody type="dynamic" colliders="cuboid">
+            <group {...props} dispose={null}>
+                <group>
+                    <mesh castShadow position={props.position} geometry={nodes.Box.geometry}  >
+                        <meshStandardMaterial {...propsBoxTexture} />
+                    </mesh>
+                </group>
             </group>
-        </group>
+
+        </RigidBody>
 
     )
 }

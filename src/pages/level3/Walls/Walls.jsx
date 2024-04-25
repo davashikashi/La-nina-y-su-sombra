@@ -1,5 +1,5 @@
 import { useTexture } from "@react-three/drei";
-import { RepeatWrapping } from "three";
+import { DoubleSide, RepeatWrapping } from "three";
 
 export default function Walls({geometry, TexturePath}){
     
@@ -28,7 +28,7 @@ export default function Walls({geometry, TexturePath}){
 
     return(
         <mesh onClick={(event)=> event.stopPropagation()} receiveShadow={true} castShadow={true} geometry={geometry} >
-                <meshStandardMaterial  {...propsWallsTexture} />
+                <meshStandardMaterial  {...propsWallsTexture} side={DoubleSide } />
         </mesh>
     )
 }
