@@ -16,9 +16,11 @@ export default function Walls({geometry, TexturePath}){
     propsWallsTexture.map.repeat.set(32,32);
     propsWallsTexture.map.wrapS = propsWallsTexture.map.wrapT = RepeatWrapping;
 
+    propsWallsTexture.normalMap.rotation = Math.PI/2;
     propsWallsTexture.normalMap.repeat.set(32,32);
     propsWallsTexture.normalMap.wrapS = propsWallsTexture.normalMap.wrapT = RepeatWrapping;
 
+    propsWallsTexture.roughnessMap.rotation = Math.PI/2;
     propsWallsTexture.roughnessMap.repeat.set(32,32);
     propsWallsTexture.roughnessMap.wrapS = propsWallsTexture.roughnessMap.wrapT = RepeatWrapping;
 
@@ -27,7 +29,7 @@ export default function Walls({geometry, TexturePath}){
 
 
     return(
-        <mesh onClick={(event)=> event.stopPropagation()} receiveShadow={true} castShadow={true} geometry={geometry} >
+        <mesh onClick={(event)=> event.stopPropagation()} receiveShadow={true} geometry={geometry} >
                 <meshStandardMaterial  {...propsWallsTexture} side={DoubleSide } />
         </mesh>
     )

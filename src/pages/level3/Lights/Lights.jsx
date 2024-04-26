@@ -13,7 +13,7 @@ export default function Lights() {
             {/* <directionalLight color={"black"} position={[0, 10, 0]} intensity={1} /> */}
             <pointLight
                 //ref={pointLightRef}
-                castShadow={true}
+                castShadow={false}
                 position={[-2.5, 2, 47]}
                 intensity={15}
                 color={"White"}
@@ -22,7 +22,7 @@ export default function Lights() {
             />
             <pointLight
 
-                castShadow={true}
+                castShadow={false}
                 position={[2.5, 2, 47]}
                 intensity={15}
                 color={"White"}
@@ -31,7 +31,7 @@ export default function Lights() {
             />
             <pointLight
                 position={[16, 2, 38]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={8}
@@ -39,7 +39,7 @@ export default function Lights() {
             />
             <pointLight
                 position={[6, 2, 38]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={8}
@@ -47,7 +47,7 @@ export default function Lights() {
             />
             <pointLight
                 position={[16, 2, 49]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={8}
@@ -55,7 +55,7 @@ export default function Lights() {
             />
             <pointLight
                 position={[-2, 2, 34]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={8}
@@ -71,7 +71,7 @@ export default function Lights() {
             />
             <pointLight
                 position={[10.5, 2, 43.5]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={8}
@@ -80,7 +80,7 @@ export default function Lights() {
             <pointLight
 
                 position={[3, 2, 18]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={8}
@@ -90,14 +90,14 @@ export default function Lights() {
             <pointLight
                 
                 position={[-3, 2, 18]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={8}
                 decay={2}
             />
             <pointLight
-                
+                ref={pointLightRef}
                 position={[0, 2, 25]}
                 castShadow={true}
                 intensity={15}
@@ -108,7 +108,7 @@ export default function Lights() {
             <pointLight
                
                 position={[6, 2, 33]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={10}
@@ -117,7 +117,7 @@ export default function Lights() {
             <pointLight
                
                 position={[14, 2, 33]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={10}
@@ -126,7 +126,7 @@ export default function Lights() {
             <pointLight
                
                 position={[6, 2, 20]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={10}
@@ -135,7 +135,7 @@ export default function Lights() {
             <pointLight
                
                 position={[14, 2, 20]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={10}
@@ -144,61 +144,61 @@ export default function Lights() {
             <pointLight
                 
                 position={[-10, 2, 28]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={8}
                 decay={2}
             />
             <pointLight
-               ref={pointLightRef}
+               
                 position={[0, 2, 0]}
-                castShadow={true}
+                castShadow={false}
                 intensity={15}
                 color={"White"}
                 distance={10}
                 decay={2}
             />
             <pointLight
-               ref={pointLightRef}
+               
                 position={[-15, 2, -5]}
-                castShadow={true}
+                castShadow={false}
                 intensity={30}
                 color={"White"}
                 distance={100}
                 decay={2}
             />
             <pointLight
-               ref={pointLightRef}
+               
                 position={[15, 2, 0]}
-                castShadow={true}
+                castShadow={false}
                 intensity={30}
                 color={"White"}
                 distance={10}
                 decay={2}
             />
             <pointLight
-               ref={pointLightRef}
+               
                 position={[10, 2, 8]}
-                castShadow={true}
+                castShadow={false}
                 intensity={30}
                 color={"White"}
                 distance={10}
                 decay={2}
             />
             <pointLight
-               ref={pointLightRef}
+               
                 position={[-5, 3, -12]}
-                castShadow={true}
+                castShadow={false}
                 intensity={30}
                 color={"White"}
                 distance={20}
                 decay={2}
             />
             <pointLight
-               ref={pointLightRef}
+               
                 position={[10, 3, -12]}
-                castShadow={true}
+                castShadow={false}
                 intensity={30}
                 color={"White"}
                 distance={20}

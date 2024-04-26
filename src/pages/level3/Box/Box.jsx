@@ -15,7 +15,7 @@ export default function Box(props) {
         roughnessMap: TexturePath + "Cratebpr_smoothness.jpg",
         diplacementMap: TexturePath + "Cratebpr_height.jpg"
     })
-    console.log(nodes)
+
     //se hace el tiling de las texturas
     propsBoxTexture.map.repeat.set(1, 1);
     propsBoxTexture.map.wrapS = propsBoxTexture.map.wrapT = RepeatWrapping;
@@ -31,10 +31,10 @@ export default function Box(props) {
 
 
     return (
-        <RigidBody type="dynamic" colliders="cuboid">
+        <RigidBody  type="dynamic" colliders="cuboid">
             <group {...props} dispose={null}>
                 <group>
-                    <mesh castShadow position={props.position} geometry={nodes.Box.geometry}  >
+                    <mesh castShadow={true} position={props.position} geometry={nodes.Box.geometry}  >
                         <meshStandardMaterial {...propsBoxTexture} />
                     </mesh>
                 </group>

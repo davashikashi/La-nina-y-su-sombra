@@ -27,7 +27,7 @@ export default function Floor({ geometry, TexturePath }) {
 
     return (
         <>
-            <mesh receiveShadow={true} geometry={geometry} >
+            <mesh  receiveShadow={true} geometry={geometry} >
                 <meshStandardMaterial  {...propsFloorTexture} />
             </mesh>
         </>

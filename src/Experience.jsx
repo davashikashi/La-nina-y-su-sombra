@@ -1,8 +1,12 @@
+import { AvatarProvider } from "./context/AvatarContext";
 import RoutesLaNinaYSuSombra from "./routes/RoutesLaNinaYSuSombra";
 
 const Experience = () =>{
     return(
-        <RoutesLaNinaYSuSombra/>
+        <AvatarProvider>
+            <RoutesLaNinaYSuSombra/>
+        </AvatarProvider>
+        
     )
 }
 
