@@ -4,14 +4,14 @@ import { RepeatWrapping } from "three";
 export default function Darkworld(props) {
     const { nodes, materials } = useGLTF("/assets/models/darkWorld/Dworld.glb")
     const FloorPATH = "/assets/textures/floor/";
-    const WallsPATH = "/assets/textures/walls/";
-    const IntwallsPATH = "/assets/textures/intwalls/";
+    const WallsPATH = "/assets/textures/intwalls/";
+    const IntwallsPATH = "/assets/textures/walls/";
 
     const propsFloorTexture = useTexture({
-        map: FloorPATH + "Rock050_1K-JPG_Color.jpg",
-        normalMap: FloorPATH + "Rock050_1K-JPG_NormalDX.jpg",
-        roughnessMap: FloorPATH + "Rock050_1K-JPG_Roughness.jpg",
-        displacementMap: FloorPATH + "Rock050_1K-JPG_Displacement.jpg",
+        map: FloorPATH + "patterned_cobblestone_diff_1k.jpg",
+        normalMap: FloorPATH + "patterned_cobblestone_nor_dx_1k.jpg",
+        roughnessMap: FloorPATH + "patterned_cobblestone_rough_1k.jpg",
+        displacementMap: FloorPATH + "patterned_cobblestone_disp_1k.jpg",
     });
 
     propsFloorTexture.map.repeat.set(10, 64);
@@ -68,17 +68,17 @@ export default function Darkworld(props) {
         <group {...props} dispose={null}>
             <group>
                 <mesh geometry={nodes.Walls.geometry}>
-                    <meshStandardMaterial {...propsWallsTexture}/>
-                </mesh>    
+                    <meshStandardMaterial {...propsWallsTexture} />
+                </mesh>
                 <mesh geometry={nodes.IntWalls.geometry}>
-                    <meshStandardMaterial {...propsIntwallsTexture}/> 
-                </mesh>    
+                    <meshStandardMaterial {...propsIntwallsTexture} />
+                </mesh>
                 <mesh geometry={nodes.Floor.geometry}>
-                    <meshStandardMaterial {...propsFloorTexture}/>
+                    <meshStandardMaterial {...propsFloorTexture} />
                 </mesh>
             </group>
         </group>
     );
 }
 
-useGLTF.preload("/assets/models/darkWorld/Dworld.glb");
+useGLTF.preload('/Dworld.glb');
