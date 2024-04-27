@@ -9,7 +9,7 @@ import { SkeletonUtils } from "three/examples/jsm/Addons.js";
 export default function Fire(props) {
     const fireModelRef = useRef();
     const fireBodyRef = useRef()
-    const { scene, materials, animations } = useGLTF("/assets/models/fire/fire.glb");
+    const { scene, materials, animations } = useGLTF("/assets/models/fire/Fire.glb");
 
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
     const { actions } = useAnimations(animations, fireModelRef);
