@@ -6,7 +6,6 @@ const Experience = () =>{
         <AvatarProvider>
             <RoutesLaNinaYSuSombra/>
         </AvatarProvider>
-        
     )
 }
 
