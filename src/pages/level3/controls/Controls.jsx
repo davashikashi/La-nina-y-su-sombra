@@ -41,6 +41,7 @@ export default function Controls() {
           (state) => state.forward || state.backward || state.leftward || state.rightward,
           (pressed) => {
             SetAvatar({ ...avatar, animation: pressed ? "walking" : "Idle" });
+            setPlay(true)
           }
         );
         return () => unsubscribe();
@@ -51,6 +52,7 @@ export default function Controls() {
             walkSound.currentTime = 0;
             walkSound.volume = Math.random()
             walkSound.play()
+            walkSound.loop = true
         }else{
             walkSound.pause()
         }
