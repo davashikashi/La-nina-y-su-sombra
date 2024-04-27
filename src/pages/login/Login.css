@@ -1,0 +1,56 @@
+@font-face {
+  font-family: 'FontYoungMan';
+  src: url('../../../public/assets/fonts/Young Man.otf') format('truetype');
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: url('../../../public/assets/images/Arco.png'); /* Imagen de fondo */
+  background-repeat: no-repeat;
+  background-size: 1000px 1000px; /* Ajusta la imagen para cubrir todo el fondo */
+  background-position: center; /* Centra la imagen */
+  color: #ffffff;
+}
+
+.login-form {
+  font-size: larger;
+  background: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad para el formulario */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+}
+
+label {
+  margin-bottom: 10px;
+}
+
+input {
+  width: 200px;
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background: #222;
+  color: #fff;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background: #ee4c4c;
+  color: #fcfcfc;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #a61616;
+}
