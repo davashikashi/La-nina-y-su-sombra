@@ -39,8 +39,8 @@ const Level3 = () => {
                         <Box position={[-7.5, 2.5, 19.5]} />
                         <Box position={[0, 2, 12]} />
                         <Boar  position={[-5,2.5,6]} />
-                        {/* <Boar  position={[5,2.5,10]} />
-                        <Boar position={[5.5, 2.5, 48.5]} /> */}
+                        <Boar  position={[5,2.5,10]} />
+                        <Boar position={[5.5, 2.5, 48.5]} />
                         <Flower position={[0,1,40]}/>
                         <Flower position={[0,1,30]}/>
                         <Flower position={[0,1,35]}/>
