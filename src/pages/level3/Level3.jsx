@@ -13,6 +13,7 @@ import Avatar from "./characters/avatar/Avatar";
 import useMovements from "../../utils/key-movements";
 import { Suspense } from "react";
 import Flower from "./Flower/Flower";
+import Fire from "./characters/fire/fire";
 
 
 
@@ -30,17 +31,31 @@ const Level3 = () => {
                     <Lights />
                     <Environments />
                     <Texts Position={[0, 7, 40]} Textto={"Reto Final"} color={"white"} />
-                    <Physics debug={true} >
-                        
+                    <Physics debug={false} >
                         <Box position={[0, 1, 4]} />
                         <Box position={[0, 1, 6]} />
                         <Box position={[4, 2.5, -7]} />
                         <Box position={[-7.5, 2.5, -6]} />
                         <Box position={[-7.5, 2.5, 19.5]} />
                         <Box position={[0, 2, 12]} />
-                        <Boar nameModel={"Boar1"} nameRigid={"Boar1 Rigid"} position={[-5,1,6]} />
-                        <Boar nameModel={"Boar2"} nameRigid={"Boar2 Rigid"} position={[5.5, 1, 48.5]} />
-                        <Flower position={[0,4,0]}/>
+                        <Boar  position={[-5,1.2,6]} />
+                        <Boar  position={[5,1.2,10]} />
+                        <Boar position={[5.5, 1.2, 48.5]} />
+                        <Flower position={[0,1,40]}/>
+                        <Flower position={[0,1,30]}/>
+                        <Flower position={[0,1,35]}/>
+                        <Flower position={[5,1,25]}/>
+                        <Flower position={[-5,1,25]}/>
+                        <Flower position={[5,1,48]}/>
+                        <Flower position={[-5,1,48]}/>
+                        <Flower position={[-10,1,48]}/>
+                        <Flower position={[-10,1,0]}/>
+                        <Flower position={[0,1,10]}/>
+                        <Flower position={[8,1,10]}/>
+                        <Fire position={[-12,1,-2]}/>
+                        <Fire position={[-12,1,28]}/>
+                        <Fire position={[10,1,20]}/>
+                        <Fire position={[10,1,35]}/>
                         <Avatar />
                         <World />
                     </Physics>
