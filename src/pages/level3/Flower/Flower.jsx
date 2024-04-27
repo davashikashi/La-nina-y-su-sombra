@@ -15,46 +15,40 @@ export default function Flower(props) {
   const floatSpeed = 1; // Velocidad del movimiento de flotación
   const rotationSpeed = 0.5; // Velocidad de rotación sobre el eje Y
 
-  useFrame((state, delta) => {
-    // Obtener el tiempo transcurrido desde el inicio de la animación
-    const time = state.clock.getElapsedTime();
+  // Variables para controlar la animación
+  const startTime = useRef(0);
 
-    // Movimiento hacia arriba y hacia abajo con una función seno
-    const yOffset = Math.sin(time * floatSpeed) * floatAmplitude;
+  useFrame(({ clock }) => {
+    const time = clock.getElapsedTime();
 
-    // Nueva posición para el RigidBody cinemático
-    const newRigidBodyPosition = new Vector3(
-      props.position[0],
-      props.position[1] + yOffset,
-      props.position[2]
-    );
+    if (flowerModelRef.current) {
+      // Calcular el desplazamiento vertical para la flotación
+      const verticalOffset = floatAmplitude * Math.sin(floatSpeed * time);
 
-    // Aplicar la nueva posición al RigidBody
-    flowerBodyRef.current.setNextKinematicTranslation(newRigidBodyPosition);
+      // Aplicar el desplazamiento vertical
+      flowerModelRef.current.position.y = props.position[1] + verticalOffset;
 
-    // Aplicar rotación suave al RigidBody
-    const currentRotation = flowerBodyRef.current.rotation();
-    const newRotation = new Quaternion().copy(currentRotation)
-    newRotation.y += rotationSpeed * delta;
+      // Calcular la rotación sobre el eje Y
+      const rotationAngle = rotationSpeed * time;
 
-    flowerBodyRef.current.setNextKinematicRotation(newRotation);
-
-    // Aplicar el mismo movimiento al modelo de la flor
-    flowerModelRef.current.position.y = newRigidBodyPosition.y;
-    flowerModelRef.current.rotation.y += rotationSpeed * delta;
+      // Aplicar la rotación
+      flowerModelRef.current.rotation.y = rotationAngle;
+    }
   });
+ 
 
   return (
-    <RigidBody
-      ref={flowerBodyRef}
-      type="kinematicPositionBased"
-      colliders={false}
-      gravityScale={0}
-    >
-      <CuboidCollider
-        args={[0.1, 0.2, 0.2]}
-        position={props.position} // Posición base desde props
-      />
+    // <RigidBodyw
+    //   ref={flowerBodyRef}
+    //   type="kinematicPosition"
+    //   colliders={false}
+    //   gravityScale={0}
+    // >
+    //   <CuboidCollider
+    //     args={[0.1, 0.2, 0.2]}
+    //     position={props.position} // Posición base desde props
+    //   />
+    // </RigidBody>
       <group ref={flowerModelRef} scale={[6, 6, 6]} position={props.position}>
         <mesh
           geometry={nodes.Flower.geometry}
@@ -63,6 +57,6 @@ export default function Flower(props) {
           rotation={[Math.PI / 2, 0, 0]} // Rotación inicial del mesh
         />
       </group>
-    </RigidBody>
+    
   );
 }
