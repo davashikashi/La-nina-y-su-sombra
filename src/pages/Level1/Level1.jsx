@@ -6,6 +6,7 @@ import { Perf } from 'r3f-perf';
 import { Physics } from "@react-three/rapier";
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
+import Avatar from "../../characters/avatar/Avatar";
 
 
 const Level1 = () => {
@@ -14,11 +15,11 @@ const Level1 = () => {
         <Canvas shadows={true}>
             <Perf position="top-left" />
             <BakeShadows />
-            <OrbitControls makeDefault />
             <Suspense fallback={null}>
                 <Lights />
                 <MapEnvironments />
                 <Physics>
+                        <Avatar/>
                         <Map1 />
                 </Physics>
             </Suspense>

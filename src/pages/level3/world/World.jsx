@@ -1,7 +1,7 @@
 import { useGLTF } from "@react-three/drei"
 import Floor from "../Floor/Floor";
 import Walls from "../Walls/Walls";
-import { RigidBody } from "@react-three/rapier";
+import { CuboidCollider, RigidBody } from "@react-three/rapier";
 
 export default function World(props) {
     //se nodes debe estar relacionado con el modelo glb
@@ -20,9 +20,9 @@ export default function World(props) {
                 <Floor geometry={nodes.SecondFloor.geometry} TexturePath={FloorPATH} />
 
             </RigidBody>
-            <RigidBody type="fixed" colliders="cuboid">
+            <RigidBody type="fixed" colliders={false}>
+                <CuboidCollider args={[20, 0.01, 80]} position={[0,0 ,0]}/>
                 <Floor geometry={nodes.Floor.geometry} TexturePath={FloorPATH} />
-
             </RigidBody>
             <RigidBody type="fixed" colliders="trimesh">
                 <Walls geometry={nodes.Walls.geometry} TexturePath={WallsPATH} />
