@@ -1,7 +1,8 @@
 import { useGLTF, useTexture } from "@react-three/drei"
 import { RigidBody } from "@react-three/rapier"
+import { useEffect, useRef, useState } from "react"
 import { RepeatWrapping } from "three"
-
+import { useGameContext } from "../../context/GameContext"
 
 export default function Box(props) {
 
@@ -29,9 +30,34 @@ export default function Box(props) {
     propsBoxTexture.diplacementMap.repeat.set(1, 1);
     propsBoxTexture.diplacementMap.wrapS = propsBoxTexture.diplacementMap.wrapT = RepeatWrapping;
 
+    const {isAttacking, isTakingSword} = useGameContext()
+
+    const health = useRef(100);
+
+    const handleHit = () => {
+        console.log(isAttacking)
+        if (isAttacking && isTakingSword) {
+            health.current = Math.max(health.current - 10, 0);
+            console.log("Health:", health.current);
+            console.log("desde box ")
+        }
+
+    };
+
+    if (health.current <= 0) {
+        return null;
+    }
+
+    // 
+
 
     return (
-        <RigidBody  type="dynamic" colliders="cuboid">
+        <RigidBody
+            name="rigid caja"
+            type="dynamic"
+            colliders="trimesh"
+            onIntersectionEnter={handleHit}
+        >
             <group {...props} dispose={null}>
                 <group>
                     <mesh castShadow={true} position={props.position} geometry={nodes.Box.geometry}  >

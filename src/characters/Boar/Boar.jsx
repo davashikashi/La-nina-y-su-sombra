@@ -6,6 +6,11 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { Euler, Quaternion, Vector3 } from "three";
 import { SkeletonUtils } from "three/examples/jsm/Addons.js";
 
+const grupoEspada = 1
+const grupoEnemigo = 2
+const grupoAmigos = 3
+const grupoEntorno = 5 //
+
 export default function Boar(props) {
 
     
@@ -67,8 +72,8 @@ export default function Boar(props) {
 
     return (
 
-        <RigidBody ref={boarBodyRef}  type="dynamic" colliders={false}>
-            <CuboidCollider  args={[0.7, 0.5, 0.5]} position={props.position} />
+        <RigidBody name="Boar"  ref={boarBodyRef}  type="dynamic" colliders={false}>
+            <CuboidCollider name="Boar" args={[0.7, 0.5, 0.5]} position={props.position} />
             <group ref={boarModelRef}  position={props.position} >
                 <group name="BoarArmature">
                     <skinnedMesh
