@@ -13,4 +13,4 @@ export default function Model(props) {
   )
 }
 
-useGLTF.preload('/Torch.glb')
+useGLTF.preload('/assets/models/Torch/Torch.glb')

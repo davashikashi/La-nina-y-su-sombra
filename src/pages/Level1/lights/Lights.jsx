@@ -145,6 +145,30 @@ const Lights = () => {
             color={new Color("#ff7700")}
             intensity={100}
         />
+        <pointLight
+            castShadow={false}
+            position={[7, 1, 45]}
+            color={new Color("#ff7700")}
+            intensity={1}
+        />
+        <pointLight
+            castShadow={false}
+            position={[-7.5, 1, 25]}
+            color={new Color("#ff7700")}
+            intensity={1}
+        />
+        <pointLight
+            castShadow={false}
+            position={[13, 1, 53]}
+            color={new Color("#ff7700")}
+            intensity={1}
+        />
+        <pointLight
+            castShadow={false}
+            position={[27, 1, 32]}
+            color={new Color("#ff7700")}
+            intensity={1}
+        />
     </>
 }
 
