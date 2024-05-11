@@ -9,7 +9,7 @@ import { Physics } from "@react-three/rapier";
 import Boar from "../../characters/Boar/Boar";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
-import Flower from "./Flower/Flower";
+import Flower from "../../Objects/Flower/Flower";
 import Fire from "../../characters/fire/fire";
 import Avatar from "../../characters/avatar/Avatar";
 
@@ -29,7 +29,7 @@ const Level3 = () => {
                 <Lights />
                 <Environments />
                 <Texts Position={[0, 7, 40]} Textto={"Reto Final"} color={"white"} />
-                <Physics debug={false} timeStep="vary">
+                <Physics debug={true} timeStep="vary">
                     <Box position={[0, 1, 4]} />
                     <Box position={[0, 1, 6]} />
                     <Box position={[4, 2.5, -7]} />

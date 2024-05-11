@@ -9,6 +9,8 @@ import { SkeletonUtils } from "three/examples/jsm/Addons.js";
 export default function Fire(props) {
     const fireModelRef = useRef();
     const fireBodyRef = useRef()
+    const avatarReference = props.avatarReference;
+
     const { scene, materials, animations } = useGLTF("/assets/models/fire/Fire.glb");
 
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
@@ -18,12 +20,18 @@ export default function Fire(props) {
     const [traveledDistance, setTraveledDistance] = useState(0);
     const [direction, setDirection] = useState(1); // 1: adelante, -1: atrás.
 
-
+    const sideToSide = props.sideToSide || false;
 
     const speed = 1
     const distance = 4
     const position  = [0,0,0]
     const directionVector = [1, 0, 0]
+
+    // Para el movimiento de persecucion
+    const chaseDistance = 5; //Distancia de persecución
+    const chaseSpeed = 4.5; //Velocidad de persecución
+
+    const [isChasing, setIsChasing] = useState(false); //Estado de persecución
 
     // useFrame((_, delta) => {
     //     if (fireBodyRef.current) {
@@ -60,27 +68,69 @@ export default function Fire(props) {
 
 
     useFrame((_, delta) => {
+
         if (fireBodyRef.current) {
-          const step = speed * delta * direction; // Cantidad de movimiento
-          const movement = new Vector3(...directionVector).multiplyScalar(step); // Movimiento en función del vector y la dirección
+            const avatarPosition = avatarReference.current?.translation(); 
+            const currentPosition = fireBodyRef.current.translation(); // Obtener la posición actual            
+            const currentPositionVector = new Vector3(currentPosition.x,
+                 currentPosition.y, currentPosition.z);
+            // console.log("posicion fuego: ", currentPositionVector)
+            // console.log("posicion avatar: ", avatarPosition)
+            // console.log("isChasing: ", isChasing)
+
+            if (avatarPosition) {
+                const distanceToAvatar = currentPositionVector.distanceTo(avatarPosition);
+
+                if (distanceToAvatar <= chaseDistance) {
+                    setIsChasing(true);
+                } else {
+                    setIsChasing(false);
+                }
+
+                if (isChasing) {
+                    const chaseDirection = new Vector3().subVectors(avatarPosition, currentPosition).normalize();
+                    const chaseDistanceDelta = chaseDirection.multiplyScalar(chaseSpeed * delta);
+                    const chasePosition = new Vector3().addVectors(currentPosition, chaseDistanceDelta);
+
+                    fireBodyRef.current.setTranslation(chasePosition, true);
+                }
+            }
+
+            if (isChasing===false && sideToSide) {
+                const step = speed * delta * direction; // Cantidad de movimiento
+                const movement = new Vector3(...directionVector).multiplyScalar(step); // Movimiento en función del vector y la dirección
+                            
+                const newPosition = new Vector3(
+                    currentPosition.x + movement.x,
+                    currentPosition.y + movement.y,
+                    currentPosition.z + movement.z
+                );
         
-          const currentPosition = fireBodyRef.current.translation(); // Obtener la posición actual
-          const newPosition = new Vector3(
-            currentPosition.x + movement.x,
-            currentPosition.y + movement.y,
-            currentPosition.z + movement.z
-          );
+                fireBodyRef.current.setTranslation(newPosition, true); // Mover el cuerpo rígido
         
-          fireBodyRef.current.setTranslation(newPosition, true); // Mover el cuerpo rígido
+                // Acumular la distancia recorrida
+                setTraveledDistance((prev) => prev + Math.abs(step));
         
-          // Acumular la distancia recorrida
-          setTraveledDistance((prev) => prev + Math.abs(step));
-        
-          // Cambiar dirección si se alcanza la distancia límite
-          if (traveledDistance >= distance) {
-            setDirection(-direction); // Invertir la dirección
-            setTraveledDistance(0); // Reiniciar la distancia
-          }
+                // Cambiar dirección si se alcanza la distancia límite
+                if (traveledDistance >= distance) {
+                    setDirection(-direction); // Invertir la dirección
+                    setTraveledDistance(0); // Reiniciar la distancia
+                }
+
+            }
+
+                // Si tenemos la posición del avatar y estamos persiguiendo
+            if (avatarPosition && isChasing) {
+                // Calcular la dirección hacia la que debe mirar la sombra
+                const directionToTarget = new Vector3().subVectors(avatarPosition, currentPosition).normalize();
+
+                // Calcular la rotación necesaria en radianes
+                const targetRotationY = Math.atan2(directionToTarget.x, directionToTarget.z);
+
+                // Aplicar la rotación al cuerpo rígido
+                fireBodyRef.current.rotation.y = targetRotationY;
+                fireModelRef.current.rotation.y = targetRotationY;
+            }
     
           // Ajustar la rotación para mirar hacia la dirección del movimiento
         //   const normalizedDirection = new Vector3(...directionVector).normalize();
@@ -105,7 +155,7 @@ export default function Fire(props) {
     }, [actions])
 
     return (
-        <RigidBody ref={fireBodyRef} type="dynamic" position={props.position} colliders={"cuboid"}>
+        <RigidBody ref={fireBodyRef} type="dynamic" position={props.position} colliders={"cuboid"} enabledRotations={[false, false, false]}>
             {/* <CuboidCollider  args={[0.3, 0.3, 0.5]} /> */}
             <group ref={fireModelRef} name="Scene">
                 <group name="Armature" scale={0.614}>
