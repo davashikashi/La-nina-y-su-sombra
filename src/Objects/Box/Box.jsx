@@ -7,6 +7,7 @@ import { useGameContext } from "../../context/GameContext"
 export default function Box(props) {
 
     const { nodes } = useGLTF("/assets/models/Box/Box.glb")
+    const {isAttacking, isTakingSword} = useGameContext()
 
     const TexturePath = "/assets/textures/crate/"
 
@@ -30,7 +31,7 @@ export default function Box(props) {
     propsBoxTexture.diplacementMap.repeat.set(1, 1);
     propsBoxTexture.diplacementMap.wrapS = propsBoxTexture.diplacementMap.wrapT = RepeatWrapping;
 
-    const {isAttacking, isTakingSword} = useGameContext()
+    
 
     const health = useRef(100);
 
