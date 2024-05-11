@@ -7,9 +7,15 @@ import { Euler, Quaternion, Vector3 } from "three";
 import { useGameContext } from "../../context/GameContext";
 import LampHand from "../../Objects/Lamp/LampHand";
 
-// Supongamos que tienes un sistema de gestión de animaciones
+import { KeyboardControls, useAnimations, useGLTF } from "@react-three/drei";
+import Ecctrl, { EcctrlAnimation } from "ecctrl";
+import React, { forwardRef } from "react";
 
-export default function Avatar(props) {
+
+const Avatar = forwardRef((props, ref) =>{
+    // const avatarBodyRef = useRef();
+    // const avatarRef = useRef();
+    // const { avatar, SetAvatar } = useAvatar();
 
     const { nodes, materials } = useGLTF('/assets/models/avatar/Girl.glb')
     //use states
@@ -116,9 +122,8 @@ export default function Avatar(props) {
     ]
 
     return (
-        <KeyboardControls map={keyboardMap} >
-            <Ecctrl
-                animated capsuleRadius={0.29} capsuleHalfHeight={0.3} maxVelLimit={3.5} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={[0, 10, 0]}>
+        <KeyboardControls map={keyboardMap}>
+            <Ecctrl animated capsuleHalfHeight={0.3} maxVelLimit={3.5} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} ref={ref}>
                 <EcctrlAnimation
                     characterURL={characterURL}
                     animationSet={animationSet} >
@@ -140,8 +145,6 @@ export default function Avatar(props) {
             </Ecctrl>
         </KeyboardControls>
     )
-}
+});
 
-
-
-// s
+export default Avatar;
