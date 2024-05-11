@@ -158,9 +158,9 @@ export default function Fire(props) {
         <RigidBody ref={fireBodyRef} type="dynamic" position={props.position} colliders={"cuboid"} enabledRotations={[false, false, false]}>
             {/* <CuboidCollider  args={[0.3, 0.3, 0.5]} /> */}
             <group ref={fireModelRef} name="Scene">
-                <group name="Armature" scale={0.614}>
+                <group name="Fuego" scale={0.614}>
                     <skinnedMesh
-                        name="Fire"
+                        name="Fuego"
                         geometry={nodes.Fire.geometry}
                         material={materials["Material.002"]}
                         skeleton={nodes.Fire.skeleton}

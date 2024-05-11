@@ -16,18 +16,19 @@ import Candle from "../../Objects/Candle/Candle";
 import FinalDoor from "../../Objects/FinalDoor/FinalDoor";
 import { useRef } from "react";
 import Texts from "./Texts/Texts";
+import { GameContextProvider } from "../../context/GameContext";
 
 
 const Level1 = () => {
     const avatarRef = useRef();
-        
+
     return (
         <Canvas shadows={true}>
             <Perf position="top-left" />
             <BakeShadows />
             <Suspense fallback={null}>
                 <Lights />
-                <MapEnvironments />      
+                <MapEnvironments />
                 {/* <OrbitControls makeDefault /> */}
                 <Torch position={[-7.28, 2, -12]} rotation={[0, 1.5, 0]}/>
                 <Torch position={[-7.28, 2, 0]} rotation={[0, 1.5, 0]}/>
@@ -82,37 +83,39 @@ const Level1 = () => {
                  <Texts color="white" Position={[0, 4, -96]} Textto="Felicidades!
                  Has llegado al final del Nivel 1!"
                  fontSize={0.6} rotation={[0, 0, 0]}/>
-                <Physics debug={false} timestep="vary">
-                    
-                        <Flower position={[0, 1, 65]}/>
-                        <Flower position={[6, 1, 18]}/>
-                        <Flower position={[20, 1, 52]}/>
-                        <Flower position={[-6, 1, -6]}/>
-                        <Flower position={[-34, 1, -26]}/>
-                        <Flower position={[12, 1, -36]}/>
-                        <Flower position={[16, 1, -12]}/>
-                        <Flower position={[25, 1, -69]}/>
-                        <Flower position={[-31, 1, -77]}/>
-                        <Flower position={[7, 1, -79]}/>
-                        <Fire position={[-8, 1, -59]} avatarReference={avatarRef}/>
-                        <Fire position={[-1, 1, -61]} avatarReference={avatarRef}/>
-                        <Fire position={[4, 1, -67]} avatarReference={avatarRef}/>
-                        <Fire position={[18, 1, -67]} avatarReference={avatarRef}/>
-                        <Fire position={[-19, 1, -79]} avatarReference={avatarRef}/>
-                        <Fire position={[-19, 1, -85]} avatarReference={avatarRef}/>
-                        <Fire position={[-35, 1, -83]} avatarReference={avatarRef}/>
-                        <Fire position={[31, 1, -77]} avatarReference={avatarRef}/>
-                        <Fire position={[23, 1, -87]} avatarReference={avatarRef}/>
-                        <Avatar avatarPosition={[0, 1, 98]} ref={avatarRef}/>
-                        <Boar position={[8, 1, -36]} avatarReference={avatarRef}/>
-                        <ShadowEnemy position={[-5, 3, 41]} avatarReference={avatarRef}/>
-                        <ShadowEnemy position={[15, 3, 40]} avatarReference={avatarRef}/>
-                        <Map1 />
-                </Physics>
-                <FinalDoor position={[0, 0, -100]} avatarReference={avatarRef}/>
+                <GameContextProvider>
+                  <Physics debug={false} timestep="vary">
+
+                          <Flower position={[0, 1, 65]}/>
+                          <Flower position={[6, 1, 18]}/>
+                          <Flower position={[20, 1, 52]}/>
+                          <Flower position={[-6, 1, -6]}/>
+                          <Flower position={[-34, 1, -26]}/>
+                          <Flower position={[12, 1, -36]}/>
+                          <Flower position={[16, 1, -12]}/>
+                          <Flower position={[25, 1, -69]}/>
+                          <Flower position={[-31, 1, -77]}/>
+                          <Flower position={[7, 1, -79]}/>
+                          <Fire position={[-8, 1, -59]} avatarReference={avatarRef}/>
+                          <Fire position={[-1, 1, -61]} avatarReference={avatarRef}/>
+                          <Fire position={[4, 1, -67]} avatarReference={avatarRef}/>
+                          <Fire position={[18, 1, -67]} avatarReference={avatarRef}/>
+                          <Fire position={[-19, 1, -79]} avatarReference={avatarRef}/>
+                          <Fire position={[-19, 1, -85]} avatarReference={avatarRef}/>
+                          <Fire position={[-35, 1, -83]} avatarReference={avatarRef}/>
+                          <Fire position={[31, 1, -77]} avatarReference={avatarRef}/>
+                          <Fire position={[23, 1, -87]} avatarReference={avatarRef}/>
+                          <Avatar avatarPosition={[0, 1, 98]} ref={avatarRef}/>
+                          <Boar position={[8, 1, -36]} avatarReference={avatarRef}/>
+                          <ShadowEnemy position={[-5, 3, 41]} avatarReference={avatarRef}/>
+                          <ShadowEnemy position={[15, 3, 40]} avatarReference={avatarRef}/>
+                          <Map1 />
+                  </Physics>
+              </GameContextProvider>
+              <FinalDoor position={[0, 0, -100]} avatarReference={avatarRef}/>
             </Suspense>
         </Canvas>
-    ) 
+    )
 }
 
 export default Level1;

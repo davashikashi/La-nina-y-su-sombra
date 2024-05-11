@@ -6,8 +6,14 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { Euler, Quaternion, Vector3 } from "three";
 import { SkeletonUtils } from "three/examples/jsm/Addons.js";
 
-export default function Model(props) {
 
+const grupoEspada = 1
+const grupoEnemigo = 2
+const grupoAmigos = 3
+const grupoEntorno = 5 //
+
+export default function Model(props) {
+  
   const avatarReference = props.avatarReference;
   const boarBodyRef = useRef();
   const boarModelRef = useRef();
