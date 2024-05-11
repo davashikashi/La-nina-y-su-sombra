@@ -8,8 +8,10 @@ import LampHand from "../../Objects/Lamp/LampHand";
 
 import { KeyboardControls, useAnimations, useGLTF } from "@react-three/drei";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
+
 import React, { forwardRef } from "react";
 import { randFloatSpread } from "three/src/math/MathUtils.js";
+
 
 
 const Avatar = forwardRef((props, ref) =>{
@@ -111,6 +113,8 @@ const Avatar = forwardRef((props, ref) =>{
     }
 
 
+    const [speed, setSpeed] = useState(3.5);
+
     const keyboardMap = [
         { name: "forward", keys: ["ArrowUp", "KeyW"] },
         { name: "backward", keys: ["ArrowDown", "KeyS"] },
@@ -123,7 +127,7 @@ const Avatar = forwardRef((props, ref) =>{
 
     return (
         <KeyboardControls map={keyboardMap}>
-            <Ecctrl animated capsuleHalfHeight={0.3} maxVelLimit={3.5} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} ref={ref}>
+            <Ecctrl animated capsuleHalfHeight={0.3} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} ref={ref}>
                 <EcctrlAnimation
                     characterURL={characterURL}
                     animationSet={animationSet} >

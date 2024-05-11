@@ -13,14 +13,10 @@ export default function Model(props) {
   const avatarReference = props.avatarReference;
 
   const { scene, materials, animations } = useGLTF('/assets/models/shadowEnemy/ShadowEnemy.glb')
-  const { actions } = useAnimations(animations, ShadowEnemyModelRef)
+  const { actions } = useAnimations(animations, ShadowEnemyModelRef);
 
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone);
-
-  if (materials.ShadowMaterial){
-    materials.ShadowMaterial.ior = 1
-  }
 
   const [isIdle, setIsIdle] = useState(true);
 
@@ -36,7 +32,7 @@ export default function Model(props) {
 
   useFrame((_, delta) => {
         const avatarPosition = avatarReference.current?.translation(); 
-        const currentPosition = ShadowEnemyBodyRef.current.translation(); // Obtener la posición actual            
+        const currentPosition = ShadowEnemyBodyRef.current?.translation(); // Obtener la posición actual            
         const currentPositionVector = new Vector3(currentPosition.x,
                  currentPosition.y, currentPosition.z);
 
@@ -60,24 +56,14 @@ export default function Model(props) {
 
         if (isChasing) {
           if (avatarPosition.z <= 16 || avatarPosition.z >= 58){
-            // Volver al punto de origen
-            // const initialPosition = new Vector3().subVectors(new Vector3(props.position[0], props.position[1], props.position[2]), currentPosition).normalize();
-            // const retreatDistanceDelta = initialPosition.multiplyScalar(chaseSpeed * delta);
-            // const retreatPosition = new Vector3().addVectors(currentPosition, retreatDistanceDelta);
-            // const retreatRotationY = Math.atan2(initialPosition.x, initialPosition.z);
-            
-            // ShadowEnemyBodyRef.current.setTranslation(retreatPosition, true);
-            // ShadowEnemyModelRef.current.rotation.y = retreatRotationY;
-            // ShadowEnemyBodyRef.current.rotation.y = retreatRotationY;
 
-            // Dejar de perseguir
-            // setIsChasing(false);
             setChaseDistance(0);
+
           }else{
               const chaseDirection = new Vector3().subVectors(avatarPosition, currentPosition).normalize();
               const chaseDistanceDelta = chaseDirection.multiplyScalar(chaseSpeed * delta);
               const chasePosition = new Vector3().addVectors(currentPosition, chaseDistanceDelta);
-              ShadowEnemyBodyRef.current.setTranslation(chasePosition, true);
+              ShadowEnemyBodyRef.current?.setTranslation(chasePosition, true);
               
             }
         }
@@ -125,7 +111,7 @@ export default function Model(props) {
   return (
     <RigidBody ref={ShadowEnemyBodyRef} type="dynamic" 
     colliders="hull" position={props.position} 
-    enabledRotations={[false, true, false]}>
+    enabledRotations={[false, false, false]}>
       {/* < /> */}
         <group ref={ShadowEnemyModelRef}>
             <group name="Scene">
@@ -150,9 +136,7 @@ export default function Model(props) {
                 <primitive object={nodes.LeftLegIK} />
                 <primitive object={nodes.BackLegIK} />
                 <primitive object={nodes.SpineIK} />
-                {/* <primitive object={nodes.ShadowEnemy} /> */}
                 </group>
-                <group name="WalkPath" />
             </group>
         </group>
     </RigidBody>
