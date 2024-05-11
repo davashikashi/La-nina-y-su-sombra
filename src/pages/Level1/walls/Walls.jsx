@@ -5,7 +5,7 @@ export default function Walls({geometry, materials}) {
         <>
             <mesh 
                 receiveShadow={true}
-                castShadow={true}
+                // castShadow={true}
                 geometry={geometry}
                 material={materials}/>
         </>

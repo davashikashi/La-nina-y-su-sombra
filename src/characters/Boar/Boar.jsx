@@ -67,7 +67,7 @@ export default function Boar(props) {
 
     return (
 
-        <RigidBody ref={boarBodyRef}  type="dynamic" colliders={false}>
+        <RigidBody ref={boarBodyRef}  type="dynamic" colliders={false} >
             <CuboidCollider  args={[0.7, 0.5, 0.5]} position={props.position} />
             <group ref={boarModelRef}  position={props.position} >
                 <group name="BoarArmature">

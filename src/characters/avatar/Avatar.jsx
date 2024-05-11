@@ -1,9 +1,10 @@
 
 import { KeyboardControls, useAnimations, useGLTF } from "@react-three/drei";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
+import React, { forwardRef } from "react";
 
 
-export default function Avatar(props) {
+const Avatar = forwardRef((props, ref) =>{
     // const avatarBodyRef = useRef();
     // const avatarRef = useRef();
     // const { avatar, SetAvatar } = useAvatar();
@@ -52,8 +53,8 @@ export default function Avatar(props) {
     ];
 
     return (
-        <KeyboardControls map={keyboardMap} >
-            <Ecctrl animated capsuleHalfHeight={0.3} maxVelLimit={3.5} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={[0, 3, 0]}>
+        <KeyboardControls map={keyboardMap}>
+            <Ecctrl animated capsuleHalfHeight={0.3} maxVelLimit={3.5} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} ref={ref}>
                 <EcctrlAnimation
                     characterURL={characterURL}
                     animationSet={animationSet} >
@@ -72,4 +73,6 @@ export default function Avatar(props) {
             </Ecctrl>
         </KeyboardControls>
     )
-}
+});
+
+export default Avatar;

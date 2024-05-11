@@ -50,12 +50,16 @@ export default function Flower(props) {
     //   />
     // </RigidBody>
       <group ref={flowerModelRef} scale={[6, 6, 6]} position={props.position}>
-        <mesh
+        {/* <mesh
           geometry={nodes.Flower.geometry}
           material={materials["Material.001"]}
           position={[0, 0, 0]} // Posición relativa del mesh dentro del grupo
-          rotation={[Math.PI / 2, 0, 0]} // Rotación inicial del mesh
-        />
+          rotation={[Math.PI / 2, 0, 0]} // Rotación inicial del mesh */}
+        <mesh geometry={nodes.Plane001.geometry} material={materials.Petals} rotation={[Math.PI / 2, 0, 0]}/>
+        <mesh geometry={nodes.Plane001_1.geometry} material={materials.Heart} rotation={[Math.PI / 2, 0, 0]}/>
+        <mesh geometry={nodes.Plane001_2.geometry} material={materials.Stick} rotation={[Math.PI / 2, 0, 0]}/>
+        <mesh geometry={nodes.Plane001_3.geometry} material={materials.Leaf} rotation={[Math.PI / 2, 0, 0]}/>
+        {/* /> */}
       </group>
     
   );
