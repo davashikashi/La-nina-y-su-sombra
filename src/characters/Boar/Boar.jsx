@@ -51,7 +51,7 @@ export default function Model(props) {
     const currentPositionVector = new Vector3(currentPosition.x,
       currentPosition.y, currentPosition.z);
 
-    console.log("X position: ", avatarPosition.x + "Z position: " + avatarPosition.z);
+    //console.log("X position: ", avatarPosition.x + "Z position: " + avatarPosition.z);
 
     if (avatarPosition) {
       const distanceToAvatar = currentPositionVector.distanceTo(avatarPosition);

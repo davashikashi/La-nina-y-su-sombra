@@ -1,14 +1,11 @@
-
+import { KeyboardControls, useAnimations, useGLTF, useKeyboardControls } from "@react-three/drei";
+import Ecctrl, { EcctrlAnimation, useGame } from "ecctrl";
 import HandSword from "../../Objects/sword/swordHand";
 import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Euler, Quaternion, Vector3 } from "three";
 import { useGameContext } from "../../context/GameContext";
 import LampHand from "../../Objects/Lamp/LampHand";
-
-import { KeyboardControls, useAnimations, useGLTF } from "@react-three/drei";
-import Ecctrl, { EcctrlAnimation } from "ecctrl";
-
+import { Euler, Quaternion, Vector3 } from "three";
 import React, { forwardRef } from "react";
 import { randFloatSpread } from "three/src/math/MathUtils.js";
 

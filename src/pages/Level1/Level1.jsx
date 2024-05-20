@@ -58,30 +58,30 @@ const Level1 = () => {
                 <Candle position={[27, 0, 32]}/>
                 <Texts color="white" Position={[0, 4, 90]} Textto="¡Bienvenido a la primera mazmorra!"/>
                 <Texts color="white" Position={[0, 4, 80]} Textto="Recoge la lampara
-                la necesitaras"/>
+                     la necesitaras"/>
                 <Texts color="white" Position={[0, 4, 75]} Textto="Los enemigos de sombra
-                intentaran apagar tu lampara" rotation ={[0, 0, 0]}/>
-                <Texts color="white" Position={[0, 4, 70]} Textto="En zonas oscuras 
-                perderas velocidad"/>
+                     intentaran apagar tu lampara" rotation ={[0, 0, 0]}/>
+                <Texts color="white" Position={[0, 4, 70]} Textto="En zonas oscuras
+                     perderas velocidad"/>
                 <Texts color="white" Position={[0, 4, 65]} Textto="Si tu lampara esta apagada y esta
-                oscuro perderas vida"/>
+                     oscuro perderas vida"/>
                 <Texts color="white" Position={[7.3, 1, 45]} Textto="Puedes recargar tu lampara
-                en las velas" fontSize={0.3} rotation={[0, -1.2, 0]}/>
+                     en las velas" fontSize={0.3} rotation={[0, -1.2, 0]}/>
                 <Texts color="white" Position={[6, 1.5, 18]} Textto="Sigue las flores!" fontSize={0.3} rotation={[0, -1.2, 0]}/>
                 <Texts color="white" Position={[0, 4, -20]} Textto="Busca la espada para derrotar
-                al jabali!" fontSize={1} rotation={[0, 0, 0]}/>
+                     al jabali!" fontSize={1} rotation={[0, 0, 0]}/>
                 <Texts color="white" Position={[0, 4, -33]} Textto="Haz que choque contra
-                los pilares o las paredes para
-                aprovechar mientras esta aturdido" fontSize={0.8} rotation={[0, 0, 0]}/>
+                     los pilares o las paredes para
+                     aprovechar mientras esta aturdido" fontSize={0.8} rotation={[0, 0, 0]}/>
                 <Texts color="white" Position={[0, 4, -45]} Textto="Encuentra las dos palancas
-                en el laberinto para abrir
-                el camino a la puerta de salida" fontSize={0.6} rotation={[0, 0, 0]}/>
+                     en el laberinto para abrir
+                     el camino a la puerta de salida" fontSize={0.6} rotation={[0, 0, 0]}/>
                 <Texts color="white" Position={[0, 2, -51]} Textto="Mucha Suerte!" fontSize={0.6} rotation={[0, 0, 0]}/>
                 <Texts color="white" Position={[15, 4, -5]} Textto="Ataca con la tecla F" fontSize={0.6} rotation={[0, 3, 0]}/>
                 <Texts color="white" Position={[15, 4, -3]} Textto="Cambia entre espada y lampara con Q y E"
                  fontSize={0.6} rotation={[0, 3, 0]}/>
                  <Texts color="white" Position={[0, 4, -96]} Textto="Felicidades!
-                 Has llegado al final del Nivel 1!"
+                      Has llegado al final del Nivel 1!"
                  fontSize={0.6} rotation={[0, 0, 0]}/>
                 <GameContextProvider>
                   <Physics debug={false} timestep="vary">
