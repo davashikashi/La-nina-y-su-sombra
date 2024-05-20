@@ -7,21 +7,37 @@ import { Euler, Quaternion, Vector3 } from "three";
 import { useGameContext } from "../../context/GameContext";
 import LampHand from "../../Objects/Lamp/LampHand";
 
-// Supongamos que tienes un sistema de gestión de animaciones
+import HandSword from "../../Objects/sword/swordHand";
+import { useEffect, useRef, useState } from "react";
+import { useFrame } from "@react-three/fiber";
+import { Euler, Quaternion, Vector3 } from "three";
+import { useGameContext } from "../../context/GameContext";
+import LampHand from "../../Objects/Lamp/LampHand";
 
-export default function Avatar(props) {
+import { KeyboardControls, useAnimations, useGLTF } from "@react-three/drei";
+import Ecctrl, { EcctrlAnimation } from "ecctrl";
 
+import React, { forwardRef } from "react";
+import { randFloatSpread } from "three/src/math/MathUtils.js";
+
+
+
+const Avatar = forwardRef((props, ref) =>{
+    // const avatarBodyRef = useRef();
+    // const avatarRef = useRef();
+    // const { avatar, SetAvatar } = useAvatar();
+    const { isAttacking, setIsAttacking } = useGameContext()
     const { nodes, materials } = useGLTF('/assets/models/avatar/Girl.glb')
     //use states
 
-    const [isCollisionDisable, setIsCollisionDisable] = useState(false); // Estado para colisiones
+    const [isCollisionDisable, setIsCollisionDisable] = useState(true); // Estado para colisiones
     const [collisionEndTime, setCollisionEndTime] = useState(null); // Control del temporizador
 
     //carga modelo
     const characterURL = '/assets/models/avatar/Girl.glb'
 
     //uso de contexto
-    const { isAttacking, setIsAttacking } = useGameContext()
+    
     const { actualObject, setActualObject } = useGameContext("sword")
     const { isTakingSword, isTakingLamp, setIsTakingSword, setIsTakingLamp } = useGameContext()
 
@@ -105,6 +121,8 @@ export default function Avatar(props) {
     }
 
 
+    const [speed, setSpeed] = useState(3.5);
+
     const keyboardMap = [
         { name: "forward", keys: ["ArrowUp", "KeyW"] },
         { name: "backward", keys: ["ArrowDown", "KeyS"] },
@@ -116,9 +134,8 @@ export default function Avatar(props) {
     ]
 
     return (
-        <KeyboardControls map={keyboardMap} >
-            <Ecctrl
-                animated capsuleRadius={0.29} capsuleHalfHeight={0.3} maxVelLimit={3.5} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={[0, 10, 0]}>
+        <KeyboardControls map={keyboardMap}>
+            <Ecctrl animated capsuleHalfHeight={0.3} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} ref={ref}>
                 <EcctrlAnimation
                     characterURL={characterURL}
                     animationSet={animationSet} >
@@ -140,8 +157,6 @@ export default function Avatar(props) {
             </Ecctrl>
         </KeyboardControls>
     )
-}
+});
 
-
-
-// s
+export default Avatar;

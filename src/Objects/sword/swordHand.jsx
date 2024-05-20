@@ -3,7 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { pass } from "three/examples/jsm/nodes/Nodes.js";
-import { GameContextProvider, useGameContext } from "../../context/GameContext";
+import {  useGameContext } from "../../context/GameContext";
 import { Euler, Quaternion, Vector3 } from "three";
 
 
@@ -11,7 +11,7 @@ import { Euler, Quaternion, Vector3 } from "three";
 const HandSword = forwardRef((props, ref) => {
 
     const { nodes, materials } = useGLTF('/assets/models/sword/sword.glb')
-
+    const { isAttacking, setIsAttacking } = useGameContext();
     const { isTakingLamp, setIsTakingLamp } = useGameContext(false)
     const { isTakingSword, setIsTakingSword } = useGameContext(true)
    
@@ -21,7 +21,7 @@ const HandSword = forwardRef((props, ref) => {
     const swordRef = useRef()
     const swordModelRef = useRef()
 
-    const { setIsAttacking } = useGameContext();
+   
 
     //offset posicion y rotacion
     const swordOffset = new Vector3(0.2, -0.1, -0.1)
@@ -32,7 +32,7 @@ const HandSword = forwardRef((props, ref) => {
     // console.log(props.isAttacking)
 
     const handleCollisionEnter = (event) => {
-        if (props.isCollisionDisable && isTakingSword) {
+        if (props.isCollisionEnabled && isTakingSword) {
             console.log("taking ", isTakingSword)
             if (enemigos.includes(event.colliderObject.name)) {
                 //console.log("Evento de colisión:", event.colliderObject.name);

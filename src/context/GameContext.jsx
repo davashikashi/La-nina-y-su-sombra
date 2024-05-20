@@ -6,6 +6,7 @@ const GameContext = createContext();
 
 // 2. Proveer el contexto
 export const GameContextProvider = ({ children }) => {
+  
   const [isAttacking, setIsAttacking] = useState(false);
   const [isTakingSword, setIsTakingSword] = useState(false);
   const [isTakingLamp, setIsTakingLamp] = useState(false);

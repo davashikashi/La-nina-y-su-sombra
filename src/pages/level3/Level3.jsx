@@ -8,7 +8,7 @@ import { Perf } from "r3f-perf";
 import { Physics } from "@react-three/rapier";
 import Boar from "../../characters/Boar/Boar";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useRef, useState } from "react";
+import { Suspense, useRef } from "react";
 import Flower from "../../Objects/Flower/Flower";
 import Fire from "../../characters/fire/fire";
 import Avatar from "../../characters/avatar/Avatar";
