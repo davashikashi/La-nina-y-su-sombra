@@ -16,6 +16,8 @@ import Sword from "../../Objects/sword/sword";
 import { GameContextProvider } from "../../context/GameContext";
 import { OrbitControls } from "@react-three/drei";
 import Lamp from "../../Objects/Lamp/Lamp";
+import shadowAvatar from "../../characters/shadowAvatar/shadowAvatar";
+import ShadowAvatar from "../../characters/shadowAvatar/shadowAvatar";
 
 
 
@@ -36,11 +38,32 @@ const Level3 = () => {
                 <Texts Position={[0, 7, 40]} Textto={"Reto Final"} color={"white"} />
                 <GameContextProvider>
                     <Physics debug={true} timeStep="vary">
-                        <Box position={[0, 2, 4]} />
-                        <Box position={[0, 2, 6]} />
-                        <Avatar />
-                        <Sword position={[7, 0.5, 0]} />
-                        <Lamp position={[-7, 0.5, 0]} />
+                        <Box position={[0, 1, 4]} />
+                        <Box position={[0, 1, 6]} />
+                        <Box position={[4, 2.5, -7]} />
+                        <Box position={[-7.5, 2.5, -6]} />
+                        <Box position={[-7.5, 2.5, 19.5]} />
+                        <Box position={[0, 2, 12]} />
+                        <Boar avatarReference={avatarRef} position={[-5, 2.5, 6]} />
+                        <Boar avatarReference={avatarRef} position={[5, 2.5, 10]} />
+                        <Boar avatarReference={avatarRef} position={[5.5, 2.5, 48.5]} />
+                        <Flower position={[0, 1, 40]} />
+                        <Flower position={[0, 1, 30]} />
+                        <Flower position={[0, 1, 35]} />
+                        <Flower position={[5, 1, 25]} />
+                        <Flower position={[-5, 1, 25]} />
+                        <Flower position={[5, 1, 48]} />
+                        <Flower position={[-5, 1, 48]} />
+                        <Flower position={[-10, 1, 48]} />
+                        <Flower position={[-10, 1, 0]} />
+                        <Flower position={[0, 1, 10]} />
+                        <Flower position={[8, 1, 10]} />
+                        {/* <Fire avatarReference={avatarRef} position={[-12, 1, -2]} />
+                        <Fire avatarReference={avatarRef} position={[-12, 1, 28]} />
+                        <Fire avatarReference={avatarRef} position={[10, 1, 20]} />
+                        <Fire avatarReference={avatarRef} position={[10, 1, 35]} /> */}
+                        {/* <Avatar avatarPosition={[0,10,0]} ref={avatarRef}/> */}
+                        <ShadowAvatar avatarPosition={[0,10,0]}/>
                         <World />
                     </Physics>
 

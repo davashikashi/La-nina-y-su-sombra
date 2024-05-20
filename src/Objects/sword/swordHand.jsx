@@ -32,7 +32,7 @@ const HandSword = forwardRef((props, ref) => {
     // console.log(props.isAttacking)
 
     const handleCollisionEnter = (event) => {
-        if (props.isCollisionEnabled && isTakingSword) {
+        if (props.isCollisionDisable && isTakingSword) {
             console.log("taking ", isTakingSword)
             if (enemigos.includes(event.colliderObject.name)) {
                 //console.log("Evento de colisión:", event.colliderObject.name);

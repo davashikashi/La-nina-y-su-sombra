@@ -7,6 +7,7 @@ import { useGameContext } from "../../context/GameContext"
 export default function Box(props) {
 
     const { nodes } = useGLTF("/assets/models/Box/Box.glb")
+    const {isAttacking, setIsAttacking} = useGameContext()
 
     const TexturePath = "/assets/textures/crate/"
 
@@ -30,25 +31,22 @@ export default function Box(props) {
     propsBoxTexture.diplacementMap.repeat.set(1, 1);
     propsBoxTexture.diplacementMap.wrapS = propsBoxTexture.diplacementMap.wrapT = RepeatWrapping;
 
-    const {isAttacking, isTakingSword} = useGameContext()
+    const dañoDe = ["puñocollider"];
 
     const health = useRef(100);
 
-    const handleHit = () => {
-        console.log(isAttacking)
-        if (isAttacking && isTakingSword) {
+    const handleHit = (event) => {
+        if (isAttacking && dañoDe.includes(event.colliderObject.name)) {
+            setIsAttacking(false)
             health.current = Math.max(health.current - 10, 0);
-            console.log("Health:", health.current);
-            console.log("desde box ")
+            console.log("Health:", health.current);    
         }
-
     };
 
     if (health.current <= 0) {
         return null;
     }
-
-    // 
+// 
 
 
     return (
