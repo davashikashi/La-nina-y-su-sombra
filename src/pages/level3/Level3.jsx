@@ -16,7 +16,6 @@ import Sword from "../../Objects/sword/sword";
 import { GameContextProvider } from "../../context/GameContext";
 import { OrbitControls } from "@react-three/drei";
 import Lamp from "../../Objects/Lamp/Lamp";
-import shadowAvatar from "../../characters/shadowAvatar/shadowAvatar";
 import ShadowAvatar from "../../characters/shadowAvatar/shadowAvatar";
 import Door from "../../Objects/Door/Door";
 import Plate from "../../Objects/Plate/Plate";
@@ -64,11 +63,11 @@ const Level3 = () => {
                         <Fire avatarReference={avatarRef} position={[-12, 1, 28]} />
                         <Fire avatarReference={avatarRef} position={[10, 1, 20]} />
                         <Fire avatarReference={avatarRef} position={[10, 1, 35]} /> */}
-                        <Avatar avatarPosition={[0,10,0]} ref={avatarRef}/>
-                        <Door id="door1" requiredActivators={["plate1"]} position={[0,2,4]} />
-                        <Plate id={"plate1"} position={[5,4,0]} />
+                        {/* <Avatar avatarPosition={[0,10,0]} ref={avatarRef}/> */}
+                        {/* <Door id="door1" requiredActivators={["plate1"]} position={[0,2,4]} />
+                        <Plate id={"plate1"} position={[5,4,0]} /> */}
                         
-                        {/* <ShadowAvatar avatarPosition={[0,10,0]}/> */}
+                        <ShadowAvatar avatarPosition={[0,10,0]}/>
                         <World />
                     </Physics>
 
