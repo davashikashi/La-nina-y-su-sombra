@@ -2,24 +2,33 @@ import { useEffect, useState } from "react"
 import { useGameContext } from "../../context/GameContext"
 
 
- const Door = ({id, requiredActivators, position})=>{
+const Door = ({ palancasRequeridas, placasPresionRequeridas ,position }) => {
 
-    const [isOpen, setIsOpen]= useState(false)
-    const {registerDoor, isDoorOpen} = useGameContext()
+    const { palancas, placasPresion } = useGameContext();
 
-    useEffect(() => {
-        registerDoor(id,requiredActivators)
-    },[id,requiredActivators, registerDoor])
+    // Función para determinar si la puerta está abierta o cerrada
+    const isPuertaAbierta = () => {
+        // Verificar si todas las palancas requeridas están activadas
+        // for (const palancaId of palancasRequeridas) {
+        //     if (!palancas[palancaId]) {
+        //         return false;
+        //     }
+        // }
 
-    useEffect(()=>{
-        setIsOpen(isDoorOpen(id))
-    },[isDoorOpen,id])
+        // Verificar si todas las placas de presión requeridas están activadas
+        for (const placaPresionId of placasPresionRequeridas) {
+            if (!placasPresion[placaPresionId]) {
+                return false;
+            }
+        }
 
+        return true;
+    };
 
-    return(
+    return (
         <mesh position={position}>
             <boxGeometry args={[3, 4, 1]} />
-            <meshStandardMaterial attach="material" color={isOpen ? 'green' : 'red'} />
+            <meshStandardMaterial attach="material" color={isPuertaAbierta() ? "green" : "red"} />
         </mesh>
     )
 }

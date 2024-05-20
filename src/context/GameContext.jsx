@@ -6,53 +6,40 @@ const GameContext = createContext();
 
 // 2. Proveer el contexto
 export const GameContextProvider = ({ children }) => {
-  
   const [isAttacking, setIsAttacking] = useState(false);
   const [isTakingSword, setIsTakingSword] = useState(false);
   const [isTakingLamp, setIsTakingLamp] = useState(false);
   const [actualObject, setActualObject] = useState();
 
+  const [palancas, setPalancas] = useState({});
+  const [placasPresion, setPlacasPresion] = useState({});
 
-  //logica para puertas en el contexto
+  // Función para actualizar el estado de las palancas
+  const togglePalanca = (id, estado) => {
+    setPalancas((prevPalancas) => ({ ...prevPalancas, [id]: estado }));
+  };
 
-  const [activators, setActivators] = useState({}) //lista activadores
-  const [doors, setDoors] = useState({}) //lista de puertas
-
-  //registrar un activador con su estado
-  const registerActivator = (id) => {
-    setActivators((prev) => ({...prev, [id]: false}))
-  }
-
-  //registrar una puerta con sus activadores y su estado
-  const registerDoor = (id, requiredActivators) => {
-    setDoors((prev) => ({...prev, [id]: {requiredActivators, isOpen:false}}))
-  }
-
-  const setActivatorState = (id, state) => {
-    setActivators((prev) => ({...prev, [id] : state}))
-    updateDoors()
-  }
-
-  const updateDoors = () => {
-    setDoors((prev) => {
-      const newDoors = {...prev}
-      for (const [id, door] of Object.entries(newDoors)){
-        newDoors[id].isOpen = door.requiredActivators.every((activator) => activators[activator])
-      }
-      return newDoors
-    })
-  }
-
-  const isDoorOpen = (id) => {
-    return doors[id]?.isOpen || false
-  }
-
-
-  ////fin logica puertas
-  
+  // Función para actualizar el estado de las placas de presión
+  const togglePlacaPresion = (id, estado) => {
+    setPlacasPresion((prevPlacasPresion) => ({ ...prevPlacasPresion, [id]: estado }));
+  };
 
   return (
-    <GameContext.Provider value={{registerActivator, registerDoor, setActivatorState, isDoorOpen , isTakingLamp, setIsTakingLamp, isAttacking, setIsAttacking, isTakingSword, setIsTakingSword, actualObject, setActualObject}}>
+    <GameContext.Provider
+      value={{
+        palancas,
+        placasPresion,
+        togglePalanca,
+        togglePlacaPresion,
+        isTakingLamp,
+        setIsTakingLamp,
+        isAttacking,
+        setIsAttacking,
+        isTakingSword,
+        setIsTakingSword,
+        actualObject,
+        setActualObject
+      }}>
       {children}
     </GameContext.Provider>
   );

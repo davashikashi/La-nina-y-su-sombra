@@ -64,8 +64,8 @@ const Level3 = () => {
                         <Fire avatarReference={avatarRef} position={[10, 1, 20]} />
                         <Fire avatarReference={avatarRef} position={[10, 1, 35]} /> */}
                         {/* <Avatar avatarPosition={[0,10,0]} ref={avatarRef}/> */}
-                        {/* <Door id="door1" requiredActivators={["plate1"]} position={[0,2,4]} />
-                        <Plate id={"plate1"} position={[5,4,0]} /> */}
+                        <Door placasPresionRequeridas={["plate1"]} position={[0,2,4]} />
+                        <Plate id={"plate1"} position={[5,1,0]} />
                         
                         <ShadowAvatar avatarPosition={[0,10,0]}/>
                         <World />

@@ -25,11 +25,11 @@ export default function World(props) {
                 <Floor geometry={nodes.SecondFloor.geometry} TexturePath={FloorPATH} />
 
             </RigidBody>
-            <RigidBody name="Suelo" type="fixed" colliders="cuboid">
-                <CuboidCollider args={[20, 0.01, 80]} position={[0, 0, 0]} />
+            <RigidBody name="Suelo" type="fixed" colliders={"trimesh"}
+            >
+                {/* <CuboidCollider args={[20, 0.01, 80]} position={[0,0 ,0]}/> */}
                 <Floor geometry={nodes.Floor.geometry} TexturePath={FloorPATH} />
             </RigidBody>
-
             <RigidBody name="Pared" type="fixed" colliders="trimesh">
                 <Walls geometry={nodes.Walls.geometry} TexturePath={WallsPATH} />
 
