@@ -75,7 +75,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
     const animationSet = {
         idle: "Idle", // Animación de reposo
         walk: "Walking", // Animación de caminar
-        run: "Walking",
+        run: "Running",
         jump: "Jump", // Si no tienes animación de salto, usar un valor seguro
         jumpIdle: "Jump",
         jumpLand: "Jump",
