@@ -76,9 +76,9 @@ const ShadowAvatar = forwardRef((props, ref) => {
         idle: "Idle", // Animación de reposo
         walk: "Walking", // Animación de caminar
         run: "Walking",
-        jump: "Idle", // Si no tienes animación de salto, usar un valor seguro
-        jumpIdle: "Idle",
-        jumpLand: "Idle",
+        jump: "Jump", // Si no tienes animación de salto, usar un valor seguro
+        jumpIdle: "Jump",
+        jumpLand: "Jump",
         fall: "Idle",
         action4: "Attacking",
     }
@@ -182,7 +182,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
                     characterURL={characterURL}
                     animationSet={animationSet} >
                     <group name="Scene">
-                        <group name="Armature" position={[0,-0.7,0]}>
+                        <group name="Armature" position={[0,-0.7,0]} rotation={[0, 3.2, 0]}>
                             <group name="Shadow">
                                 <skinnedMesh
                                     name="Shadow_1"
