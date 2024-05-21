@@ -16,6 +16,9 @@ import Sword from "../../Objects/sword/sword";
 import { GameContextProvider } from "../../context/GameContext";
 import { OrbitControls } from "@react-three/drei";
 import Lamp from "../../Objects/Lamp/Lamp";
+import ShadowAvatar from "../../characters/shadowAvatar/shadowAvatar";
+import Door from "../../Objects/Door/Door";
+import Plate from "../../Objects/Plate/Plate";
 
 
 
@@ -42,11 +45,12 @@ const Level3 = () => {
                         <Box position={[-7.5, 2.5, -6]} />
                         <Box position={[-7.5, 2.5, 19.5]} />
                         <Box position={[0, 2, 12]} />
-                        <Boar avatarReference={avatarRef} position={[-5, 2.5, 6]} />
+                        {/* <Boar avatarReference={avatarRef} position={[-5, 2.5, 6]} />
                         <Boar avatarReference={avatarRef} position={[5, 2.5, 10]} />
                         <Boar avatarReference={avatarRef} position={[5.5, 2.5, 48.5]} />
-                        <Flower position={[0, 1, 40]} />
+                        <Flower position={[0, 1, 40]} /> */}
                         <Flower position={[0, 1, 30]} />
+                        <Flower position={[0, 1, 0]} />
                         <Flower position={[0, 1, 35]} />
                         <Flower position={[5, 1, 25]} />
                         <Flower position={[-5, 1, 25]} />
@@ -56,14 +60,20 @@ const Level3 = () => {
                         <Flower position={[-10, 1, 0]} />
                         <Flower position={[0, 1, 10]} />
                         <Flower position={[8, 1, 10]} />
-                        <Fire avatarReference={avatarRef} position={[-12, 1, -2]} />
+                        {/* <Fire avatarReference={avatarRef} position={[-12, 1, -2]} />
                         <Fire avatarReference={avatarRef} position={[-12, 1, 28]} />
                         <Fire avatarReference={avatarRef} position={[10, 1, 20]} />
-                        <Fire avatarReference={avatarRef} position={[10, 1, 35]} />
-                        <Avatar avatarPosition={[0,10,0]} ref={avatarRef}/>
+                        <Fire avatarReference={avatarRef} position={[10, 1, 35]} /> */}
+                        {/* <Avatar avatarPosition={[0,10,0]} ref={avatarRef}/> */}
+                        <Door placasPresionRequeridas={["plate1"]} position={[0,2,4]} />
+                        <Plate id={"plate1"} position={[5,1,0]} />
+                        
+                        <ShadowAvatar avatarPosition={[0,10,-2]}/>
                         <World />
                     </Physics>
+
                 </GameContextProvider>
+
             </Suspense>
         </Canvas>
 
@@ -72,4 +82,3 @@ const Level3 = () => {
 }
 
 export default Level3;
-
