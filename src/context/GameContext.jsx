@@ -1,5 +1,5 @@
 // En un archivo llamado GameContext.js
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 // 1. Crear el contexto
 const GameContext = createContext();
@@ -11,9 +11,18 @@ export const GameContextProvider = ({ children }) => {
   const [isTakingLamp, setIsTakingLamp] = useState(false);
   const [actualObject, setActualObject] = useState();
   const [puntaje, setPuntaje] = useState(0);
+  const [health, setHealth] = useState(3);
 
   const [palancas, setPalancas] = useState({});
   const [placasPresion, setPlacasPresion] = useState({});
+  const [lastCheckedScore, setLastCheckedScore] = useState(0);
+
+  useEffect(() => {
+    if (puntaje > lastCheckedScore && puntaje % 10 === 0 && health < 3) {
+      setHealth(prevHealth => prevHealth + 1);
+      setLastCheckedScore(puntaje);
+    }
+  }, [puntaje, health, lastCheckedScore]);
 
   // Función para actualizar el estado de las palancas
   const togglePalanca = (id, estado) => {
@@ -28,6 +37,8 @@ export const GameContextProvider = ({ children }) => {
   return (
     <GameContext.Provider
       value={{
+        health, 
+        setHealth,
         puntaje,
         setPuntaje,
         palancas,

@@ -9,7 +9,7 @@ export default function Flower(props) {
   const { nodes, materials } = useGLTF("/assets/models/Flower/Flower.glb");
   const flowerModelRef = useRef();
   const flowerBodyRef = useRef();
-  const { puntaje, setPuntaje } = useGameContext();
+  const { puntaje, setPuntaje,health,setHealth } = useGameContext();
   const [visible, setVisible] = useState(true);
   const [time, setTime] = useState(0);
 

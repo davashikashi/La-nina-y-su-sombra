@@ -19,6 +19,7 @@ import Lamp from "../../Objects/Lamp/Lamp";
 import ShadowAvatar from "../../characters/shadowAvatar/shadowAvatar";
 import Door from "../../Objects/Door/Door";
 import Plate from "../../Objects/Plate/Plate";
+import GameUI from "../../UI/UI";
 
 
 
@@ -30,52 +31,71 @@ const Level3 = () => {
 
 
     return (
+        <GameContextProvider>
+            <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
 
-        <Canvas shadows={true} camera={{ position: [0, 20, 49] }} >
-            <Perf position="top-left" />
-            <Suspense fallback={null}>
-                <Lights />
-                <Environments />
-                <Texts Position={[0, 7, 40]} Textto={"Reto Final"} color={"white"} />
-                <GameContextProvider>
-                    <Physics debug={true} timeStep="vary">
-                        <Box position={[0, 1, 4]} />
-                        <Box position={[0, 1, 6]} />
-                        <Box position={[4, 2.5, -7]} />
-                        <Box position={[-7.5, 2.5, -6]} />
-                        <Box position={[-7.5, 2.5, 19.5]} />
-                        <Box position={[0, 2, 12]} />
-                        {/* <Boar avatarReference={avatarRef} position={[-5, 2.5, 6]} />
+                <Canvas shadows={true} camera={{ position: [0, 20, 49] }} >
+                    <Perf position="top-left" />
+                    <Suspense fallback={null}>
+                        <Lights />
+                        <Environments />
+                        <Texts Position={[0, 7, 40]} Textto={"Reto Final"} color={"white"} />
+
+                        <Physics debug={true} timeStep="vary">
+                            <Box position={[0, 1, 4]} />
+                            <Box position={[0, 1, 6]} />
+                            <Box position={[4, 2.5, -7]} />
+                            <Box position={[-7.5, 2.5, -6]} />
+                            <Box position={[-7.5, 2.5, 19.5]} />
+                            <Box position={[0, 2, 12]} />
+                            {/* <Boar avatarReference={avatarRef} position={[-5, 2.5, 6]} />
                         <Boar avatarReference={avatarRef} position={[5, 2.5, 10]} />
                         <Boar avatarReference={avatarRef} position={[5.5, 2.5, 48.5]} />
                         <Flower position={[0, 1, 40]} /> */}
-                        <Flower position={[0, 1, 30]} />
-                        <Flower position={[0, 1, 0]} />
-                        <Flower position={[0, 1, 35]} />
-                        <Flower position={[5, 1, 25]} />
-                        <Flower position={[-5, 1, 25]} />
-                        <Flower position={[5, 1, 48]} />
-                        <Flower position={[-5, 1, 48]} />
-                        <Flower position={[-10, 1, 48]} />
-                        <Flower position={[-10, 1, 0]} />
-                        <Flower position={[0, 1, 10]} />
-                        <Flower position={[8, 1, 10]} />
-                        {/* <Fire avatarReference={avatarRef} position={[-12, 1, -2]} />
+                            <Flower position={[0, 1, 30]} />
+                            <Flower position={[0, 1, 0]} />
+                            
+                            
+                            <Flower position={[0, 1, -3]} />
+                            <Flower position={[1, 1, 0]} />
+                            <Flower position={[0, 1, -4]} />
+                            <Flower position={[2, 1, 0]} />
+                            <Flower position={[3, 1, 0]} />
+                            <Flower position={[-1, 1, 0]} />
+                            <Flower position={[-2, 1, 0]} />
+                            <Flower position={[-3, 1, 0]} />
+
+                            <Flower position={[0, 1, 35]} />
+                            <Flower position={[5, 1, 25]} />
+                            <Flower position={[-5, 1, 25]} />
+                            <Flower position={[5, 1, 48]} />
+                            <Flower position={[-5, 1, 48]} />
+                            <Flower position={[-10, 1, 48]} />
+                            <Flower position={[-10, 1, 0]} />
+                            <Flower position={[0, 1, 10]} />
+                            <Flower position={[8, 1, 10]} />
+                            {/* <Fire avatarReference={avatarRef} position={[-12, 1, -2]} />
                         <Fire avatarReference={avatarRef} position={[-12, 1, 28]} />
                         <Fire avatarReference={avatarRef} position={[10, 1, 20]} />
                         <Fire avatarReference={avatarRef} position={[10, 1, 35]} /> */}
-                        {/* <Avatar avatarPosition={[0,10,0]} ref={avatarRef}/> */}
-                        <Door placasPresionRequeridas={["plate1"]} position={[0,2,4]} />
-                        <Plate id={"plate1"} position={[5,1,0]} />
-                        
-                        <ShadowAvatar avatarPosition={[0,10,-2]}/>
-                        <World />
-                    </Physics>
+                            {/* <Avatar avatarPosition={[0,10,0]} ref={avatarRef}/> */}
+                            <Door placasPresionRequeridas={["plate1"]} position={[0, 2, 4]} />
+                            <Plate id={"plate1"} position={[5, 1, 0]} />
 
-                </GameContextProvider>
+                            <ShadowAvatar avatarPosition={[0, 10, -2]} />
+                            <World />
+                        </Physics>
 
-            </Suspense>
-        </Canvas>
+
+
+
+
+                    </Suspense>
+                </Canvas>
+
+                <GameUI />
+            </div>
+        </GameContextProvider>
 
     )
 

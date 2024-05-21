@@ -134,8 +134,8 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
     })
     ////////////////////////////////////////////////////////////////
-    const [health, setHealth] = useState(100);
-    const [isVulnerable, setIsVulnerable] = useState(true);
+    const {health,setHealth} = useGameContext()
+    const [isVulnerable, setIsVulnerable] = useState(false);
     const [canTakeDamage, setCanTakeDamage] = useState(true);
     const enemigos = ["Boar", "Fuego", "rigid caja"];
 
@@ -150,6 +150,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
     };
 
     useEffect(() => {
+        console.log(health)
         if (health <= 0) {
             console.log("El jugador ha perdido toda su salud y ha muerto.");
         }
@@ -158,8 +159,9 @@ const ShadowAvatar = forwardRef((props, ref) => {
     useEffect(() => {
         if (isVulnerable) {
             console.log(health)
-            setHealth((prevHealth) => Math.max(prevHealth - 10, 0));
+            setHealth(prevHealth => prevHealth - 1);
             setIsVulnerable(false);
+            
             setTimeout(() => {
                 // Esta línea de código se ejecutará después de 3000 milisegundos (3 segundos)
                 setCanTakeDamage(true);
