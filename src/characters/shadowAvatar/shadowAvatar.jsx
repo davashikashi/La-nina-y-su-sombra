@@ -6,12 +6,14 @@ import { KeyboardControls, useAnimations, useGLTF } from "@react-three/drei";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import React, { forwardRef } from "react";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
-
+import golpea from "../../Sounds/lanzaGolpe.mp3"
+import golpeado from "../../Sounds/hitEnemigo.mp3"
+import anda from "../../Sounds/shadowWalk.mp3"
 
 
 const ShadowAvatar = forwardRef((props, ref) => {
-    // const avatarBodyRef = useRef();
-    // const avatarRef = useRef();
+    const avatarBodyRef = useRef();
+    const avatarRef = useRef();
     // const { avatar, SetAvatar } = useAvatar();
 
     const handRefCollider = useRef()
@@ -25,15 +27,18 @@ const ShadowAvatar = forwardRef((props, ref) => {
     const characterURL = '/assets/models/shadowAvatar/Shadow.glb'
 
 
-    const handOffset = new Vector3(0.2, 0, -0.1)
+    const handOffset = new Vector3(0, 0, -0.7)
     const rotationOffset = new Quaternion().setFromEuler(
         new Euler(0, 0, 0) // Rotación para levantar la espada
     );
 
-    
+    const lanzaGolpe = new Audio(golpea)
+
 
     //definicion de huesos manos
     const rightHandBone = nodes.RightArmIK
+
+    const andando = new Audio(anda)
 
     //console.log("huesos", nodes.GirlModel.skeleton)
 
@@ -44,18 +49,39 @@ const ShadowAvatar = forwardRef((props, ref) => {
             console.log("con colisiones")
             setIsAttacking(true)
             //console.log("colisiones") // Habilita colisiones
+            lanzaGolpe.volume = 0.1;
+            lanzaGolpe.play();
             setCollisionEndTime(Date.now() + 1000); // Deshabilitar en 1.5 segundos
         }
+
+        if (event.key.toLowerCase() === "w"
+            || event.key.toLowerCase() === "a"
+            || event.key.toLowerCase() === "s"
+            || event.key.toLowerCase() === "d"){
+                andando.loop = true
+                andando.volume = 0.2;
+                andando.play();
+            }
 
 
     };
 
+    const handleKeyUp = (event) => {
+        if (event.key.toLowerCase() === "w" || event.key.toLowerCase() === "a" || event.key.toLowerCase() === "s" || event.key.toLowerCase() === "d") {
+          andando.pause();
+          andando.currentTime = 0;
+        }
+      };
+
     useEffect(() => {
         window.addEventListener("keydown", handleKeyDown);
+        window.addEventListener("keyup", handleKeyUp);
+    
         return () => {
-            window.removeEventListener("keydown", handleKeyDown);
+          window.removeEventListener("keydown", handleKeyDown);
+          window.removeEventListener("keyup", handleKeyUp);
         };
-    }, []);
+      }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -134,10 +160,11 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
     })
     ////////////////////////////////////////////////////////////////
-    const {health,setHealth} = useGameContext()
+    const { health, setHealth } = useGameContext()
     const [isVulnerable, setIsVulnerable] = useState(false);
     const [canTakeDamage, setCanTakeDamage] = useState(true);
     const enemigos = ["Boar", "Fuego", "rigid caja"];
+    const hitEnemigo = new Audio(golpeado)
 
 
 
@@ -159,9 +186,11 @@ const ShadowAvatar = forwardRef((props, ref) => {
     useEffect(() => {
         if (isVulnerable) {
             console.log(health)
+            hitEnemigo.volume = 0.3;
+            hitEnemigo.play();
             setHealth(prevHealth => prevHealth - 1);
             setIsVulnerable(false);
-            
+
             setTimeout(() => {
                 // Esta línea de código se ejecutará después de 3000 milisegundos (3 segundos)
                 setCanTakeDamage(true);
@@ -177,12 +206,12 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
     return (
         <KeyboardControls map={keyboardMap}>
-            <Ecctrl animated onCollisionEnter={handleHit} capsuleHalfHeight={0.3} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} ref={ref}>
+            <Ecctrl animated ref={avatarBodyRef} onCollisionEnter={handleHit} capsuleHalfHeight={0.3} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} ref={ref}>
                 <EcctrlAnimation
                     characterURL={characterURL}
                     animationSet={animationSet} >
                     <group name="Scene">
-                        <group name="Armature" position={[0,-0.7,0]} rotation={[0, 3.2, 0]}>
+                        <group ref={avatarRef} name="Armature" position={[0, -0.7, 0]} rotation={[0, 3.2, 0]}>
                             <group name="Shadow">
                                 <skinnedMesh
                                     name="Shadow_1"

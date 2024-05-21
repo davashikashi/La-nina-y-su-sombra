@@ -3,11 +3,13 @@ import { RigidBody } from "@react-three/rapier"
 import { useEffect, useRef, useState } from "react"
 import { RepeatWrapping } from "three"
 import { useGameContext } from "../../context/GameContext"
+import hit from "../../Sounds/hit.mp3"
+import morir from "../../Sounds/morirEnemigo.mp3"
 
 export default function Box(props) {
 
     const { nodes } = useGLTF("/assets/models/Box/Box.glb")
-    const {isAttacking, setIsAttacking} = useGameContext()
+    const { isAttacking, setIsAttacking } = useGameContext()
 
     const TexturePath = "/assets/textures/crate/"
 
@@ -32,39 +34,54 @@ export default function Box(props) {
     propsBoxTexture.diplacementMap.wrapS = propsBoxTexture.diplacementMap.wrapT = RepeatWrapping;
 
     const dañoDe = ["puñocollider"];
+    const [visible, setVisible] = useState(true)
 
     const health = useRef(100);
 
+    const Hit = new Audio(hit)
+    const dead = new Audio(morir)
+
     const handleHit = (event) => {
         if (isAttacking && dañoDe.includes(event.colliderObject.name)) {
+            Hit.volume = 0.3
+            Hit.play()
             setIsAttacking(false)
             health.current = Math.max(health.current - 10, 0);
-            console.log("Health:", health.current);    
+            console.log("Health:", health.current);
         }
     };
 
-    if (health.current <= 0) {
-        return null;
-    }
-// 
+
+
+    useEffect(() => {
+        console.log(health.current)
+        if (health.current <= 0) {
+            dead.volume = 0.4
+            dead.play()
+            setVisible(false)
+        }
+    }, [health.current])
+    // 
 
 
     return (
-        <RigidBody
-            name="rigid caja"
-            type="dynamic"
-            colliders="trimesh"
-            onIntersectionEnter={handleHit}
-        >
-            <group {...props} dispose={null}>
-                <group>
-                    <mesh castShadow={true} position={props.position} geometry={nodes.Box.geometry}  >
-                        <meshStandardMaterial {...propsBoxTexture} />
-                    </mesh>
+        <>
+            {visible && (<RigidBody
+                name="rigid caja"
+                type="dynamic"
+                colliders="trimesh"
+                onIntersectionEnter={handleHit}
+            >
+                <group {...props} dispose={null}>
+                    <group>
+                        <mesh castShadow={true} position={props.position} geometry={nodes.Box.geometry}  >
+                            <meshStandardMaterial {...propsBoxTexture} />
+                        </mesh>
+                    </group>
                 </group>
-            </group>
 
-        </RigidBody>
+            </RigidBody>)}
+        </>
 
     )
 }

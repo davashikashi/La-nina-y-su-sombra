@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Quaternion, Vector3, Euler } from "three";
 import { useGameContext } from "../../context/GameContext";
 
+
 export default function Flower(props) {
   const { nodes, materials } = useGLTF("/assets/models/Flower/Flower.glb");
   const flowerModelRef = useRef();
@@ -12,6 +13,7 @@ export default function Flower(props) {
   const { puntaje, setPuntaje,health,setHealth } = useGameContext();
   const [visible, setVisible] = useState(true);
   const [time, setTime] = useState(0);
+  
 
   const floatScale = 0.5; // Escala para ajustar el movimiento del modelo
   const floatAmplitude = 1 * floatScale; // Amplitud del movimiento de flotación
@@ -52,6 +54,7 @@ export default function Flower(props) {
     if (event.colliderObject.name.toString() === 'character-capsule-collider') {
       console.log("si choca");
       setPuntaje(prevPuntaje => prevPuntaje + 1);
+      
       setVisible(false); // Ocultar el objeto
     }
   };
