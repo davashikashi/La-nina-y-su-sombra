@@ -10,6 +10,7 @@ export const GameContextProvider = ({ children }) => {
   const [isTakingSword, setIsTakingSword] = useState(false);
   const [isTakingLamp, setIsTakingLamp] = useState(false);
   const [actualObject, setActualObject] = useState();
+  const [puntaje, setPuntaje] = useState(0);
 
   const [palancas, setPalancas] = useState({});
   const [placasPresion, setPlacasPresion] = useState({});
@@ -27,6 +28,8 @@ export const GameContextProvider = ({ children }) => {
   return (
     <GameContext.Provider
       value={{
+        puntaje,
+        setPuntaje,
         palancas,
         placasPresion,
         togglePalanca,

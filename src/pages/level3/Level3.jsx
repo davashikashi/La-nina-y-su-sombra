@@ -48,8 +48,9 @@ const Level3 = () => {
                         {/* <Boar avatarReference={avatarRef} position={[-5, 2.5, 6]} />
                         <Boar avatarReference={avatarRef} position={[5, 2.5, 10]} />
                         <Boar avatarReference={avatarRef} position={[5.5, 2.5, 48.5]} />
-                        <Flower position={[0, 1, 40]} />
+                        <Flower position={[0, 1, 40]} /> */}
                         <Flower position={[0, 1, 30]} />
+                        <Flower position={[0, 1, 0]} />
                         <Flower position={[0, 1, 35]} />
                         <Flower position={[5, 1, 25]} />
                         <Flower position={[-5, 1, 25]} />
@@ -58,7 +59,7 @@ const Level3 = () => {
                         <Flower position={[-10, 1, 48]} />
                         <Flower position={[-10, 1, 0]} />
                         <Flower position={[0, 1, 10]} />
-                        <Flower position={[8, 1, 10]} /> */}
+                        <Flower position={[8, 1, 10]} />
                         {/* <Fire avatarReference={avatarRef} position={[-12, 1, -2]} />
                         <Fire avatarReference={avatarRef} position={[-12, 1, 28]} />
                         <Fire avatarReference={avatarRef} position={[10, 1, 20]} />
@@ -67,7 +68,7 @@ const Level3 = () => {
                         <Door placasPresionRequeridas={["plate1"]} position={[0,2,4]} />
                         <Plate id={"plate1"} position={[5,1,0]} />
                         
-                        <ShadowAvatar avatarPosition={[0,10,0]}/>
+                        <ShadowAvatar avatarPosition={[0,10,-2]}/>
                         <World />
                     </Physics>
 
