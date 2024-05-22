@@ -12,6 +12,8 @@ import Lights from "./lights/Lights";
 import { GameContextProvider } from "../../context/GameContext";
 import ShadowAvatar from "../../characters/shadowAvatar/shadowAvatar";
 import FinalDoor from "../../Objects/FinalDoor/FinalDoor";
+import Box from "../../Objects/Box/Box";
+import Plate from "../../Objects/Plate/Plate";
 
 const Level2 = () => {
 
@@ -35,8 +37,25 @@ const Level2 = () => {
                         <Flower position={[153, 1, 1]}/>
                         <Flower position={[179, 1, 13]}/>
                         <Flower position={[194, 1, 0]}/>
-                        <Perf position="top-left" />
-                        <ambientLight intensity={0.5} />
+                        
+                        <Box position={[4, .2, -3.5]} />
+                        <Box position={[4, .2, -2.8]} />
+                        <Box position={[4, .2, -2.1]} />
+                        <Box position={[4, .2, -1.4]} />
+                        <Box position={[4, .2, -.7]} />
+                        <Box position={[4, .2, 0]} />
+                        <Box position={[4, .2, .7]} />
+                        <Box position={[4, .2, 1.4]} />
+                        <Box position={[4, .2, 2.1]} />
+                        <Box position={[4, .2, 2.8]} />
+                        <Box position={[4, .2, 3.5]} />
+                        <Box position={[16, .2, 7]} />
+                        <Box position={[37, .2, 9]} />
+
+                        <Plate id={"plate1"} position={[33, 0.06, 16]} />
+
+                        <Perf position="top" />
+
                         <Map2 />
                         {/* <ShadowAvatar avatarPosition={[0, 10, 0]} /> */}
                     </Physics>
