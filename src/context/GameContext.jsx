@@ -1,5 +1,7 @@
 // En un archivo llamado GameContext.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import agregarVida from "../Sounds/agregar vida.mp3";
+import Recompensa from "../Sounds/recogerRecompensa.mp3";
 
 // 1. Crear el contexto
 const GameContext = createContext();
@@ -17,12 +19,25 @@ export const GameContextProvider = ({ children }) => {
   const [placasPresion, setPlacasPresion] = useState({});
   const [lastCheckedScore, setLastCheckedScore] = useState(0);
 
+  const subeVida = new Audio(agregarVida)
+  const recompensa = new Audio(Recompensa)
+
+
   useEffect(() => {
     if (puntaje > lastCheckedScore && puntaje % 10 === 0 && health < 3) {
       setHealth(prevHealth => prevHealth + 1);
       setLastCheckedScore(puntaje);
+      subeVida.volume = 0.5;
+      subeVida.play();
     }
-  }, [puntaje, health, lastCheckedScore]);
+  }, [puntaje, lastCheckedScore]);
+
+  useEffect(() => {
+    if (puntaje) {
+      recompensa.volume = 0.2;
+      recompensa.play()
+    }
+  }, [puntaje])
 
   // Función para actualizar el estado de las palancas
   const togglePalanca = (id, estado) => {
@@ -37,7 +52,7 @@ export const GameContextProvider = ({ children }) => {
   return (
     <GameContext.Provider
       value={{
-        health, 
+        health,
         setHealth,
         puntaje,
         setPuntaje,

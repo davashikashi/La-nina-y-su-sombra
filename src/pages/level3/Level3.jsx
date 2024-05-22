@@ -35,7 +35,7 @@ const Level3 = () => {
             <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
 
                 <Canvas shadows={true} camera={{ position: [0, 20, 49] }} >
-                    <Perf position="top-left" />
+                    {/* <Perf position="top-left" /> */}
                     <Suspense fallback={null}>
                         <Lights />
                         <Environments />
@@ -79,8 +79,9 @@ const Level3 = () => {
                         <Fire avatarReference={avatarRef} position={[10, 1, 20]} />
                         <Fire avatarReference={avatarRef} position={[10, 1, 35]} /> */}
                             {/* <Avatar avatarPosition={[0,10,0]} ref={avatarRef}/> */}
-                            <Door placasPresionRequeridas={["plate1"]} position={[0, 2, 4]} />
-                            <Plate id={"plate1"} position={[5, 1, 0]} />
+                            <Door placasPresionRequeridas={["plate1", "plate2"]} position={[0, 2, 4]} />
+                            <Plate id={"plate1"} position={[-2, 0.1, 10]} />
+                            <Plate id={"plate2"} position={[-2, 0.1, 8]} />
 
                             <ShadowAvatar avatarPosition={[0, 10, -2]} />
                             <World />
