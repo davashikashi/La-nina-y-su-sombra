@@ -20,6 +20,7 @@ import ShadowAvatar from "../../characters/shadowAvatar/shadowAvatar";
 import Door from "../../Objects/Door/Door";
 import Plate from "../../Objects/Plate/Plate";
 import GameUI from "../../UI/UI";
+import Tentacle from "../../characters/tentacle/tentacle";
 
 
 
@@ -82,15 +83,13 @@ const Level3 = () => {
                             <Door placasPresionRequeridas={["plate1", "plate2"]} position={[0, 2, 4]} />
                             <Plate id={"plate1"} position={[-2, 0.1, 10]} />
                             <Plate id={"plate2"} position={[-2, 0.1, 8]} />
-
                             <ShadowAvatar avatarPosition={[0, 10, -2]} />
+                            <Tentacle position={[10,0.1,5]} />
+                            <Tentacle position={[5,0.1,-5]} />
+
+                            
                             <World />
                         </Physics>
-
-
-
-
-
                     </Suspense>
                 </Canvas>
 

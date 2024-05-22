@@ -1,7 +1,8 @@
 // En un archivo llamado GameContext.js
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import agregarVida from "../Sounds/agregar vida.mp3";
 import Recompensa from "../Sounds/recogerRecompensa.mp3";
+
 
 // 1. Crear el contexto
 const GameContext = createContext();
@@ -14,6 +15,9 @@ export const GameContextProvider = ({ children }) => {
   const [actualObject, setActualObject] = useState();
   const [puntaje, setPuntaje] = useState(0);
   const [health, setHealth] = useState(3);
+
+
+  const [avatar, setAvatar] = useState();
 
   const [palancas, setPalancas] = useState({});
   const [placasPresion, setPlacasPresion] = useState({});
@@ -31,6 +35,8 @@ export const GameContextProvider = ({ children }) => {
       subeVida.play();
     }
   }, [puntaje, lastCheckedScore]);
+
+
 
   useEffect(() => {
     if (puntaje) {
@@ -52,6 +58,8 @@ export const GameContextProvider = ({ children }) => {
   return (
     <GameContext.Provider
       value={{
+        avatar,
+        setAvatar,
         health,
         setHealth,
         puntaje,

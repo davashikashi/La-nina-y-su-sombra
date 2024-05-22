@@ -19,6 +19,8 @@ const ShadowAvatar = forwardRef((props, ref) => {
     const handRefCollider = useRef()
     const { isAttacking, setIsAttacking } = useGameContext()
     const { nodes, materials } = useGLTF('/assets/models/shadowAvatar/Shadow.glb')
+    const { setAvatar } = useGameContext();
+    
     //use states
 
     const [collisionEndTime, setCollisionEndTime] = useState(null); // Control del temporizador
@@ -57,31 +59,31 @@ const ShadowAvatar = forwardRef((props, ref) => {
         if (event.key.toLowerCase() === "w"
             || event.key.toLowerCase() === "a"
             || event.key.toLowerCase() === "s"
-            || event.key.toLowerCase() === "d"){
-                andando.loop = true
-                andando.volume = 0.2;
-                andando.play();
-            }
+            || event.key.toLowerCase() === "d") {
+            andando.loop = true
+            andando.volume = 0.2;
+            andando.play();
+        }
 
 
     };
 
     const handleKeyUp = (event) => {
         if (event.key.toLowerCase() === "w" || event.key.toLowerCase() === "a" || event.key.toLowerCase() === "s" || event.key.toLowerCase() === "d") {
-          andando.pause();
-          andando.currentTime = 0;
+            andando.pause();
+            andando.currentTime = 0;
         }
-      };
+    };
 
     useEffect(() => {
         window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keyup", handleKeyUp);
-    
+
         return () => {
-          window.removeEventListener("keydown", handleKeyDown);
-          window.removeEventListener("keyup", handleKeyUp);
+            window.removeEventListener("keydown", handleKeyDown);
+            window.removeEventListener("keyup", handleKeyUp);
         };
-      }, []);
+    }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -124,9 +126,20 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // useEffect(() => {
+    //     setActualposition(avatarBodyRef.current?.translation())
+    //     setPlayerPosition(actualposition)
+        
+    // },[avatarBodyRef.current?.translation()]);
+
+    useEffect(() => {
+        setAvatar(
+            avatarBodyRef.current
+        )
+    }, [avatarBodyRef?.current])
 
     useFrame(() => {
-
+        
         if (handRefCollider.current) {
             // Obtén la posición y rotación del props.props.rightHandBone
             const worldPosition = rightHandBone.getWorldPosition(new Vector3());
@@ -201,12 +214,10 @@ const ShadowAvatar = forwardRef((props, ref) => {
         }
     }, [canTakeDamage]);
 
-
-
-
     return (
         <KeyboardControls map={keyboardMap}>
-            <Ecctrl mass={1} animated ref={avatarBodyRef} onCollisionEnter={handleHit} capsuleHalfHeight={0.3} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} ref={ref}>
+            <Ecctrl ref={avatarBodyRef}
+             debug={false} animated onCollisionEnter={handleHit} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} >
                 <EcctrlAnimation
                     characterURL={characterURL}
                     animationSet={animationSet} >
@@ -240,10 +251,10 @@ const ShadowAvatar = forwardRef((props, ref) => {
                                 <CuboidCollider
                                     name="puñocollider"
                                     sensor={true}
-                                    // onIntersectionEnter={handleCollisionEnter}
                                     position={[0, 0, 0.5]}
                                     args={[0.1, 0.2, 0.3]}
                                 />
+                                
                             </RigidBody>
 
                         </group>
