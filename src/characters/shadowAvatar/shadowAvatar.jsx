@@ -182,7 +182,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
                     characterURL={characterURL}
                     animationSet={animationSet} >
                     <group name="Scene">
-                        <group name="Armature" position={[0,-0.7,0]} rotation={[0, 3.2, 0]}>
+                        <group name="Armature" position={[0,-0.86,0]} rotation={[0, 3.2, 0]}>
                             <group name="Shadow">
                                 <skinnedMesh
                                     name="Shadow_1"
