@@ -206,12 +206,12 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
     return (
         <KeyboardControls map={keyboardMap}>
-            <Ecctrl animated ref={avatarBodyRef} onCollisionEnter={handleHit} capsuleHalfHeight={0.3} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} ref={ref}>
+            <Ecctrl mass={1} animated ref={avatarBodyRef} onCollisionEnter={handleHit} capsuleHalfHeight={0.3} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} ref={ref}>
                 <EcctrlAnimation
                     characterURL={characterURL}
                     animationSet={animationSet} >
                     <group name="Scene">
-                        <group name="Armature" position={[0,-0.86,0]} rotation={[0, 3.2, 0]}>
+                        <group ref={avatarRef} name="Armature" position={[0, -0.9, 0]} rotation={[0, 3.2, 0]}>
                             <group name="Shadow">
                                 <skinnedMesh
                                     name="Shadow_1"

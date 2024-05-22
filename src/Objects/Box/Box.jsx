@@ -69,8 +69,11 @@ export default function Box(props) {
             {visible && (<RigidBody
                 name="rigid caja"
                 type="dynamic"
-                colliders="trimesh"
+                colliders="cuboid"
+                mass={100}
                 onIntersectionEnter={handleHit}
+                linearDamping={0.1}
+                angularDamping={0.1}
             >
                 <group {...props} dispose={null}>
                     <group>
