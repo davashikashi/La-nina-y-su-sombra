@@ -56,8 +56,9 @@ useFrame(() => {
             lockRotations={true}
             lockTranslations={true}
             colliders={"cuboid"}
-            ref={rigidBodyRef} >
-        <group name="Scene" scale={[0.7, 0.7, 0.7]} positon={position}>
+            ref={rigidBodyRef}
+            >
+        <group name="Scene" scale={[0.7, 0.7, 0.7]} position={position} >
             <mesh name="Platform" geometry={nodes.Platform.geometry} material={materials.Rock} />
             <mesh name="Spikes" geometry={nodes.Spikes.geometry} material={materials.Steel} />
         </group>
