@@ -25,30 +25,24 @@ export default function Tentacle(props) {
 
 
 
-    // useEffect(() => {
-    //     if (attack && avatar && tentacleRigid) {
-    //         // Si attack es true, reproduce la animación de ataque
-    //         const avatarPosition = avatar.translation();
-    //         const tentaclePosition = tentacleRigid.current.translation();
+    useEffect(() => {
+        if (attack && avatar && tentacleRigid) {
+            // Obtener la posición del avatar y del tentáculo
+            const avatarPosition = avatar.translation();
+            const tentaclePosition = tentacleRigid.current.translation();
 
-    //         // Calcula la dirección desde la posición del tentáculo hacia la posición del avatar
-    //         const direction = new Vector3().subVectors(avatarPosition, tentaclePosition).normalize();
+            
 
-    //         // Calcula el ángulo de rotación basado en la dirección
-    //         const angle = Math.atan2(-direction.x, direction.z);
+            // Detener la animación Idle y reproducir la animación de ataque
+            actions["Idle.002"].stop();
+            actions["Attack.001"].play();
+        } else {
+            // Si attack es false, detener la animación de ataque y reproducir la animación Idle
+            actions["Attack.001"].stop();
+            actions["Idle.002"].play();
+        }
+    }, [attack, avatar, tentacleRigid?.current]);
 
-    //         // Actualiza la rotación del tentáculo
-    //         tentacleRigid.current.rotation = [0, angle, 0];
-
-    //         // Detiene la animación Idle y reproduce la animación de ataque
-    //         actions["Idle.002"].stop();
-    //         actions["Attack.001"].play();
-    //     } else {
-    //         // Si attack es false, reproduce la animación Idle
-    //         actions["Attack.001"].stop();
-    //         actions["Idle.002"].play();
-    //     }
-    // }, [attack, avatar, tentacleRigid?.current]);
 
 
 
@@ -74,29 +68,33 @@ export default function Tentacle(props) {
 
 
     return (
-        <RigidBody
-            ref={tentacleRigid}
-            colliders={"hull"}
-            type="KinematicVelocityBased"
-            position={props.position}
-            scale={[1, 1, 1]} // Mantén la escala del RigidBody constante
-        >
-
-            <group ref={tentacleModel} name="Scene">
-                <group name="Armature">
-                    <skinnedMesh
-                        name="Tentacle"
-                        geometry={nodes.Tentacle.geometry}
-                        material={materials['Material.001']}
-                        skeleton={nodes.Tentacle.skeleton}
-                    />
-                    <primitive object={nodes.Bone} />
-                </group>
-            </group>
-
-
+        <>
             <CuboidCollider onIntersectionExit={handleIntersectionExit} onIntersectionEnter={handleIntersection} sensor={true} args={[3, 2, 3]} />
-        </RigidBody>
+            <RigidBody
+                ref={tentacleRigid}
+                colliders={"hull"}
+                type="KinematicVelocityBased"
+                position={props.position}
+                lockRotations={[true, false, true]}
+                scale={[1, 1, 1]} // Mantén la escala del RigidBody constante
+            >
+
+                <group ref={tentacleModel} name="Scene">
+                    <group name="Armature">
+                        <skinnedMesh
+                            name="Tentacle"
+                            geometry={nodes.Tentacle.geometry}
+                            material={materials['Material.001']}
+                            skeleton={nodes.Tentacle.skeleton}
+                        />
+                        <primitive object={nodes.Bone} />
+                    </group>
+                </group>
+
+
+            </RigidBody>
+        </>
+
     );
 }
 
