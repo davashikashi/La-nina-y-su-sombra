@@ -176,7 +176,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
     const { health, setHealth } = useGameContext()
     const [isVulnerable, setIsVulnerable] = useState(false);
     const [canTakeDamage, setCanTakeDamage] = useState(true);
-    const enemigos = ["Boar", "Fuego", "rigid caja", "Spikes", "ShadowEnemy"];
+    const enemigos = ["tentaculoBody","tentaculoHead","Boar", "Fuego", "rigid caja", "Spikes", "ShadowEnemy"];
     const hitEnemigo = new Audio(golpeado)
 
 
@@ -188,6 +188,14 @@ const ShadowAvatar = forwardRef((props, ref) => {
             setCanTakeDamage(false)
         }
     };
+
+    const handleSensorHit = (event) => {
+        const nombreEnemigo = event.colliderObject.name;
+        if (enemigos.includes(nombreEnemigo) && canTakeDamage) {
+            setIsVulnerable(true);
+            setCanTakeDamage(false)
+        }
+    }
 
     useEffect(() => {
         console.log(health)
@@ -217,7 +225,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
     return (
         <KeyboardControls map={keyboardMap}>
             <Ecctrl ref={avatarBodyRef}
-             debug={false} animated onCollisionEnter={handleHit} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} >
+             debug={false} animated onIntersectionEnter={handleSensorHit} onCollisionEnter={handleHit} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} >
                 <EcctrlAnimation
                     characterURL={characterURL}
                     animationSet={animationSet} >
