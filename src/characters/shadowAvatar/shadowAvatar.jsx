@@ -19,7 +19,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
     const handRefCollider = useRef()
     const { isAttacking, setIsAttacking } = useGameContext()
     const { nodes, materials } = useGLTF('/assets/models/shadowAvatar/Shadow.glb')
-    const { setAvatar } = useGameContext();
+    const { setShadowAvatar } = useGameContext();
     
     //use states
 
@@ -133,7 +133,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
     // },[avatarBodyRef.current?.translation()]);
 
     useEffect(() => {
-        setAvatar(
+        setShadowAvatar(
             avatarBodyRef.current
         )
     }, [avatarBodyRef?.current])

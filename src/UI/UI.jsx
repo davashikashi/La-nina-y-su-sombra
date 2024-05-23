@@ -3,7 +3,7 @@ import heartIcon from "../icons/HealthMeter.png" // Importa la imagen del icono 
 import flowerIcon from "../icons/Flower.png"
 
 import './GameUI.css'; // Asegúrate de crear un archivo CSS para el estilo de la interfaz de usuario
-import { useGameContext } from '../context/GameContext';
+import { useGameContext } from "../context/GameContext";
 
 const GameUI = () => {
     const { puntaje, health } = useGameContext();

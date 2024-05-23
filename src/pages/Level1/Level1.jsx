@@ -17,10 +17,11 @@ import FinalDoor from "../../Objects/FinalDoor/FinalDoor";
 import { useRef } from "react";
 import Texts from "./Texts/Texts";
 import { GameContextProvider } from "../../context/GameContext";
+import GameUI from "../../UI/UI";
 
 
 const Level1 = () => {
-    const avatarRef = useRef();
+//     const avatarRef = useRef();
 
     return (
         <Canvas shadows={true}>
@@ -96,7 +97,7 @@ const Level1 = () => {
                           <Flower position={[25, 1, -69]}/>
                           <Flower position={[-31, 1, -77]}/>
                           <Flower position={[7, 1, -79]}/>
-                          <Fire position={[-8, 1, -59]} avatarReference={avatarRef}/>
+                          {/* <Fire position={[-8, 1, -59]} avatarReference={avatarRef}/>
                           <Fire position={[-1, 1, -61]} avatarReference={avatarRef}/>
                           <Fire position={[4, 1, -67]} avatarReference={avatarRef}/>
                           <Fire position={[18, 1, -67]} avatarReference={avatarRef}/>
@@ -104,17 +105,17 @@ const Level1 = () => {
                           <Fire position={[-19, 1, -85]} avatarReference={avatarRef}/>
                           <Fire position={[-35, 1, -83]} avatarReference={avatarRef}/>
                           <Fire position={[31, 1, -77]} avatarReference={avatarRef}/>
-                          <Fire position={[23, 1, -87]} avatarReference={avatarRef}/>
-                          <Avatar avatarPosition={[0, 1, 98]} ref={avatarRef}/>
-                          <Boar position={[8, 1, -36]} avatarReference={avatarRef}/>
-                          <ShadowEnemy position={[-5, 3, 41]} avatarReference={avatarRef}/>
-                          <ShadowEnemy position={[15, 3, 40]} avatarReference={avatarRef}/>
+                          <Fire position={[23, 1, -87]} avatarReference={avatarRef}/> */}
+                          <Avatar avatarPosition={[0, 1, 98]} />
+                          {/* <Boar position={[8, 1, -36]} avatarReference={avatarRef}/> */}
+                          <ShadowEnemy position={[-5, 3, 41]}/>
+                          {/* <ShadowEnemy position={[15, 3, 40]} avatarReference={avatarRef}/> */}
                           <Map1 />
                   </Physics>
-              <FinalDoor position={[0, 0, -100]} avatarReference={avatarRef}/>
+              {/* <FinalDoor position={[0, 0, -100]} avatarReference={avatarRef}/> */}
               </GameContextProvider>
             </Suspense>
-            <GameUI />
+            {/* <GameUI /> */}
         </Canvas>
     )
 }
