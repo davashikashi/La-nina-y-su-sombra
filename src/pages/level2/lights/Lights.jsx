@@ -14,10 +14,10 @@ const Lights = () => {
         /> */}
         <pointLight
             castShadow={true}
-            position={[32, 4, -6.8]}
+            position={[15.8, 2.8, -3]}
             rotation={[0, 1.5, 0]}
             color={new Color("#ff7700")}
-            intensity={100}
+            intensity={80}
         />
     </>
 }

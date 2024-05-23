@@ -63,7 +63,7 @@ const Door = ({ palancasRequeridas, placasPresionRequeridas, position }) => {
             previousPosition.current = targetPosition.clone();
 
             // Interpolación para un movimiento suave
-            const newPosition = currentPosition.lerp(targetPosition, 0.1);
+            const newPosition = currentPosition.lerp(targetPosition, 0.05);
             rigidBodyRef.current.setTranslation(newPosition, true);
         }
     });
