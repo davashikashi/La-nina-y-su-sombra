@@ -109,9 +109,10 @@ export default function Model(props) {
   }, [isIdle, isChasing, isBlowing, actions]);
 
   return (
-    <RigidBody ref={ShadowEnemyBodyRef} type="dynamic" 
+    <RigidBody ref={ShadowEnemyBodyRef} type="kinematicVelocityBased" 
     colliders="hull" position={props.position} 
-    enabledRotations={[false, false, false]}>
+    enabledRotations={[false, false, false]}
+    name="ShadowEnemy">
       {/* < /> */}
         <group ref={ShadowEnemyModelRef}>
             <group name="Scene">

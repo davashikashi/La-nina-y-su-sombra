@@ -24,7 +24,7 @@ const Level1 = () => {
 
     return (
         <Canvas shadows={true}>
-            <Perf position="top-left" />
+            <Perf position="top" />
             <BakeShadows />
             <Suspense fallback={null}>
                 <Lights />
@@ -84,7 +84,7 @@ const Level1 = () => {
                       Has llegado al final del Nivel 1!"
                  fontSize={0.6} rotation={[0, 0, 0]}/>
                 <GameContextProvider>
-                  <Physics debug={false} timestep="vary">
+                  <Physics debug={true} timestep="vary">
 
                           <Flower position={[0, 1, 65]}/>
                           <Flower position={[6, 1, 18]}/>
@@ -111,9 +111,10 @@ const Level1 = () => {
                           <ShadowEnemy position={[15, 3, 40]} avatarReference={avatarRef}/>
                           <Map1 />
                   </Physics>
-              </GameContextProvider>
               <FinalDoor position={[0, 0, -100]} avatarReference={avatarRef}/>
+              </GameContextProvider>
             </Suspense>
+            <GameUI />
         </Canvas>
     )
 }

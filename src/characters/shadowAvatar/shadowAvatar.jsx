@@ -176,7 +176,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
     const { health, setHealth } = useGameContext()
     const [isVulnerable, setIsVulnerable] = useState(false);
     const [canTakeDamage, setCanTakeDamage] = useState(true);
-    const enemigos = ["Boar", "Fuego", "rigid caja"];
+    const enemigos = ["Boar", "Fuego", "rigid caja", "Spikes", "ShadowEnemy"];
     const hitEnemigo = new Audio(golpeado)
 
 
