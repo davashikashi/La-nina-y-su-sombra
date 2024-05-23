@@ -17,7 +17,8 @@ export const GameContextProvider = ({ children }) => {
   const [health, setHealth] = useState(3);
 
 
-  const [avatar, setAvatar] = useState();
+  const [shadowAvatar, setShadowAvatar] = useState();
+  const [girlAvatar, setGirlAvatar] = useState();
 
   const [palancas, setPalancas] = useState({});
   const [placasPresion, setPlacasPresion] = useState({});
@@ -58,8 +59,10 @@ export const GameContextProvider = ({ children }) => {
   return (
     <GameContext.Provider
       value={{
-        avatar,
-        setAvatar,
+        girlAvatar,
+        setGirlAvatar,
+        shadowAvatar,
+        setShadowAvatar,
         health,
         setHealth,
         puntaje,
