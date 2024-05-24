@@ -1,22 +1,27 @@
 import { useRef, useState, useEffect, useMemo } from 'react'
 import { useFrame, useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations, Shadow } from '@react-three/drei'
-import { RigidBody, CuboidCollider, RapierCollider, CapsuleCollider} from '@react-three/rapier'
+import { RigidBody, CuboidCollider, RapierCollider, ConeCollider} from '@react-three/rapier'
 import { SkeletonUtils } from "three/examples/jsm/Addons.js";
 import { Quaternion, Vector3 } from "three";
 import { Euler } from "three";
+import { useGameContext } from '../../context/GameContext';
 
 export default function Model(props) {
     
   const ShadowEnemyBodyRef = useRef();
   const ShadowEnemyModelRef = useRef();
-  const avatarReference = props.avatarReference;
+
+  const { girlAvatar } = useGameContext();
 
   const { scene, materials, animations } = useGLTF('/assets/models/shadowEnemy/ShadowEnemy.glb')
   const { actions } = useAnimations(animations, ShadowEnemyModelRef);
 
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes } = useGraph(clone);
+
+  // const spine = nodes.FrontLeg0; // Obtener el nodo de la columna vertebral
+  // const spineOffset = new Vector3(0, 0, 0);
 
   const [isIdle, setIsIdle] = useState(true);
 
@@ -29,56 +34,35 @@ export default function Model(props) {
 
   const [isChasing, setIsChasing] = useState(false); //Estado de persecución
   const [isBlowing, setIsBlowing] = useState(false); //Estado de soplido
+  const [inArea, setInArea] = useState(false);
+  const [outOfBounds, setOutOfBounds] = useState(true);
 
-  useFrame((_, delta) => {
-        const avatarPosition = avatarReference.current?.translation(); 
-        const currentPosition = ShadowEnemyBodyRef.current?.translation(); // Obtener la posición actual            
-        const currentPositionVector = new Vector3(currentPosition.x,
-                 currentPosition.y, currentPosition.z);
+  useFrame((_, delta) => { 
 
-        // console.log("X position: ", avatarPosition.x + "Z position: " + avatarPosition.z);
-        if (avatarPosition) {
+    if (girlAvatar && ShadowEnemyBodyRef.current){
+
+      if (isChasing && !outOfBounds){
+        const avatarPosition = girlAvatar?.translation();
+        const currentPosition = ShadowEnemyBodyRef.current?.translation();
+        const currentPositionVector = new Vector3(currentPosition?.x, 
+          currentPosition?.y, currentPosition?.z);
         const distanceToAvatar = currentPositionVector.distanceTo(avatarPosition);
 
-        if (distanceToAvatar <= chaseDistance) {
-            setIsChasing(true);
-        } else {
-            setIsChasing(false);
+        if (distanceToAvatar <= blowDistance){
+          setIsBlowing(true);
         }
 
-        if (avatarPosition.z > 16 && avatarPosition.z < 58 && !isBlowing){
-          setChaseDistance(6.5);
-        }
+        const chaseDirection = new Vector3().subVectors(avatarPosition, currentPosition).normalize();
+        const chaseDistanceDelta = chaseDirection.multiplyScalar(chaseSpeed * delta);
+        const chasePosition = new Vector3().addVectors(currentPosition, chaseDistanceDelta);
+        ShadowEnemyBodyRef.current?.setTranslation(chasePosition, true);
 
-        if (distanceToAvatar <= blowDistance) {
-            setIsBlowing(true);
-        }
-
-        if (isChasing) {
-          if (avatarPosition.z <= 16 || avatarPosition.z >= 58){
-
-            setChaseDistance(0);
-
-          }else{
-              const chaseDirection = new Vector3().subVectors(avatarPosition, currentPosition).normalize();
-              const chaseDistanceDelta = chaseDirection.multiplyScalar(chaseSpeed * delta);
-              const chasePosition = new Vector3().addVectors(currentPosition, chaseDistanceDelta);
-              ShadowEnemyBodyRef.current?.setTranslation(chasePosition, true);
-              
-            }
-        }
-        // Si tenemos la posición del avatar y estamos persiguiendo
-        if (avatarPosition && isChasing) {
-            // Calcular la dirección hacia la que debe mirar la sombra
-            const directionToTarget = new Vector3().subVectors(avatarPosition, currentPosition).normalize();
-
-            // Calcular la rotación necesaria en radianes
-            const targetRotationY = Math.atan2(directionToTarget.x, directionToTarget.z);
-
-            // Aplicar la rotación al cuerpo rígido
-            ShadowEnemyBodyRef.current.rotation.y = targetRotationY;
-            ShadowEnemyModelRef.current.rotation.y = targetRotationY;
-        }
+        const directionToTarget = new Vector3().subVectors(avatarPosition, currentPosition).normalize();
+        const targetRotationY = Math.atan2(directionToTarget.x, directionToTarget.z);
+        const targetQuaternion = new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), targetRotationY);
+        ShadowEnemyBodyRef.current.setRotation(targetQuaternion);
+        // ShadowEnemyModelRef.current.rotation.y = targetRotationY;
+      }
     }
   });
 
@@ -89,7 +73,7 @@ export default function Model(props) {
       actions.Idle.stop(); // Detener la animación Idle si la sombra no está quieta
     }
 
-    if (isChasing) {
+    if (isChasing && !outOfBounds) {
       actions.ShadowWalking.play(); // Reproducir la animación de persecución
     } else {
       actions.ShadowWalking.stop(); // Detener la animación de persecución
@@ -97,23 +81,56 @@ export default function Model(props) {
 
     if (isBlowing) {
         actions.ShadowBlowing.play(); // Reproducir la animación de soplido
-        setChaseDistance(0); // Detener la persecución
+        setIsChasing(false) // Detener la persecución
 
         setTimeout(() => {
-          setIsBlowing(false); // Detener el soplido después de 1 segundo 
-          setChaseDistance(6.5); // Volver a activar la persecución   
+          setIsBlowing(false); // Detener el soplido después de 1 segundo
       }, 1600);
+
     } else {
         actions.ShadowBlowing.stop(); // Detener la animación de soplido
     }
-  }, [isIdle, isChasing, isBlowing, actions]);
+
+    if(!isBlowing && inArea){
+      setIsChasing(true);
+    }
+  }, [isIdle, isChasing, isBlowing, actions, inArea]);
+
+  const handleIntersection = (event) => {
+    if (event.colliderObject.name === "character-capsule-collider") {
+      setInArea(true);
+      if (outOfBounds){
+        setIsChasing(true);
+      }
+    }
+  }
+
+  const handleIntersectionExit = (event) => { 
+    if (event.colliderObject.name === "character-capsule-collider" || outOfBounds) {
+        setIsChasing(false);
+        setInArea(false);
+    }
+  }
+
+  const handleOutOfBounds = (event) => {
+    if (event.colliderObject.name === "character-capsule-collider") {
+      setOutOfBounds(false);
+    }
+  }
+  const handleOutOfBoundsExit = (event) => {
+    if (event.colliderObject.name === "character-capsule-collider") {
+      setOutOfBounds(true);
+    }
+  }
+
 
   return (
+    <>
     <RigidBody ref={ShadowEnemyBodyRef} type="kinematicVelocityBased" 
     colliders="hull" position={props.position} 
-    enabledRotations={[false, false, false]}
-    name="ShadowEnemy">
-      {/* < /> */}
+    enabledRotations={[false, true, false]}
+    name="ShadowEnemy"
+    rotation={props.rotation} >
         <group ref={ShadowEnemyModelRef}>
             <group name="Scene">
                 <group name="Armature">
@@ -136,10 +153,19 @@ export default function Model(props) {
                 <primitive object={nodes.RightLegIK} />
                 <primitive object={nodes.LeftLegIK} />
                 <primitive object={nodes.BackLegIK} />
-                <primitive object={nodes.SpineIK} />
+                <primitive object={nodes.SpineIK} />  
+                <CuboidCollider onIntersectionEnter={handleIntersection}
+                  onIntersectionExit={handleIntersectionExit}
+                  sensor={true} args={[3, 1, 4]} 
+                  position={[0, 1, 2.5]}
+                  name="ShadowSensor"/>
                 </group>
             </group>
         </group>
     </RigidBody>
+    <CuboidCollider onIntersectionEnter={handleOutOfBounds}
+    onIntersectionExit={handleOutOfBoundsExit}
+    args={props.boundsArgs} position={props.boundsPosition} sensor={true}/>
+    </>
   )
 }

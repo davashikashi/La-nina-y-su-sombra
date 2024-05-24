@@ -22,6 +22,7 @@ import Plate from "../../Objects/Plate/Plate";
 import GameUI from "../../UI/UI";
 import Tentacle from "../../characters/tentacle/tentacle";
 import Spikes from "../../Objects/Spikes/Spikes";
+import ShadowEnemy from "../../characters/ShadowEnemy/ShadowEnemy";
 
 
 
@@ -44,6 +45,9 @@ const Level3 = () => {
                         <Texts Position={[0, 7, 40]} Textto={"Reto Final"} color={"white"} />
 
                         <Physics debug={true} timeStep="vary">
+
+                            <World />
+
                             <Box position={[0, 1, 4]} />
                             <Box position={[0, 1, 6]} />
                             <Box position={[4, 2.5, -7]} />
@@ -88,9 +92,8 @@ const Level3 = () => {
                             <ShadowAvatar avatarPosition={[0, 10, -2]} />
                             <Tentacle position={[10,0.1,5]} />
                             <Tentacle position={[5,0.1,-5]} />
+                            <ShadowEnemy position={[-5, 3, -5]} boundsPosition={[0, 1, 35]} boundsArgs={[7.9, 1, 20]} rotation={[0, 1, 0]}/>
 
-                            
-                            <World />
                         </Physics>
                     </Suspense>
                 </Canvas>

@@ -112,7 +112,7 @@ const handleIntersectionExit = (event) => {
             gravityScale={0}
             lockRotations={true}
             lockTranslations={true}
-            colliders={"cuboid"}
+            colliders="cuboid"
             ref={rigidBodyRef}
             >
         <group name="Scene" scale={[0.7, 0.7, 0.7]} position={position} >

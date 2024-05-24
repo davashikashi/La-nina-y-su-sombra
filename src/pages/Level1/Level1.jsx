@@ -87,6 +87,7 @@ const Level1 = () => {
                 <GameContextProvider>
                   <Physics debug={true} timestep="vary">
 
+                         <Map1 />
                           <Flower position={[0, 1, 65]}/>
                           <Flower position={[6, 1, 18]}/>
                           <Flower position={[20, 1, 52]}/>
@@ -97,20 +98,19 @@ const Level1 = () => {
                           <Flower position={[25, 1, -69]}/>
                           <Flower position={[-31, 1, -77]}/>
                           <Flower position={[7, 1, -79]}/>
-                          {/* <Fire position={[-8, 1, -59]} avatarReference={avatarRef}/>
-                          <Fire position={[-1, 1, -61]} avatarReference={avatarRef}/>
-                          <Fire position={[4, 1, -67]} avatarReference={avatarRef}/>
-                          <Fire position={[18, 1, -67]} avatarReference={avatarRef}/>
-                          <Fire position={[-19, 1, -79]} avatarReference={avatarRef}/>
-                          <Fire position={[-19, 1, -85]} avatarReference={avatarRef}/>
-                          <Fire position={[-35, 1, -83]} avatarReference={avatarRef}/>
-                          <Fire position={[31, 1, -77]} avatarReference={avatarRef}/>
-                          <Fire position={[23, 1, -87]} avatarReference={avatarRef}/> */}
-                          <Avatar avatarPosition={[0, 1, 98]} />
+                          <Fire position={[-8, 1, -59]} />
+                          <Fire position={[-1, 1, -61]} />
+                          <Fire position={[4, 1, -67]} />
+                          <Fire position={[18, 1, -67]} />
+                          <Fire position={[-19, 1, -79]} />
+                          <Fire position={[-19, 1, -85]} />
+                          <Fire position={[-35, 1, -83]} />
+                          <Fire position={[31, 1, -77]} />
+                          <Fire position={[23, 1, -87]} />
+                          <Avatar avatarPosition={[0, 2, 98]} />
                           {/* <Boar position={[8, 1, -36]} avatarReference={avatarRef}/> */}
-                          <ShadowEnemy position={[-5, 3, 41]}/>
+                          <ShadowEnemy position={[-3, 3, 45]} boundsPosition={[0, 1, 35]} boundsArgs={[7.9, 1, 20]} rotation={[0, 1, 0]}/>
                           {/* <ShadowEnemy position={[15, 3, 40]} avatarReference={avatarRef}/> */}
-                          <Map1 />
                   </Physics>
               {/* <FinalDoor position={[0, 0, -100]} avatarReference={avatarRef}/> */}
               </GameContextProvider>

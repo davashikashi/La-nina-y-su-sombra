@@ -26,10 +26,6 @@ export default function Model(props) {
   const { nodes } = useGraph(clone);
 
   const speed = 6
-  const squareSide =10
-
-  const distanceTraveled = useRef(0); // Distancia acumulada
-  const currentDirection = useRef(new Vector3(1, 0, 0)); // Dirección inicial
 
   const [isWalking, setIsWalking] = useState(false); // Estado de la animación
   const [isCharging, setIsCharging] = useState(false); // Estado de la animación de carga
@@ -41,8 +37,6 @@ export default function Model(props) {
     new Vector3(-1, 0, 0), // Izquierda
     new Vector3(0, 0, 1), // Arriba
   ];
-
-  let currentDirectionIndex = 0; // Índice para cambiar de dirección
 
   useFrame((_, delta) => {
 
@@ -70,38 +64,6 @@ export default function Model(props) {
       if ((avatarPosition.z <= -24 && avatarPosition.z >= -48) || avatarPosition.x <=14) {
         setChargeDistance(5);
       }
-      // console.log("Is charging: ", isCharging);
-
-      // if (isWalking) {
-      //   // Calcular movimiento y nueva posición
-      //   const movement = delta * speed; // Distancia por frame
-
-      //   const newTranslation = new Vector3(
-      //     currentPosition.x + currentDirection.current.x * movement,
-      //     currentPosition.y,
-      //     currentPosition.z + currentDirection.current.z * movement
-      //   );
-
-      //   distanceTraveled.current += movement; // Acumula la distancia recorrida
-
-      //   // Cambiar de dirección cuando se alcanza el límite del cuadrado
-      //   if (distanceTraveled.current >= squareSide) {
-      //     distanceTraveled.current = 0; // Reiniciar la distancia
-      //     currentDirectionIndex = (currentDirectionIndex + 1) % 4; // Cambiar a la siguiente dirección
-      //     currentDirection.current = directions[currentDirectionIndex]; // Ajustar la dirección
-
-      //     // Crear un cuaternión para la nueva rotación
-      //     const angleMap = [-Math.PI / 2, 0, Math.PI / 2, Math.PI]; // Angles para cada dirección
-      //     const quaternion = new Quaternion().setFromEuler(new Euler(0, angleMap[currentDirectionIndex], 0));
-
-      //     // Aplicar la rotación al RigidBody y al modelo para mantener la coherencia
-      //     //rigidBody.setRotation(quaternion, true);
-      //     boarModelRef.current.setRotationFromQuaternion(quaternion);
-      //   }
-
-      //   // Mover el RigidBody a la nueva posición
-      //   boarBodyRef.current.setTranslation(newTranslation, true);
-      // }
 
       if (isCharging) {
         setIsWalking(false);

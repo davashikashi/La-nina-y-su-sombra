@@ -14,7 +14,7 @@ export default function Tentacle(props) {
     const [move, setMove] = useState(false);
     const [inArea, setInArea] = useState(false);
     const [attacking, setAttacking] = useState(false); // Nuevo estado para controlar si el tentáculo está atacando
-    const { avatar } = useGameContext();
+    const { girlAvatar } = useGameContext();
 
     // Clonar la escena para evitar modificar la original
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
@@ -100,7 +100,7 @@ export default function Tentacle(props) {
     };
 
     useFrame(() => {
-        if (mid && bodyRefCollider.current && avatar) {
+        if (mid && bodyRefCollider.current && girlAvatar) {
             // Obtener la posición y rotación del hueso 'mid'
             const midPosition = mid.getWorldPosition(new Vector3());
             const midQuaternion = mid.getWorldQuaternion(new Quaternion());
@@ -125,7 +125,7 @@ export default function Tentacle(props) {
                 const currentPosition = mid.getWorldPosition(new Vector3());
 
                 // Obtener la posición del avatar
-                const avatarPosition = avatar.translation();
+                const avatarPosition = girlAvatar.translation();
 
                 // Calcular la dirección hacia la que debe mirar el tentáculo
                 const directionToTarget = new Vector3().subVectors(avatarPosition, currentPosition).normalize();

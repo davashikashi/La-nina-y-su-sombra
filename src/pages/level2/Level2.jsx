@@ -21,12 +21,15 @@ const Level2 = () => {
         <Canvas shadows={true}>
             <BakeShadows />
             <Suspense fallback={null}>                
-                <OrbitControls makeDefault />
+                {/* <OrbitControls makeDefault /> */}
                 <Lights />
                 <MapEnvironments />
                 <Torch position={[16, 1, -3.28]} rotation={[0, 0, 0]}/>
                 <GameContextProvider>
                     <Physics debug={false} timestep="vary">
+                   
+                        <Map2 />
+
                         <Flower position={[16.5, 1, 3]}/>
                         <Flower position={[28.5, 1, 5.5]}/>
                         <Flower position={[37, 1, 11]}/>
@@ -62,8 +65,7 @@ const Level2 = () => {
 
                         <Perf position="top" />
 
-                        <Map2 />
-                        {/* <ShadowAvatar avatarPosition={[0, 10, 0]} /> */}
+                        <ShadowAvatar avatarPosition={[1, 10, 1]} />
                     </Physics>
                 </GameContextProvider>
                 {/* <FinalDoor position={[0, 0, -200]} avatarReference={avatarRef}/> */}

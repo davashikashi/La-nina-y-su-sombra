@@ -56,4 +56,4 @@ export default function Map1(props) {
 }
 
 //se hace la precarga del modelo
-useGLTF.preload('/Map1.glb')
+useGLTF.preload('/assets/models/world/Map1.glb')
