@@ -1,18 +1,20 @@
 import { useRef, useState, useEffect, useMemo } from 'react'
 import { useFrame, useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations, Shadow } from '@react-three/drei'
-import { RigidBody, CuboidCollider, RapierCollider, ConeCollider} from '@react-three/rapier'
+import { RigidBody, CuboidCollider, RapierCollider, ConeCollider } from '@react-three/rapier'
 import { SkeletonUtils } from "three/examples/jsm/Addons.js";
 import { Quaternion, Vector3 } from "three";
 import { Euler } from "three";
 import { useGameContext } from '../../context/GameContext';
+import hit from "../../Sounds/hit.mp3"
+import morir from "../../Sounds/morirEnemigo.mp3"
 
 export default function Model(props) {
-    
+
   const ShadowEnemyBodyRef = useRef();
   const ShadowEnemyModelRef = useRef();
 
-  const { girlAvatar } = useGameContext();
+  const { girlAvatar, isAttacking, setIsAttacking } = useGameContext();
 
   const { scene, materials, animations } = useGLTF('/assets/models/shadowEnemy/ShadowEnemy.glb')
   const { actions } = useAnimations(animations, ShadowEnemyModelRef);
@@ -37,18 +39,18 @@ export default function Model(props) {
   const [inArea, setInArea] = useState(false);
   const [outOfBounds, setOutOfBounds] = useState(true);
 
-  useFrame((_, delta) => { 
+  useFrame((_, delta) => {
 
-    if (girlAvatar && ShadowEnemyBodyRef.current){
+    if (girlAvatar && ShadowEnemyBodyRef.current) {
 
-      if (isChasing && !outOfBounds){
+      if (isChasing && !outOfBounds) {
         const avatarPosition = girlAvatar?.translation();
         const currentPosition = ShadowEnemyBodyRef.current?.translation();
-        const currentPositionVector = new Vector3(currentPosition?.x, 
+        const currentPositionVector = new Vector3(currentPosition?.x,
           currentPosition?.y, currentPosition?.z);
         const distanceToAvatar = currentPositionVector.distanceTo(avatarPosition);
 
-        if (distanceToAvatar <= blowDistance){
+        if (distanceToAvatar <= blowDistance) {
           setIsBlowing(true);
         }
 
@@ -80,18 +82,18 @@ export default function Model(props) {
     }
 
     if (isBlowing) {
-        actions.ShadowBlowing.play(); // Reproducir la animación de soplido
-        setIsChasing(false) // Detener la persecución
+      actions.ShadowBlowing.play(); // Reproducir la animación de soplido
+      setIsChasing(false) // Detener la persecución
 
-        setTimeout(() => {
-          setIsBlowing(false); // Detener el soplido después de 1 segundo
+      setTimeout(() => {
+        setIsBlowing(false); // Detener el soplido después de 1 segundo
       }, 1600);
 
     } else {
-        actions.ShadowBlowing.stop(); // Detener la animación de soplido
+      actions.ShadowBlowing.stop(); // Detener la animación de soplido
     }
 
-    if(!isBlowing && inArea){
+    if (!isBlowing && inArea) {
       setIsChasing(true);
     }
   }, [isIdle, isChasing, isBlowing, actions, inArea]);
@@ -99,16 +101,16 @@ export default function Model(props) {
   const handleIntersection = (event) => {
     if (event.colliderObject.name === "character-capsule-collider") {
       setInArea(true);
-      if (outOfBounds){
+      if (outOfBounds) {
         setIsChasing(true);
       }
     }
   }
 
-  const handleIntersectionExit = (event) => { 
+  const handleIntersectionExit = (event) => {
     if (event.colliderObject.name === "character-capsule-collider" || outOfBounds) {
-        setIsChasing(false);
-        setInArea(false);
+      setIsChasing(false);
+      setInArea(false);
     }
   }
 
@@ -123,49 +125,78 @@ export default function Model(props) {
     }
   }
 
+  const dañoDe = ["puñocollider"];
+  const [visible, setVisible] = useState(true)
+
+  const health = useRef(3);
+
+  const Hit = new Audio(hit)
+  const dead = new Audio(morir)
+
+  const handleHit = (event) => {
+    if (isAttacking && dañoDe.includes(event.colliderObject.name)) {
+      Hit.volume = 0.3
+      Hit.play()
+      setIsAttacking(false)
+      health.current = Math.max(health.current - 1, 0);
+      console.log("Health:", health.current);
+    }
+  };
+
+  useEffect(() => {
+    console.log(health.current)
+    if (health.current <= 0) {
+      dead.volume = 0.4
+      dead.play()
+      setVisible(false)
+    }
+  }, [health.current])
+
 
   return (
     <>
-    <RigidBody ref={ShadowEnemyBodyRef} type="kinematicVelocityBased" 
-    colliders="hull" position={props.position} 
-    enabledRotations={[false, true, false]}
-    name="ShadowEnemy"
-    rotation={props.rotation} >
-        <group ref={ShadowEnemyModelRef}>
+      {visible && (<>
+        <RigidBody onIntersectionEnter={handleHit} ref={ShadowEnemyBodyRef} type="kinematicVelocityBased"
+          colliders="hull" position={props.position}
+          enabledRotations={[false, true, false]}
+          name="ShadowEnemy"
+          rotation={props.rotation} >
+          <group ref={ShadowEnemyModelRef}>
             <group name="Scene">
-                <group name="Armature">
+              <group name="Armature">
                 <group name="ShadowEnemy">
-                    <skinnedMesh
+                  <skinnedMesh
                     name="ShadowEnemy_1"
                     geometry={nodes.ShadowEnemy_1.geometry}
                     material={materials.ShadowMaterial}
                     skeleton={nodes.ShadowEnemy_1.skeleton}
-                    />
-                    <skinnedMesh
+                  />
+                  <skinnedMesh
                     name="ShadowEnemy_2"
                     geometry={nodes.ShadowEnemy_2.geometry}
                     material={materials.ShadowEyeMaterial}
                     skeleton={nodes.ShadowEnemy_2.skeleton}
-                    />
+                  />
                 </group>
                 <primitive object={nodes.Spine0} />
                 <primitive object={nodes.FrontLegIK} />
                 <primitive object={nodes.RightLegIK} />
                 <primitive object={nodes.LeftLegIK} />
                 <primitive object={nodes.BackLegIK} />
-                <primitive object={nodes.SpineIK} />  
+                <primitive object={nodes.SpineIK} />
                 <CuboidCollider onIntersectionEnter={handleIntersection}
                   onIntersectionExit={handleIntersectionExit}
-                  sensor={true} args={[3, 1, 4]} 
+                  sensor={true} args={[3, 1, 4]}
                   position={[0, 1, 2.5]}
-                  name="ShadowSensor"/>
-                </group>
+                  name="ShadowSensor" />
+              </group>
             </group>
-        </group>
-    </RigidBody>
-    <CuboidCollider onIntersectionEnter={handleOutOfBounds}
-    onIntersectionExit={handleOutOfBoundsExit}
-    args={props.boundsArgs} position={props.boundsPosition} sensor={true}/>
+          </group>
+        </RigidBody>
+        <CuboidCollider onIntersectionEnter={handleOutOfBounds}
+          onIntersectionExit={handleOutOfBoundsExit}
+          args={props.boundsArgs} position={props.boundsPosition} sensor={true} />
+      </>)}
     </>
   )
 }

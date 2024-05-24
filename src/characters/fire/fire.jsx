@@ -225,7 +225,7 @@ export default function Fire(props) {
       }
 
     return (
-        <RigidBody ref={fireBodyRef} type="dynamic" position={props.position} colliders={"cuboid"}
+        <RigidBody name="Fuego" ref={fireBodyRef} type="dynamic" position={props.position} colliders={"cuboid"}
          enabledRotations={[false, true, false]}>
             {/* <CuboidCollider  args={[0.3, 0.3, 0.5]} /> */}
             <group ref={fireModelRef} name="Scene">

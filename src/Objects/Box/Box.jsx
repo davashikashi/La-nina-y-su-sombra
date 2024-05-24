@@ -9,7 +9,7 @@ import morir from "../../Sounds/morirEnemigo.mp3"
 export default function Box(props) {
 
     const { nodes } = useGLTF("/assets/models/Box/Box.glb")
-    const { isAttacking, setIsAttacking } = useGameContext()
+
 
     const TexturePath = "/assets/textures/crate/"
 
@@ -33,56 +33,27 @@ export default function Box(props) {
     propsBoxTexture.diplacementMap.repeat.set(1, 1);
     propsBoxTexture.diplacementMap.wrapS = propsBoxTexture.diplacementMap.wrapT = RepeatWrapping;
 
-    const dañoDe = ["puñocollider"];
-    const [visible, setVisible] = useState(true)
-
-    const health = useRef(100);
-
-    const Hit = new Audio(hit)
-    const dead = new Audio(morir)
-
-    const handleHit = (event) => {
-        if (isAttacking && dañoDe.includes(event.colliderObject.name)) {
-            Hit.volume = 0.3
-            Hit.play()
-            setIsAttacking(false)
-            health.current = Math.max(health.current - 10, 0);
-            console.log("Health:", health.current);
-        }
-    };
-
-    useEffect(() => {
-        console.log(health.current)
-        if (health.current <= 0) {
-            dead.volume = 0.4
-            dead.play()
-            setVisible(false)
-        }
-    }, [health.current])
-    // 
 
 
     return (
-        <>
-            {visible && (<RigidBody
-                name="rigid caja"
-                type="dynamic"
-                colliders="cuboid"
-                mass={100}
-                onIntersectionEnter={handleHit}
-                linearDamping={0.1}
-                angularDamping={0.1}
-            >
-                <group {...props} dispose={null}>
-                    <group>
-                        <mesh castShadow={true} position={props.position} geometry={nodes.Box.geometry}  >
-                            <meshStandardMaterial {...propsBoxTexture} />
-                        </mesh>
-                    </group>
+        <RigidBody
+            name="rigid caja"
+            type="dynamic"
+            colliders="cuboid"
+            mass={100}
+            linearDamping={0.1}
+            angularDamping={0.1}
+        >
+            <group {...props} dispose={null}>
+                <group>
+                    <mesh castShadow={true} position={props.position} geometry={nodes.Box.geometry}  >
+                        <meshStandardMaterial {...propsBoxTexture} />
+                    </mesh>
                 </group>
+            </group>
 
-            </RigidBody>)}
-        </>
+        </RigidBody>
+
 
     )
 }
