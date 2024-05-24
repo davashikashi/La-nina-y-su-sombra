@@ -13,6 +13,7 @@ export default function Fire(props) {
     const fireSensorRef = useRef()
 
     const { girlAvatar } = useGameContext();
+    const {shadowAvatar} = useGameContext();    
 
     const { scene, materials, animations } = useGLTF("/assets/models/fire/Fire.glb");
 
@@ -144,7 +145,7 @@ export default function Fire(props) {
         // //   fireModelRef.current.setRotationFromQuaternion(quaternion);
         // }
 
-    if (girlAvatar && fireBodyRef.current){
+    if (shadowAvatar && fireBodyRef.current){
 
         if (!isChasing && sideToSide){
             const currentPosition = fireBodyRef.current.translation(); // Obtener la posición actual
@@ -176,7 +177,13 @@ export default function Fire(props) {
             const currentPosition = fireBodyRef.current.translation(); // Obtener la posición actual
             const currentPositionVector = new Vector3(currentPosition.x,
                 currentPosition.y, currentPosition.z);
-            const avatarPosition = girlAvatar.translation(); // Obtener la posición del avatar
+            let avatarPosition  // Obtener la posición del avatar
+
+            if (girlAvatar){
+                avatarPosition = girlAvatar.translation();
+            }else if (shadowAvatar){
+                avatarPosition = shadowAvatar.translation();
+            }
 
             const chaseDirection = new Vector3().subVectors(avatarPosition, currentPosition).normalize();
             const chaseDistanceDelta = chaseDirection.multiplyScalar(chaseSpeed * delta);
