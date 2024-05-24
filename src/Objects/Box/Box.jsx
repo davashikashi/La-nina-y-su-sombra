@@ -51,8 +51,6 @@ export default function Box(props) {
         }
     };
 
-
-
     useEffect(() => {
         console.log(health.current)
         if (health.current <= 0) {

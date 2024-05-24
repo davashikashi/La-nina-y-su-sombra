@@ -20,7 +20,9 @@ const ShadowAvatar = forwardRef((props, ref) => {
     const { isAttacking, setIsAttacking } = useGameContext()
     const { nodes, materials } = useGLTF('/assets/models/shadowAvatar/Shadow.glb')
     const { setShadowAvatar } = useGameContext();
-    
+    const [pequeño, setPequeño] = useState(false)
+    console.log("es pequeño concha su mare", pequeño)
+
     //use states
 
     const [collisionEndTime, setCollisionEndTime] = useState(null); // Control del temporizador
@@ -64,9 +66,16 @@ const ShadowAvatar = forwardRef((props, ref) => {
             andando.volume = 0.2;
             andando.play();
         }
+        if (event.key.toLowerCase() === "q") {
+
+            setPequeño((prevPequeño) => !prevPequeño) //que bendicion papa Dios
+
+        }
 
 
     };
+
+
 
     const handleKeyUp = (event) => {
         if (event.key.toLowerCase() === "w" || event.key.toLowerCase() === "a" || event.key.toLowerCase() === "s" || event.key.toLowerCase() === "d") {
@@ -129,7 +138,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
     // useEffect(() => {
     //     setActualposition(avatarBodyRef.current?.translation())
     //     setPlayerPosition(actualposition)
-        
+
     // },[avatarBodyRef.current?.translation()]);
 
     useEffect(() => {
@@ -138,8 +147,17 @@ const ShadowAvatar = forwardRef((props, ref) => {
         )
     }, [avatarBodyRef?.current])
 
-    useFrame(() => {
+
+    // useEffect(() => {
+    //     //control de teclas
         
+
+    // }, [pequeño]);
+
+
+
+    useFrame(() => {
+
         if (handRefCollider.current) {
             // Obtén la posición y rotación del props.props.rightHandBone
             const worldPosition = rightHandBone.getWorldPosition(new Vector3());
@@ -176,7 +194,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
     const { health, setHealth } = useGameContext()
     const [isVulnerable, setIsVulnerable] = useState(false);
     const [canTakeDamage, setCanTakeDamage] = useState(true);
-    const enemigos = ["tentaculoBody","tentaculoHead","Boar", "Fuego", "rigid caja", "Spikes", "ShadowEnemy"];
+    const enemigos = ["tentaculoBody", "tentaculoHead","Boar" , "Fuego", "Spikes", "ShadowEnemy"];
     const hitEnemigo = new Audio(golpeado)
 
 
@@ -224,13 +242,14 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
     return (
         <KeyboardControls map={keyboardMap}>
-            <Ecctrl ref={avatarBodyRef}
-             debug={false} animated onIntersectionEnter={handleSensorHit} onCollisionEnter={handleHit} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} >
+            <Ecctrl children ref={avatarBodyRef}
+                debug={false} animated springK={0} capsuleHalfHeight={pequeño ? 0 : 0.4} capsuleRadius={pequeño ? 0.3 : 0.3} autoBalance={false}
+                onIntersectionEnter={handleSensorHit} dampingC={0} onCollisionEnter={handleHit} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} >
                 <EcctrlAnimation
                     characterURL={characterURL}
                     animationSet={animationSet} >
                     <group name="Scene">
-                        <group ref={avatarRef} name="Armature" position={[0, -0.9, 0]} rotation={[0, 3.2, 0]}>
+                        <group ref={avatarRef} scale={pequeño ? [0.5, 0.5, 0.5] : [1, 1, 1]} name="Armature" rotation={[0, 3.2, 0]} position={pequeño ? [0, -0.3, 0] : [0, -0.7, 0]} >
                             <group name="Shadow">
                                 <skinnedMesh
                                     name="Shadow_1"
@@ -259,10 +278,10 @@ const ShadowAvatar = forwardRef((props, ref) => {
                                 <CuboidCollider
                                     name="puñocollider"
                                     sensor={true}
-                                    position={[0, 0, 0.5]}
-                                    args={[0.1, 0.2, 0.3]}
+                                    position={pequeño ? [0,0,1] : [0, 0, 0.5]}
+                                    args={pequeño ? [0.1, 0.1, 0.2] :[0.1, 0.2, 0.3]}
                                 />
-                                
+
                             </RigidBody>
 
                         </group>
