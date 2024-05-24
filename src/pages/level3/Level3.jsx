@@ -23,17 +23,15 @@ import GameUI from "../../UI/UI";
 import Tentacle from "../../characters/tentacle/tentacle";
 import Spikes from "../../Objects/Spikes/Spikes";
 import ShadowEnemy from "../../characters/ShadowEnemy/ShadowEnemy";
+import Map2 from "../level2/world/Map2";
 
 
 
 
 const Level3 = () => {
 
-    //level3 será el director de orquesta entre componentes
-    const avatarRef = useRef()
-
-
     return (
+
         <GameContextProvider>
             <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
 
@@ -60,8 +58,8 @@ const Level3 = () => {
                         <Flower position={[0, 1, 40]} /> */}
                             <Flower position={[0, 1, 30]} />
                             <Flower position={[0, 1, 0]} />
-                            
-                            
+
+
                             <Flower position={[0, 1, -3]} />
                             <Flower position={[1, 1, 0]} />
                             <Flower position={[0, 1, -4]} />
@@ -89,10 +87,11 @@ const Level3 = () => {
                             <Spikes placasPresionRequeridas={["plate1"]} position={[-4, 0, 7]} />
                             <Plate id={"plate1"} position={[-2, 0.1, 10]} />
                             <Plate id={"plate2"} position={[-2, 0.1, 8]} />
+                            <Fire position={[0, 5, 0]} />
                             <ShadowAvatar avatarPosition={[0, 10, -2]} />
-                            <ShadowEnemy position={[-5, 3, -5]} boundsPosition={[0, 1, 35]} boundsArgs={[7.9, 1, 20]} rotation={[0, 1, 0]}/>
-                            <Tentacle position={[10,0,5]} />
-                            <Tentacle position={[5,0,-5]} />
+                            <ShadowEnemy position={[-5, 3, -5]} boundsPosition={[0, 1, 35]} boundsArgs={[7.9, 1, 20]} rotation={[0, 1, 0]} />
+                            <Tentacle position={[10, 0, 5]} />
+                            <Tentacle position={[5, 0, -5]} />
 
                         </Physics>
                     </Suspense>
