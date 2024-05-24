@@ -43,7 +43,7 @@ const Level3 = () => {
                         <Environments />
                         <Texts Position={[0, 7, 40]} Textto={"Reto Final"} color={"white"} />
 
-                        <Physics debug={true} timeStep="vary">
+                        <Physics debug={false} timeStep="vary">
                             <Box position={[0, 1, 4]} />
                             <Box position={[0, 1, 6]} />
                             <Box position={[4, 2.5, -7]} />
@@ -86,8 +86,8 @@ const Level3 = () => {
                             <Plate id={"plate1"} position={[-2, 0.1, 10]} />
                             <Plate id={"plate2"} position={[-2, 0.1, 8]} />
                             <ShadowAvatar avatarPosition={[0, 10, -2]} />
-                            <Tentacle position={[10,0.1,5]} />
-                            <Tentacle position={[5,0.1,-5]} />
+                            <Tentacle position={[10,0,5]} />
+                            <Tentacle position={[5,0,-5]} />
 
                             
                             <World />
