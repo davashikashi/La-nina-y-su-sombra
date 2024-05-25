@@ -34,7 +34,6 @@ export default function Map2(props) {
   }, [shadowAvatar]);
 
   const handleFalling = (event) => {
-    console.log(event.colliderObject.name);
     if (event.colliderObject.name === "character-capsule-collider") {
       const hitEnemigo = hitEnemigoRef.current;
       hitEnemigo.volume = 0.3;

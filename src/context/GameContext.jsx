@@ -2,6 +2,10 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import agregarVida from "../Sounds/agregar vida.mp3";
 import Recompensa from "../Sounds/recogerRecompensa.mp3";
+import { db } from "../firebase/firebase.config";
+import { collection, getDocs } from "firebase/firestore";
+import { get, set } from 'firebase/database';
+import { Vector3 } from 'three';
 
 
 // 1. Crear el contexto
@@ -26,6 +30,7 @@ export const GameContextProvider = ({ children }) => {
   const [flowers, setFlowers] = useState({})
   const [fires, setFires] = useState({})
   const [shadows, setShadows] = useState({})
+  // const [docID, setDocID] = useState(''); //id del documento en firebase
 
   const [lastCheckedScore, setLastCheckedScore] = useState(0);
   
@@ -33,41 +38,222 @@ export const GameContextProvider = ({ children }) => {
   const subeVida = new Audio(agregarVida)
   const recompensa = new Audio(Recompensa)
 
+  //guardar las posiciones para firebase 
+  const [tentaclePositions, setTentaclePositions] = useState({}); // Diccionario de posiciones de tentáculos: id -> {x, y, z}
+  const [cajaPositions, setCajaPositions] = useState({}); // Diccionario de posiciones de cajas: id -> {x, y, z}
+  const [flowerPositions, setFlowerPositions] = useState({}); // Diccionario de posiciones de flores: id -> {x, y, z}
+  const [firePositions, setFirePositions] = useState({}); // Diccionario de posiciones de fuegos: id -> {x, y, z}
+  const [shadowPositions, setShadowPositions] = useState({}); // Diccionario de posiciones de sombras: id -> {x, y, z}
 
-  const addTentacle = useCallback((id, ref) => {
+  const getAllCheckpoints = async () => {
+    try {
+        // Obtener la referencia a la colección "checkpoints"
+        const checkpointsCollection = collection(db, 'checkpoints');
+        
+        // Obtener todos los documentos de la colección
+        const querySnapshot = await getDocs(checkpointsCollection);
+
+        const allCheckpoints = [];
+        
+        // Iterar sobre cada documento y obtener sus datos
+        querySnapshot.forEach((doc) => {
+
+            allCheckpoints.push({
+              id: doc.id,
+              data: doc.data()
+          });
+
+        });
+
+        return allCheckpoints[0].data;
+    } catch (error) {
+        console.error('Error al obtener los documentos de la colección:', error);
+    }
+};
+
+const setFlowerVisibility = (id, visible) => {
+  setFlowerPositions(prevFlowerPositions => ({
+    ...prevFlowerPositions,
+    [id]: {
+      ...prevFlowerPositions[id],
+      visible: visible
+    }
+  }));
+};
+const setTentacleVisibility = (id, visible) => {
+  setTentaclePositions(prevTentaclePositions => ({
+    ...prevTentaclePositions,
+    [id]: {
+      ...prevTentaclePositions[id],
+      visible: visible
+    }
+  }));
+};
+const setShadowVisibility = (id, visible) => {
+  setShadowPositions(prevShadowPositions => ({
+    ...prevShadowPositions,
+    [id]: {
+      ...prevShadowPositions[id],
+      visible: visible
+    }
+  }));
+};
+
+const setShadowHealth = (id, health) => {
+  setShadowPositions(prevShadowPositions => ({
+    ...prevShadowPositions,
+    [id]: {
+      ...prevShadowPositions[id],
+      health: health
+    }
+  }));
+};
+
+const setTentacleHealth = (id, health) => {
+  setTentaclePositions(prevTentaclePositions => ({
+    ...prevTentaclePositions,
+    [id]: {
+      ...prevTentaclePositions[id],
+      health: health
+    }
+  }));
+};
+
+const setPlateStatus = (id, status) => {
+  setFlowerPositions(prevPlacasPresion => ({
+    ...prevPlacasPresion,
+    [id]: {
+      ...prevPlacasPresion[id],
+       status
+    }
+  }));
+};
+
+  useEffect(() => {
+    if (health <= 0) {
+      getAllCheckpoints().then((checkpoint) => {
+      for (const [id, position] of Object.entries(checkpoint.fires)) {
+        fires[id].setTranslation(new Vector3(position.x, position.y + 3, position.z));
+      }
+      for (const [id, position] of Object.entries(checkpoint.flowers)) {
+        flowers[id].setTranslation(new Vector3(position.x, position.y + 3, position.z));
+        // flowerPositions[id].visible = checkpoint.flowers[id].visible;
+        setFlowerVisibility(id, checkpoint.flowers[id].visible);
+      }
+      for (const [id, position] of Object.entries(checkpoint.cajas)) {
+        cajas[id].setTranslation(new Vector3(position.x, position.y + 3, position.z));
+      }
+      for (const [id] of Object.entries(checkpoint.placasPresion)) {
+        // placasPresion[id] = checkpoint.placasPresion[id];
+        setPlateStatus(id, checkpoint.placasPresion[id]);
+        console.log(placasPresion)
+      }
+      for (const [id, position] of Object.entries(checkpoint.tentacles)) {
+        setTentacleVisibility(id, checkpoint.tentacles[id].visible);
+        setTentacleHealth(id, checkpoint.tentacles[id].health);
+      }
+      for (const [id, position] of Object.entries(checkpoint.shadows)) {
+        shadows[id].setTranslation(new Vector3(position.x, position.y + 10, position.z));
+        setShadowVisibility(id, checkpoint.shadows[id].visible); 
+        setShadowHealth(id, checkpoint.shadows[id].health);
+      }
+      setHealth(checkpoint.health);
+      setPuntaje(checkpoint.puntaje);
+      shadowAvatar.setTranslation(new Vector3(checkpoint.shadowAvatar[0], checkpoint.shadowAvatar[1] + 6, checkpoint.shadowAvatar[2]));
+      // console.log(shadowAvatar.translation())
+      // shadowAvatar.position.set(checkpoint.shadowAvatar.x, checkpoint.shadowAvatar.y + 6, checkpoint.shadowAvatar.z);
+      });
+    }
+
+  }, [health]);
+
+
+  const addTentacle = useCallback((id, ref, visible, health) => {
     setTentacles(prevTentacles => ({
       ...prevTentacles,
       [id]: ref
     }));
+    // const { x, y, z } = ref.position
+    setTentaclePositions(prevTentaclePositions => ({
+      ...prevTentaclePositions,
+      [id]: { visible, health }
+    }));
+
   }, []);
 
-  const removeTentacle = useCallback((id) => {
-    setTentacles(prevTentacles => {
-      const updatedTentacles = { ...prevTentacles };
-      delete updatedTentacles[id];
-      return updatedTentacles;
+  const removeTentacle = useCallback((id, visible) => {
+    // setTentacles(prevTentacles => {
+    //   const updatedTentacles = { ...prevTentacles };
+    //   delete updatedTentacles[id];
+    //   return updatedTentacles;
+    // });
+
+    setTentaclePositions(prevTentaclePositions => {
+      const updatedTentaclePositions = { ...prevTentaclePositions };
+
+      // Verificar si el elemento existe en flowerPositions
+      if (updatedTentaclePositions[id]) {
+        // Actualizar solo el valor de visible
+        updatedTentaclePositions[id]["visible"] = visible;
+      }
+
+      return updatedTentaclePositions;
     });
   }, []);
+
+  // const addCaja = useCallback((id, ref) => {
+  //   setCajas(prevCajas => ({
+  //     ...prevCajas,
+  //     [id]: ref
+  //   }));
+  // }, []);
 
   const addCaja = useCallback((id, ref) => {
     setCajas(prevCajas => ({
       ...prevCajas,
       [id]: ref
     }));
+
+    // Aquí obtienes la posición del ref y actualizas el diccionario de posiciones
+    const { x, y, z } = ref.translation()
+    setCajaPositions(prevCajaPositions => ({
+      ...prevCajaPositions,
+      [id]: { x, y, z }
+    }));
+
   }, []);
 
-  const addFlower = useCallback((id, ref) => {
+  const addFlower = useCallback((id, ref, visible) => {
     setFlowers(prevFlowers => ({
       ...prevFlowers,
       [id]: ref
     }));
+
+    // Aquí obtienes la posición del ref y actualizas el diccionario de posiciones
+    const { x, y, z } = ref.translation()
+    setFlowerPositions(prevFlowerPositions => ({
+      ...prevFlowerPositions,
+      [id]: { x, y, z, visible }
+    }));
   }, []);
 
-  const removeFlower = useCallback((id) => {
-    setFlowers(prevFlowers => {
-      const updatedFlowers = { ...prevFlowers };
-      delete updatedFlowers[id];
-      return updatedFlowers;
+  const removeFlower = useCallback((id, visible) => {
+    // setFlowers(prevFlowers => {
+    //   const updatedFlowers = { ...prevFlowers };
+    //   delete updatedFlowers[id];
+    //   return updatedFlowers;
+    // });
+
+    setFlowerPositions(prevFlowerPositions => {
+      const updatedFlowerPositions = { ...prevFlowerPositions };
+
+      // Verificar si el elemento existe en flowerPositions
+      if (updatedFlowerPositions[id]) {
+        // Actualizar solo el valor de visible
+        updatedFlowerPositions[id]["visible"] = visible;
+      }
+
+      return updatedFlowerPositions;
     });
   }, []);
 
@@ -75,6 +261,12 @@ export const GameContextProvider = ({ children }) => {
     setFires(prevFires => ({
       ...prevFires,
       [id]: ref
+    }));
+
+    const { x, y, z } = ref.translation()
+    setFirePositions(prevFirePositions => ({
+      ...prevFirePositions,
+      [id]: { x, y, z}
     }));
   }, []);
 
@@ -87,18 +279,35 @@ export const GameContextProvider = ({ children }) => {
   }, []);
 
   
-  const addShadow = useCallback((id, ref) => {
+  const addShadow = useCallback((id, ref, visible, health) => {
     setShadows(prevShadows => ({
       ...prevShadows,
       [id]: ref
     }));
+
+    const { x, y, z } = ref.translation()
+    setShadowPositions(prevShadowPositions => ({
+      ...prevShadowPositions,
+      [id]: { x, y, z, visible, health }
+    }));
   }, []);
 
-  const removeShadow = useCallback((id) => {
-    setShadows(prevShadows => {
-      const updatedShadows = { ...prevShadows };
-      delete updatedShadows[id];
-      return updatedShadows;
+  const removeShadow = useCallback((id, visible) => {
+    // setShadows(prevShadows => {
+    //   const updatedShadows = { ...prevShadows };
+    //   delete updatedShadows[id];
+    //   return updatedShadows;
+    // });
+    setShadowPositions(prevShadowPositions => {
+      const updatedShadowPositions = { ...prevShadowPositions };
+
+      // Verificar si el elemento existe en flowerPositions
+      if (updatedShadowPositions[id]) {
+        // Actualizar solo el valor de visible
+        updatedShadowPositions[id]["visible"] = visible;
+      }
+
+      return updatedShadowPositions;
     });
   }, []);
 
@@ -124,6 +333,9 @@ export const GameContextProvider = ({ children }) => {
       recompensa.volume = 0.2;
       recompensa.play()
     }
+    // if(cajaPositions){
+    //   console.log(cajaPositions)
+    // }
   }, [puntaje])
 
   // Función para actualizar el estado de las palancas
@@ -143,20 +355,30 @@ export const GameContextProvider = ({ children }) => {
         removeShadow,
         shadows,
         setShadows,
+        shadowPositions,
+        setShadowPositions,
         addFire,
         removeFire,
         fires,
         setFires,
+        firePositions,
+        setFirePositions,
         addFlower,
         removeFlower,
         setFlowers,
         flowers,
+        flowerPositions,
+        setFlowerPositions,
         addCaja,
         cajas, 
         setCajas,
+        cajaPositions,
+        setCajaPositions,
         removeTentacle,
         addTentacle,
         tentacles,
+        tentaclePositions,
+        setTentaclePositions,
         setTentacles,
         girlAvatar,
         setGirlAvatar,

@@ -24,7 +24,6 @@ export default function FinalDoor(props) {
     //     navigate("/level2");
     //   }
     // } 
-    console.log("Avatar: ", wentThrough);
     if (girlAvatar || shadowAvatar) {
       if(wentThrough){
         navigate(link);

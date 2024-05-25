@@ -14,7 +14,8 @@ export default function Fire(props) {
     const {addFire, removeFire} = useGameContext()
 
     const { girlAvatar } = useGameContext();
-    const {shadowAvatar} = useGameContext();    
+    const {shadowAvatar} = useGameContext();
+    const {firePositions} = useGameContext();   
 
     const { scene, materials, animations } = useGLTF("/assets/models/fire/Fire.glb");
 
@@ -27,23 +28,24 @@ export default function Fire(props) {
 
     const sideToSide = props.sideToSide || false;
 
-    const bone = nodes.Bone
 
-    const speed = 0.01
+    const speed = 1
     const distance = 4
-    const position  = [0,0,0]
     const directionVector = [1, 0, 0]
     const fireRotation = props.rotation || [0, 0, 0]
 
     // Para el movimiento de persecucion
-    const chaseDistance = 5; //Distancia de persecución
-    const chaseSpeed = 3.5; //Velocidad de persecución
+    const chaseSpeed = 2; //Velocidad de persecución
 
     const [isChasing, setIsChasing] = useState(false); //Estado de persecución
 
     useEffect(() => {
         addFire(props.id, fireBodyRef.current)
     }, [fireBodyRef?.current, addFire, props.id])
+
+    // useEffect(() => {
+    //     const isVisible = firePositions[props.id]["visible"]
+    // }, [firePositions])
 
     // useFrame((_, delta) => {
     //     if (fireBodyRef.current) {

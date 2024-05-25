@@ -16,8 +16,9 @@ export default function Tentacle(props) {
     const [move, setMove] = useState(false);
     const [inArea, setInArea] = useState(false);
     const [attacking, setAttacking] = useState(false);
-    const { shadowAvatar, isAttacking, setIsAttacking } = useGameContext();
+    const { shadowAvatar, isAttacking, setIsAttacking, tentaclePositions, setTentaclePositions } = useGameContext();
     const [referencesExist, setReferencesExist] = useState(true);
+    const [health, setHealth] = useState(3);
 
     // Clonar la escena para evitar modificar la original
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
@@ -34,14 +35,13 @@ export default function Tentacle(props) {
 
     const dañoDe = ["puñocollider"];
     const [visible, setVisible] = useState(true);
-    const health = useRef(3);
 
     const Hit = new Audio(hit);
     const dead = new Audio(morir);
 
 
     useEffect(() => {
-        addTentacle(props.id, tentacleModel.current)
+        addTentacle(props.id, tentacleModel.current, visible, health)
     }, [tentacleModel?.current, addTentacle, props.id])
 
 
@@ -59,6 +59,19 @@ export default function Tentacle(props) {
             }, 2500);
         }
     };
+
+    useEffect(() => {
+        
+        if(tentaclePositions){
+          for (const [id, position] of Object.entries(tentaclePositions)){
+            if (id === props.id){
+              setVisible(tentaclePositions[id].visible)
+              setHealth(tentaclePositions[id].health)
+            }
+          }
+        }
+        
+    }, [tentaclePositions])
 
     const stopAttackAnimation = () => {
         if (tentacleModel.current && actions["Attack.001"] && actions["Idle.002"]) {
@@ -134,19 +147,36 @@ export default function Tentacle(props) {
             Hit.volume = 0.3;
             Hit.play();
             setIsAttacking(false);
-            health.current = Math.max(health.current - 1, 0);
+            setHealth(prevHealth => prevHealth - 1)
         }
     };
 
+    const setTentacleHealth = (id, health) => {
+        setTentaclePositions(prevTentaclePositions => ({
+          ...prevTentaclePositions,
+          [id]: {
+            ...prevTentaclePositions[id],
+            health: health
+          }
+        }));
+      };
+
     useEffect(() => {
-        if (health.current <= 0) {
+        if (health <= 0) {
             dead.volume = 0.4;
             dead.play();
-            setReferencesExist(false);
-            removeTentacle(props.id)
+            removeTentacle(props.id, false)
+            setReferencesExist(false);          
             setVisible(false);
-        }
-    }, [health.current]);
+        } else if (health) {
+            console.log("TT: ", tentaclePositions)
+            for (const [id, positions] of Object.entries(tentaclePositions)){
+              if (id === props.id){
+                setTentacleHealth(id, health)
+              }
+            }
+          }
+    }, [health]);
 
 
     return (
