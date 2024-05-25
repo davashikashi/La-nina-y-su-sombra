@@ -140,12 +140,12 @@ export default function Model(props) {
       Hit.play()
       setIsAttacking(false)
       health.current = Math.max(health.current - 1, 0);
-      console.log("Health:", health.current);
+      //console.log("Health:", health.current);
     }
   };
 
   useEffect(() => {
-    console.log(health.current)
+    //console.log(health.current)
     if (health.current <= 0) {
       dead.volume = 0.4
       dead.play()

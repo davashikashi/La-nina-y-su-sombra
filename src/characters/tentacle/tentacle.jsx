@@ -74,7 +74,7 @@ export default function Tentacle(props) {
 
     useEffect(() => {
         if (inArea) {
-            console.log("ataca", attacking)
+            //console.log("ataca", attacking)
             if (attacking) {
                 startAttackAnimation();
             } else {
