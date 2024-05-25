@@ -24,6 +24,7 @@ import Tentacle from "../../characters/tentacle/tentacle";
 import Spikes from "../../Objects/Spikes/Spikes";
 import ShadowEnemy from "../../characters/ShadowEnemy/ShadowEnemy";
 import Map2 from "../level2/world/Map2";
+import FinalDoor from "../../Objects/FinalDoor/FinalDoor";
 
 
 
@@ -93,9 +94,12 @@ const Level3 = () => {
                             <ShadowEnemy position={[-5, 3, -5]} boundsPosition={[0, 1, 35]} boundsArgs={[7.9, 1, 20]} rotation={[0, 1, 0]} />
                             <Tentacle position={[10, 0, 5]} />
                             <Tentacle position={[5, 0, -5]} />
+                            
+                        <FinalDoor position={[-7, 0, 0]} link="/level2" />
 
                         </Physics>
                     </Suspense>
+                    
                 </Canvas>
 
                 <GameUI />

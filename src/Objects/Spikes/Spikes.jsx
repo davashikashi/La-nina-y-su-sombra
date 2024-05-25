@@ -8,6 +8,7 @@ import { useRef, useEffect, useState } from 'react'
 import golpeado from "../../Sounds/hitEnemigo.mp3"
 import { useGLTF, useAnimations } from '@react-three/drei'
 
+
 const Spikes = ({ alternating, palancasRequeridas, placasPresionRequeridas, position }) => {
     const rigidBodyRef = useRef()
     const { nodes, materials, animations } = useGLTF('/assets/models/spikes/Spikes.glb')
@@ -24,6 +25,7 @@ const Spikes = ({ alternating, palancasRequeridas, placasPresionRequeridas, posi
     const hitEnemigo = new Audio(golpeado)
 
     const spikesDown = () => {
+
         for (const placaPresionId of placasPresionRequeridas) {
             if (!placasPresion[placaPresionId]) {
                 return false;
@@ -80,8 +82,6 @@ const Spikes = ({ alternating, palancasRequeridas, placasPresionRequeridas, posi
             }
         }
     });
-    
-
 
     const handleIntersection = (event) => {
         if (event.colliderObject.name === "character-capsule-collider") {
