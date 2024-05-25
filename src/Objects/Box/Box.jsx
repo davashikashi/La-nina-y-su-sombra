@@ -3,11 +3,14 @@ import { RigidBody } from "@react-three/rapier"
 import { useEffect, useRef, useState } from "react"
 import { RepeatWrapping } from "three"
 import { useGameContext } from "../../context/GameContext"
+import morir from "../../Sounds/morirEnemigo.mp3"
 
 export default function Box(props) {
 
     const { nodes } = useGLTF("/assets/models/Box/Box.glb")
-    const {isAttacking, isTakingSword} = useGameContext()
+    const cajaBodyRef = useRef()
+    const { addCaja } = useGameContext()
+
 
     const TexturePath = "/assets/textures/crate/"
 
@@ -31,43 +34,29 @@ export default function Box(props) {
     propsBoxTexture.diplacementMap.repeat.set(1, 1);
     propsBoxTexture.diplacementMap.wrapS = propsBoxTexture.diplacementMap.wrapT = RepeatWrapping;
 
-    
-
-    const health = useRef(100);
-
-    const handleHit = () => {
-        console.log(isAttacking)
-        if (isAttacking && isTakingSword) {
-            health.current = Math.max(health.current - 10, 0);
-            console.log("Health:", health.current);
-            console.log("desde box ")
-        }
-
-    };
-
-    if (health.current <= 0) {
-        return null;
-    }
-
-    // 
-
+    useEffect(() => {
+        addCaja(props.id, cajaBodyRef.current)
+    }, [cajaBodyRef?.current, addCaja, props.id])
 
     return (
         <RigidBody
+            ref={cajaBodyRef}
             name="rigid caja"
             type="dynamic"
-            colliders="trimesh"
-            onIntersectionEnter={handleHit}
+            colliders="cuboid"
+            mass={100}
+            linearDamping={0.1}
+            angularDamping={0.1}
+            position={props.position}
         >
-            <group {...props} dispose={null}>
-                <group>
-                    <mesh castShadow={true} position={props.position} geometry={nodes.Box.geometry}  >
-                        <meshStandardMaterial {...propsBoxTexture} />
-                    </mesh>
-                </group>
+            <group>
+                <mesh castShadow={true} geometry={nodes.Box.geometry}  >
+                    <meshStandardMaterial {...propsBoxTexture} />
+                </mesh>
             </group>
 
         </RigidBody>
+
 
     )
 }

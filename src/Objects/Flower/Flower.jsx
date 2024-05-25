@@ -1,66 +1,138 @@
 import { useGLTF } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useGraph } from "@react-three/fiber";
 import { RigidBody, CuboidCollider } from "@react-three/rapier";
-import { useRef } from "react";
-import { Quaternion, Vector3 } from "three";
+import { useEffect, useRef, useState } from "react";
+import { Quaternion, Vector3, Euler } from "three";
+import { useGameContext } from "../../context/GameContext";
+
 
 export default function Flower(props) {
   const { nodes, materials } = useGLTF("/assets/models/Flower/Flower.glb");
-
-  const flowerBodyRef = useRef();
   const flowerModelRef = useRef();
+  const flowerBodyRef = useRef();
+  const { puntaje, setPuntaje, health, setHealth } = useGameContext();
+  const [visible, setVisible] = useState(true);
+  const [time, setTime] = useState(0);
+  const { addFlower, removeFlower, setFlower, flowers } = useGameContext()
+  const { flowerPositions } = useGameContext();
 
-  // Parámetros para el movimiento de flotación y rotación
-  const floatAmplitude = 0.2; // Amplitud del movimiento hacia arriba y hacia abajo
+  let isVisible
+
+
+  const floatScale = 0.5; // Escala para ajustar el movimiento del modelo
+  const floatAmplitude = 1 * floatScale; // Amplitud del movimiento de flotación
   const floatSpeed = 1; // Velocidad del movimiento de flotación
-  const rotationSpeed = 0.5; // Velocidad de rotación sobre el eje Y
+  const rotationSpeed = 1; // Velocidad de rotación
+  // Ajusta según sea necesario
 
-  // Variables para controlar la animación
-  const startTime = useRef(0);
 
-  useFrame(({ clock }) => {
-    const time = clock.getElapsedTime();
+  useFrame((state, delta) => {
+    // Incrementamos el tiempo utilizando el delta de tiempo para obtener un movimiento uniforme
+    setTime(prevTime => prevTime + delta);
 
-    if (flowerModelRef.current) {
-      // Calcular el desplazamiento vertical para la flotación
+    if (flowerModelRef.current && flowerBodyRef.current) {
+      // Calcular el desplazamiento vertical para la flotación en seno
       const verticalOffset = floatAmplitude * Math.sin(floatSpeed * time);
 
-      // Aplicar el desplazamiento vertical
-      flowerModelRef.current.position.y = props.position[1] + verticalOffset;
+      // Calcular la rotación sobre el eje Y utilizando el tiempo delta
+      const rotationAngle = rotationSpeed * delta;
 
-      // Calcular la rotación sobre el eje Y
-      const rotationAngle = rotationSpeed * time;
+      // Crear vectores de posición y rotación para el cuerpo rígido
+      const newPosition = new Vector3(props.position[0], props.position[1] + verticalOffset, props.position[2]);
+      const newRotation = new Euler(0, rotationAngle, 0, 'XYZ');
 
-      // Aplicar la rotación
-      flowerModelRef.current.rotation.y = rotationAngle;
+      // Actualizar la posición y rotación del rigidBody cinemático
+      flowerBodyRef.current.setNextKinematicTranslation(newPosition);
+      flowerBodyRef.current.setNextKinematicRotation(newRotation);
+
+      // Rotar el modelo sobre su propio eje
+      flowerModelRef.current.rotation.y += rotationAngle;
+      // console.log(visible, props.id)
+      // console.log(flowerModelRef?.current, props.id)
     }
   });
- 
+
+
+  useEffect(() => {
+    addFlower(props.id, flowerBodyRef.current, visible)
+  }, [flowerBodyRef?.current, addFlower, props.id])
+
+  useEffect(() => {
+        
+        if(flowerPositions){
+          for (const [id, position] of Object.entries(flowerPositions)){
+            if (id === props.id){
+              setVisible(flowerPositions[id].visible)
+              console.log("isVisible: ", visible, props.id)
+            }
+          }
+          // console.log("flowerPositions: ", flowerPositions)
+        }
+        
+    }, [flowerPositions])
+  
+    useEffect(() => {
+      // console.log("flowerPositions: ", flowerPositions)
+    }, [flowerBodyRef?.current]);
+
+  const handleIntersection = (event) => {
+    if (event.colliderObject.name.toString() === 'character-capsule-collider') {
+      //console.log("si choca");
+      setPuntaje(prevPuntaje => prevPuntaje + 1);
+      removeFlower(props.id, false)
+      setVisible(false); // Ocultar el objeto
+    }
+  };
+
+  useEffect(() => {
+    //console.log("puntaje: ", puntaje);
+  }, [puntaje]);
 
   return (
-    // <RigidBodyw
-    //   ref={flowerBodyRef}
-    //   type="kinematicPosition"
-    //   colliders={false}
-    //   gravityScale={0}
-    // >
-    //   <CuboidCollider
-    //     args={[0.1, 0.2, 0.2]}
-    //     position={props.position} // Posición base desde props
-    //   />
-    // </RigidBody>
-      <group ref={flowerModelRef} scale={[6, 6, 6]} position={props.position}>
-        {/* <mesh
-          geometry={nodes.Flower.geometry}
-          material={materials["Material.001"]}
-          position={[0, 0, 0]} // Posición relativa del mesh dentro del grupo
-          rotation={[Math.PI / 2, 0, 0]} // Rotación inicial del mesh */}
-        <mesh geometry={nodes.Plane001.geometry} material={materials.Petals} rotation={[Math.PI / 2, 0, 0]}/>
-        <mesh geometry={nodes.Plane001_1.geometry} material={materials.Heart} rotation={[Math.PI / 2, 0, 0]}/>
-        <mesh geometry={nodes.Plane001_2.geometry} material={materials.Stick} rotation={[Math.PI / 2, 0, 0]}/>
-        <mesh geometry={nodes.Plane001_3.geometry} material={materials.Leaf} rotation={[Math.PI / 2, 0, 0]}/>
-        {/* /> */}
-      </group>
-    
+    <RigidBody
+      ref={flowerBodyRef}
+      type="kinematicPosition"
+      sensor={true}
+      gravityScale={0}
+      colliders={false}
+      onIntersectionEnter={handleIntersection}
+      position={props.position}
+    >
+      {visible && (
+        <>
+          <CuboidCollider args={[0.1, 0.3, 0.1]} />
+          <group ref={flowerModelRef} scale={[4, 4, 4]} >
+            <mesh
+
+              castShadow
+              receiveShadow
+              geometry={nodes.Plane001.geometry}
+              material={materials.Petals}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Plane001_1.geometry}
+              material={materials.Heart}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Plane001_2.geometry}
+              material={materials.Stick}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Plane001_3.geometry}
+              material={materials.Leaf}
+            />
+
+          </group>
+        </>
+      )}
+    </RigidBody>
   );
 }
+
+

@@ -1,22 +1,19 @@
-
+import { KeyboardControls, useAnimations, useGLTF, useKeyboardControls } from "@react-three/drei";
+import Ecctrl, { EcctrlAnimation, useGame } from "ecctrl";
 import HandSword from "../../Objects/sword/swordHand";
 import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Euler, Quaternion, Vector3 } from "three";
 import { useGameContext } from "../../context/GameContext";
 import LampHand from "../../Objects/Lamp/LampHand";
-
-import { KeyboardControls, useAnimations, useGLTF } from "@react-three/drei";
-import Ecctrl, { EcctrlAnimation } from "ecctrl";
-
+import { Euler, Quaternion, Vector3 } from "three";
 import React, { forwardRef } from "react";
 import { randFloatSpread } from "three/src/math/MathUtils.js";
 
 
 
 const Avatar = forwardRef((props, ref) =>{
-    // const avatarBodyRef = useRef();
-    // const avatarRef = useRef();
+    const avatarBodyRef = useRef();
+    // const avatarModelRef = useRef();
     // const { avatar, SetAvatar } = useAvatar();
     const { isAttacking, setIsAttacking } = useGameContext()
     const { nodes, materials } = useGLTF('/assets/models/avatar/Girl.glb')
@@ -32,6 +29,15 @@ const Avatar = forwardRef((props, ref) =>{
     
     const { actualObject, setActualObject } = useGameContext("sword")
     const { isTakingSword, isTakingLamp, setIsTakingSword, setIsTakingLamp } = useGameContext()
+
+    //Context Setter
+    const { setGirlAvatar } = useGameContext();
+
+    useEffect(() => {
+        setGirlAvatar(
+            avatarBodyRef.current
+        )
+    }, [avatarBodyRef?.current])
 
 
 
@@ -127,7 +133,7 @@ const Avatar = forwardRef((props, ref) =>{
 
     return (
         <KeyboardControls map={keyboardMap}>
-            <Ecctrl animated capsuleHalfHeight={0.3} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} ref={ref}>
+            <Ecctrl animated capsuleHalfHeight={0.3} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} ref={avatarBodyRef}>
                 <EcctrlAnimation
                     characterURL={characterURL}
                     animationSet={animationSet} >
