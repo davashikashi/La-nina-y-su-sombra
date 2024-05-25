@@ -28,13 +28,14 @@ export default function Fire(props) {
 
     const sideToSide = props.sideToSide || false;
 
+
     const speed = 1
     const distance = 4
     const directionVector = [1, 0, 0]
     const fireRotation = props.rotation || [0, 0, 0]
 
     // Para el movimiento de persecucion
-    const chaseSpeed = 1; //Velocidad de persecución
+    const chaseSpeed = 2; //Velocidad de persecución
 
     const [isChasing, setIsChasing] = useState(false); //Estado de persecución
 
