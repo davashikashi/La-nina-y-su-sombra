@@ -7,10 +7,11 @@ import { useTexture } from "@react-three/drei";
 import door from "../../Sounds/doorMove.mp3"
 
 
-const Door = ({ palancasRequeridas, placasPresionRequeridas, position }) => {
+const Door = ({ palancasRequeridas, placasPresionRequeridas, position, rotation }) => {
 
 
     const TexturePath = "assets/textures/door/"
+    const doorRotation = rotation || [0, 0, 0]
 
     // Cargar la textura
     const propsDoorTexture = useTexture({
@@ -85,6 +86,7 @@ const Door = ({ palancasRequeridas, placasPresionRequeridas, position }) => {
             lockTranslations={true}// Bloquear el movimiento lineal en el eje Z
             colliders={"cuboid"}
             ref={rigidBodyRef}
+            rotation={doorRotation}
         >
             <mesh position={position}>
                 <boxGeometry args={[3, 4, 0.3]} />

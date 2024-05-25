@@ -8,7 +8,7 @@ import { useRef, useEffect, useState } from 'react'
 import golpeado from "../../Sounds/hitEnemigo.mp3"
 import { useGLTF, useAnimations } from '@react-three/drei'
 
-const Spikes = ({ palancasRequeridas, placasPresionRequeridas, position }) => {
+const Spikes = ({ palancasRequeridas, placasPresionRequeridas, position, alternating }) => {
   const rigidBodyRef = useRef()
   const { nodes, materials, animations } = useGLTF('/assets/models/spikes/Spikes.glb')
 //   const { actions } = useAnimations(animations, spikesModel)
@@ -22,13 +22,17 @@ const Spikes = ({ palancasRequeridas, placasPresionRequeridas, position }) => {
 
   const hitEnemigo = new Audio(golpeado)
 
+  const spikesAlternating = alternating || false;
+
   const spikesDown = () => {
-    for (const placaPresionId of placasPresionRequeridas) {
-        if (!placasPresion[placaPresionId]) {
-            return false;
+    if (!spikesAlternating) {
+        for (const placaPresionId of placasPresionRequeridas) {
+            if (!placasPresion[placaPresionId]) {
+                return false;
+            }
         }
+        return true;
     }
-    return true;
 };
 
 useFrame(() => {
@@ -60,8 +64,6 @@ useFrame(() => {
 
             setTimeout(() => {
                 setIsVulnerable(true);
-                console.log("Ha pasado 2 segundos");
-                console.log(canTakeDamage)
             }, 2000);
         }     
 

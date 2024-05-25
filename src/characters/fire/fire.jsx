@@ -33,6 +33,7 @@ export default function Fire(props) {
     const distance = 4
     const position  = [0,0,0]
     const directionVector = [1, 0, 0]
+    const fireRotation = props.rotation || [0, 0, 0]
 
     // Para el movimiento de persecucion
     const chaseDistance = 5; //Distancia de persecución
@@ -238,7 +239,7 @@ export default function Fire(props) {
 
     return (
         <RigidBody name="Fuego" ref={fireBodyRef} type="dynamic" position={props.position} colliders={"cuboid"}
-         enabledRotations={[false, true, false]}>
+         enabledRotations={[false, true, false]} rotation={fireRotation}>
             {/* <CuboidCollider  args={[0.3, 0.3, 0.5]} /> */}
             <group ref={fireModelRef} name="Scene">
                 <group name="Fuego" scale={0.614}>
@@ -251,7 +252,7 @@ export default function Fire(props) {
                     <primitive object={nodes.Bone} />
                     <CuboidCollider onIntersectionEnter={handleIntersection}
                      onIntersectionExit={handleIntersectionExit}
-                    args={[3, 2, 4]} sensor={true} position={[0, 1, 3]}
+                    args={[2, 2, 4]} sensor={true} position={[0, 1, 3]}
                     name="fireSensor" ref={fireSensorRef}/>
                 </group>
             </group>
