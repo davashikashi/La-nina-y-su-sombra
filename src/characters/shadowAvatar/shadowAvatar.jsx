@@ -21,7 +21,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
     const { nodes, materials } = useGLTF('/assets/models/shadowAvatar/Shadow.glb')
     const { setShadowAvatar } = useGameContext();
     const [pequeño, setPequeño] = useState(false)
-    console.log("es pequeño concha su mare", pequeño)
+    //console.log("es pequeño concha su mare", pequeño)
 
     //use states
 
@@ -50,7 +50,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
     //control de teclas
     const handleKeyDown = (event) => {
         if (event.key.toLowerCase() === "f") {
-            console.log("con colisiones")
+            //console.log("con colisiones")
             setIsAttacking(true)
             //console.log("colisiones") // Habilita colisiones
             lanzaGolpe.volume = 0.1;
@@ -97,7 +97,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
     useEffect(() => {
         const interval = setInterval(() => {
             if (collisionEndTime && Date.now() > collisionEndTime) {
-                console.log("sin colisiones")
+                //console.log("sin colisiones")
                 setIsAttacking(false);
                 setCollisionEndTime(null);
             }
@@ -216,15 +216,15 @@ const ShadowAvatar = forwardRef((props, ref) => {
     }
 
     useEffect(() => {
-        console.log(health)
+        //console.log(health)
         if (health <= 0) {
-            console.log("El jugador ha perdido toda su salud y ha muerto.");
+            //console.log("El jugador ha perdido toda su salud y ha muerto.");
         }
     }, [health]);
 
     useEffect(() => {
         if (isVulnerable) {
-            console.log(health)
+            //console.log(health)
             hitEnemigo.volume = 0.3;
             hitEnemigo.play();
             setHealth(prevHealth => prevHealth - 1);
@@ -235,7 +235,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
                 setCanTakeDamage(true);
                 // Esta línea de código se ejecutará después de 3000 milisegundos (3 segundos)
                 //
-                console.log("Ha pasado 3 segundos");
+                //console.log("Ha pasado 3 segundos");
             }, 3000);
         }
     }, [canTakeDamage]);

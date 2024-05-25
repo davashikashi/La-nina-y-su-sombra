@@ -57,14 +57,14 @@ const Level2 = () => {
                             <Flower id={"flower9"} position={[89.5, 1, 6.5]} />
                             <Flower id={"flower10"} position={[97, 1, 0]} />
 
-                            <Fire id={"fuego1"} position={[10,1,0]} />
+                            {/* <Fire id={"fuego1"} position={[10,1,0]} /> */}
 
-                            <Box id={"caja1"} position={[3, .2, -1.4]} />
-                            <Box id={"caja2"}  position={[3, .2, -.7]} />
-                            <Box id={"caja3"}  position={[3, .2, 0]} />
-                            <Box id={"caja4"}  position={[3, .2, .7]} />
-                            <Box id={"caja5"}  position={[3, .2, 1.4]} />
-                            <Box id={"caja6"}  position={[8, .2, 3]} />
+                            <Box id={"caja1"} position={[3, 1, -1.4]} />
+                            <Box id={"caja2"}  position={[3, 1, -0.7]} />
+                            <Box id={"caja3"}  position={[3, 1, 0]} />
+                            <Box id={"caja4"}  position={[3, 1, 0.7]} />
+                            <Box id={"caja5"}  position={[3, 1, 1.4]} />
+                            <Box id={"caja6"}  position={[8, 1, 3]} />
                             <Box id={"caja7"}  position={[14.8, .2, 2.8]} />
                             <Box id={"caja8"}  position={[20.5, 1.3, 5.5]} />
                             <Box id={"caja9"}  position={[26, 1.3, 1.7]} />
@@ -81,8 +81,8 @@ const Level2 = () => {
                             <Plate id={"plate2"} position={[44.4, 2.06, 11]} />
                             <Plate id={"plate3"} position={[54.2, 1.06, 3.5]} />
 
-                            {/* <ShadowEnemy id={"shadow1"} position={[15,1,0]} /> */}
-
+                            <ShadowEnemy id={"shadow1"} position={[15,1,0]} boundsPosition={[0, 1, 35]} boundsArgs={[7.9, 1, 20]} rotation={[0, 1, 0]}/>
+                            
                             <Perf position="top" />
 
                             <Tentacle id={"tentacle1"} position={[28, 0, 3]} />
@@ -90,7 +90,7 @@ const Level2 = () => {
                             <Tentacle id={"tentacle3"} position={[28, 0, 7]} />
                             <Tentacle id={"tentacle4"} position={[30, 0, 7]} />
 
-                            <ShadowAvatar avatarPosition={[1, 10, 1]} />
+                            <ShadowAvatar avatarPosition={[1, 10, 1]} /> 
                         </Physics>
 
                         {/* <FinalDoor position={[0, 0, -200]} avatarReference={avatarRef}/> */}

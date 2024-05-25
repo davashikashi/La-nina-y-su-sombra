@@ -25,7 +25,7 @@ export const GameContextProvider = ({ children }) => {
   const [cajas, setCajas] = useState({})
   const [flowers, setFlowers] = useState({})
   const [fires, setFires] = useState({})
-  //const [shadows, setShadows] = useState({})
+  const [shadows, setShadows] = useState({})
 
   const [lastCheckedScore, setLastCheckedScore] = useState(0);
   
@@ -87,20 +87,20 @@ export const GameContextProvider = ({ children }) => {
   }, []);
 
   
-  // const addShadow = useCallback((id, ref) => {
-  //   setShadows(prevShadows => ({
-  //     ...prevShadows,
-  //     [id]: ref
-  //   }));
-  // }, []);
+  const addShadow = useCallback((id, ref) => {
+    setShadows(prevShadows => ({
+      ...prevShadows,
+      [id]: ref
+    }));
+  }, []);
 
-  // const removeShadow = useCallback((id) => {
-  //   setShadows(prevShadows => {
-  //     const updatedShadows = { ...prevShadows };
-  //     delete updatedShadows[id];
-  //     return updatedShadows;
-  //   });
-  // }, []);
+  const removeShadow = useCallback((id) => {
+    setShadows(prevShadows => {
+      const updatedShadows = { ...prevShadows };
+      delete updatedShadows[id];
+      return updatedShadows;
+    });
+  }, []);
 
   
 
@@ -139,10 +139,10 @@ export const GameContextProvider = ({ children }) => {
   return (
     <GameContext.Provider
       value={{
-        // addShadow,
-        // removeShadow,
-        // shadows,
-        // setShadows,
+        addShadow,
+        removeShadow,
+        shadows,
+        setShadows,
         addFire,
         removeFire,
         fires,

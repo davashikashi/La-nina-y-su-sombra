@@ -22,7 +22,7 @@ export default function Tentacle(props) {
     // Clonar la escena para evitar modificar la original
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
     const { nodes } = useGraph(clone);
-    const {addTentacle, removeTentacle} = useGameContext();
+    const { addTentacle, removeTentacle } = useGameContext();
 
     // Configurar animaciones
     const { actions } = useAnimations(animations, tentacleModel.current);
@@ -39,21 +39,22 @@ export default function Tentacle(props) {
     const Hit = new Audio(hit);
     const dead = new Audio(morir);
 
-    
-    useEffect(() => {
-        addTentacle(props.id,tentacleModel.current)
-    }, [tentacleModel?.current,addTentacle,props.id])
 
-  
+    useEffect(() => {
+        addTentacle(props.id, tentacleModel.current)
+    }, [tentacleModel?.current, addTentacle, props.id])
+
+
 
     const startAttackAnimation = () => {
         if (tentacleModel.current && actions["Attack.001"] && actions["Idle.002"]) {
             actions["Idle.002"].stop();
-            actions["Attack.001"].reset().play();
+            actions["Attack.001"].play();
             setTimeout(() => {
                 setMove(false);
             }, 950);
             setTimeout(() => {
+                actions["Attack.001"].stop();
                 setAttacking(false);
             }, 2500);
         }
@@ -62,22 +63,25 @@ export default function Tentacle(props) {
     const stopAttackAnimation = () => {
         if (tentacleModel.current && actions["Attack.001"] && actions["Idle.002"]) {
             setMove(true);
-            actions["Attack.001"].stop();
-            actions["Idle.002"].reset().play();
+
+            actions["Idle.002"].play();
             setTimeout(() => {
+                
                 setAttacking(true);
-            }, 1000);
+            }, 3000);
         }
     };
 
     useEffect(() => {
         if (inArea) {
+            console.log("ataca", attacking)
             if (attacking) {
                 startAttackAnimation();
             } else {
                 stopAttackAnimation();
             }
-        } else if (actions["Idle.002"] && actions["Attack.001"]) {
+        }
+        else if (actions["Idle.002"] && actions["Attack.001"]) {
             actions["Attack.001"].stop();
             actions["Idle.002"].play();
         }
@@ -100,7 +104,7 @@ export default function Tentacle(props) {
     };
 
     useFrame(() => {
-        if (mid && referencesExist &&bodyRefCollider.current && shadowAvatar) {
+        if (mid && referencesExist && bodyRefCollider.current && shadowAvatar) {
             const midPosition = mid.getWorldPosition(new Vector3());
             const midQuaternion = mid.getWorldQuaternion(new Quaternion());
             const headPosition = chest.getWorldPosition(new Vector3());
@@ -149,6 +153,13 @@ export default function Tentacle(props) {
         <>
             {visible && (
                 <>
+                    <CuboidCollider
+                        args={[3, 2, 3]}
+                        position={props.position}
+                        onIntersectionExit={handleIntersectionExit}
+                        onIntersectionEnter={handleIntersection}
+                        sensor={true}
+                    />
 
                     <group scale={[1, 0.7, 1]} ref={tentacleModel} name="Scene" position={props.position}>
                         <group name="Armature">
@@ -165,13 +176,6 @@ export default function Tentacle(props) {
                             <RigidBody ref={headRef} type="KinematicPositionBased" sensor={true} lockRotations={true} lockTranslations={true} gravityScale={0} colliders={false}>
                                 <CuboidCollider name="tentaculoHead" args={[0.2, 1, 0.4]} />
                             </RigidBody>
-                            <RigidBody position={[0,2,0]} lockRotations={true} lockTranslations={true} gravityScale={0} colliders={false} sensor={true} onIntersectionExit={handleIntersectionExit}
-                                onIntersectionEnter={handleIntersection}>
-                                <CuboidCollider
-                                    args={[3, 2, 3]}
-                                />
-                            </RigidBody>
-
                         </group>
                     </group>
                 </>

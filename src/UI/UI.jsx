@@ -11,8 +11,8 @@ const GameUI = () => {
 
     // Generar dinámicamente elementos de imagen de corazón basados en la cantidad de salud
     const renderHeartIcons = () => {
-        console.log("entrar renderizar corazones")
-        console.log("health", health)
+        // console.log("entrar renderizar corazones")
+        // console.log("health", health)
         const hearts = [];
         for (let i = 0; i < health; i++) {
             hearts.push(<img key={i} src={heartIcon} alt="Corazón" />);
