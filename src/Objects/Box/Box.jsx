@@ -3,12 +3,13 @@ import { RigidBody } from "@react-three/rapier"
 import { useEffect, useRef, useState } from "react"
 import { RepeatWrapping } from "three"
 import { useGameContext } from "../../context/GameContext"
-import hit from "../../Sounds/hit.mp3"
 import morir from "../../Sounds/morirEnemigo.mp3"
 
 export default function Box(props) {
 
     const { nodes } = useGLTF("/assets/models/Box/Box.glb")
+    const cajaBodyRef = useRef()
+    const { addCaja } = useGameContext()
 
 
     const TexturePath = "/assets/textures/crate/"
@@ -33,23 +34,25 @@ export default function Box(props) {
     propsBoxTexture.diplacementMap.repeat.set(1, 1);
     propsBoxTexture.diplacementMap.wrapS = propsBoxTexture.diplacementMap.wrapT = RepeatWrapping;
 
-
+    useEffect(() => {
+        addCaja(props.id, cajaBodyRef.current)
+    }, [cajaBodyRef?.current, addCaja, props.id])
 
     return (
         <RigidBody
+            ref={cajaBodyRef}
             name="rigid caja"
             type="dynamic"
             colliders="cuboid"
             mass={100}
             linearDamping={0.1}
             angularDamping={0.1}
+            position={props.position}
         >
-            <group {...props} dispose={null}>
-                <group>
-                    <mesh castShadow={true} position={props.position} geometry={nodes.Box.geometry}  >
-                        <meshStandardMaterial {...propsBoxTexture} />
-                    </mesh>
-                </group>
+            <group>
+                <mesh castShadow={true} geometry={nodes.Box.geometry}  >
+                    <meshStandardMaterial {...propsBoxTexture} />
+                </mesh>
             </group>
 
         </RigidBody>

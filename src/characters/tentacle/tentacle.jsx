@@ -22,6 +22,7 @@ export default function Tentacle(props) {
     // Clonar la escena para evitar modificar la original
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
     const { nodes } = useGraph(clone);
+    const {addTentacle, removeTentacle} = useGameContext();
 
     // Configurar animaciones
     const { actions } = useAnimations(animations, tentacleModel.current);
@@ -38,6 +39,12 @@ export default function Tentacle(props) {
     const Hit = new Audio(hit);
     const dead = new Audio(morir);
 
+    
+    useEffect(() => {
+        addTentacle(props.id,tentacleModel.current)
+    }, [tentacleModel?.current,addTentacle,props.id])
+
+  
 
     const startAttackAnimation = () => {
         if (tentacleModel.current && actions["Attack.001"] && actions["Idle.002"]) {
@@ -132,6 +139,7 @@ export default function Tentacle(props) {
             dead.volume = 0.4;
             dead.play();
             setReferencesExist(false);
+            removeTentacle(props.id)
             setVisible(false);
         }
     }, [health.current]);

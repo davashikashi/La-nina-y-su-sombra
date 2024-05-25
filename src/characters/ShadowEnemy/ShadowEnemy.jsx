@@ -13,6 +13,7 @@ export default function Model(props) {
 
   const ShadowEnemyBodyRef = useRef();
   const ShadowEnemyModelRef = useRef();
+  //const {addShadow , removeShadow} = useGameContext()
 
   const { girlAvatar, isAttacking, setIsAttacking } = useGameContext();
 
@@ -148,9 +149,16 @@ export default function Model(props) {
     if (health.current <= 0) {
       dead.volume = 0.4
       dead.play()
+      //removeShadow(props.id)
       setVisible(false)
     }
   }, [health.current])
+
+  // useEffect(() => {
+  //   addShadow(props.id, ShadowEnemyBodyRef.current)
+  // }, [ShadowEnemyBodyRef?.current, addShadow, props.id])
+
+
 
 
   return (

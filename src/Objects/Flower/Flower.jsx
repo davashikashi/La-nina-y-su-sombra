@@ -10,16 +10,17 @@ export default function Flower(props) {
   const { nodes, materials } = useGLTF("/assets/models/Flower/Flower.glb");
   const flowerModelRef = useRef();
   const flowerBodyRef = useRef();
-  const { puntaje, setPuntaje,health,setHealth } = useGameContext();
+  const { puntaje, setPuntaje, health, setHealth } = useGameContext();
   const [visible, setVisible] = useState(true);
   const [time, setTime] = useState(0);
-  
+  const { addFlower, removeFlower } = useGameContext()
+
 
   const floatScale = 0.5; // Escala para ajustar el movimiento del modelo
   const floatAmplitude = 1 * floatScale; // Amplitud del movimiento de flotación
   const floatSpeed = 1; // Velocidad del movimiento de flotación
   const rotationSpeed = 1; // Velocidad de rotación
-   // Ajusta según sea necesario
+  // Ajusta según sea necesario
 
 
   useFrame((state, delta) => {
@@ -47,14 +48,16 @@ export default function Flower(props) {
   });
 
 
-
+  useEffect(() => {
+    addFlower(props.id, flowerBodyRef.current)
+  }, [flowerBodyRef?.current, addFlower, props.id])
 
 
   const handleIntersection = (event) => {
     if (event.colliderObject.name.toString() === 'character-capsule-collider') {
       console.log("si choca");
       setPuntaje(prevPuntaje => prevPuntaje + 1);
-      
+      removeFlower(props.id)
       setVisible(false); // Ocultar el objeto
     }
   };

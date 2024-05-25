@@ -23,6 +23,7 @@ import Fire from "../../characters/fire/fire"
 import ShadowEnemy from "../../characters/ShadowEnemy/ShadowEnemy"
 
 
+
 const Level2 = () => {
 
     return (
@@ -45,45 +46,49 @@ const Level2 = () => {
 
                             <Map2 />
 
-                            <Flower position={[16.5, 1, 3]} />
-                            <Flower position={[28.5, 1, 5.5]} />
-                            <Flower position={[37, 1, 11]} />
-                            <Flower position={[50.5, 1, 0.5]} />
-                            <Flower position={[54.2, 2, 3.5]} />
-                            <Flower position={[61.5, 1, 3.5]} />
-                            <Flower position={[67.5, 1, 0]} />
-                            <Flower position={[76.5, 1, 1]} />
-                            <Flower position={[89.5, 1, 6.5]} />
-                            <Flower position={[97, 1, 0]} />
+                            <Flower id={"flower1"} position={[16.5, 1, 3]} />
+                            <Flower id={"flower2"} position={[28.5, 1, 5.5]} />
+                            <Flower id={"flower3"} position={[37, 1, 11]} />
+                            <Flower id={"flower4"} position={[50.5, 1, 0.5]} />
+                            <Flower id={"flower5"} position={[54.2, 2, 3.5]} />
+                            <Flower id={"flower6"} position={[61.5, 1, 3.5]} />
+                            <Flower id={"flower7"} position={[67.5, 1, 0]} />
+                            <Flower id={"flower8"} position={[76.5, 1, 1]} />
+                            <Flower id={"flower9"} position={[89.5, 1, 6.5]} />
+                            <Flower id={"flower10"} position={[97, 1, 0]} />
 
-                            <Box position={[3, .2, -1.4]} />
-                            <Box position={[3, .2, -.7]} />
-                            <Box position={[3, .2, 0]} />
-                            <Box position={[3, .2, .7]} />
-                            <Box position={[3, .2, 1.4]} />
-                            <Box position={[8, .2, 3]} />
-                            <Box position={[14.8, .2, 2.8]} />
-                            <Box position={[20.5, 1.3, 5.5]} />
-                            <Box position={[26, 1.3, 1.7]} />
-                            <Box position={[41.75, 1, -.75]} />
-                            <Box position={[43.25, 1, .25]} />
-                            <Box position={[42.75, 1, 1.25]} />
-                            <Box position={[43.75, 1, -.75]} />
-                            <Box position={[44.75, 1, .25]} />
-                            <Box position={[44.75, 1, 1.72]} />
-                            <Box position={[45.25, 1, -1.72]} />
-                            <Box position={[45.75, 1, 1.25]} />
+                            <Fire id={"fuego1"} position={[10,1,0]} />
+
+                            <Box id={"caja1"} position={[3, .2, -1.4]} />
+                            <Box id={"caja2"}  position={[3, .2, -.7]} />
+                            <Box id={"caja3"}  position={[3, .2, 0]} />
+                            <Box id={"caja4"}  position={[3, .2, .7]} />
+                            <Box id={"caja5"}  position={[3, .2, 1.4]} />
+                            <Box id={"caja6"}  position={[8, .2, 3]} />
+                            <Box id={"caja7"}  position={[14.8, .2, 2.8]} />
+                            <Box id={"caja8"}  position={[20.5, 1.3, 5.5]} />
+                            <Box id={"caja9"}  position={[26, 1.3, 1.7]} />
+                            <Box id={"caja10"}  position={[41.75, 1, -.75]} />
+                            <Box id={"caja11"}  position={[43.25, 1, .25]} />
+                            <Box id={"caja12"}  position={[42.75, 1, 1.25]} />
+                            <Box id={"caja13"}  position={[43.75, 1, -.75]} />
+                            <Box id={"caja14"}  position={[44.75, 1, .25]} />
+                            <Box id={"caja15"}  position={[44.75, 1, 1.72]} />
+                            <Box id={"caja16"}  position={[45.25, 1, -1.72]} />
+                            <Box id={"caja17"}  position={[45.75, 1, 1.25]} />
 
                             <Plate id={"plate1"} position={[16.5, 0.06, 8]} />
                             <Plate id={"plate2"} position={[44.4, 2.06, 11]} />
                             <Plate id={"plate3"} position={[54.2, 1.06, 3.5]} />
 
+                            {/* <ShadowEnemy id={"shadow1"} position={[15,1,0]} /> */}
+
                             <Perf position="top" />
 
-                            <Tentacle position={[28, 0, 3]} />
-                            <Tentacle position={[30, 0, 3]} />
-                            <Tentacle position={[28, 0, 7]} />
-                            <Tentacle position={[30, 0, 7]} />
+                            <Tentacle id={"tentacle1"} position={[28, 0, 3]} />
+                            <Tentacle id={"tentacle2"} position={[30, 0, 3]} />
+                            <Tentacle id={"tentacle3"} position={[28, 0, 7]} />
+                            <Tentacle id={"tentacle4"} position={[30, 0, 7]} />
 
                             <ShadowAvatar avatarPosition={[1, 10, 1]} />
                         </Physics>

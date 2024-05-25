@@ -10,7 +10,8 @@ import { useGameContext } from '../../context/GameContext';
 export default function Fire(props) {
     const fireModelRef = useRef();
     const fireBodyRef = useRef()
-    const fireSensorRef = useRef()
+    const fireSensorRef = useRef() 
+    const {addFire, removeFire} = useGameContext()
 
     const { girlAvatar } = useGameContext();
     const {shadowAvatar} = useGameContext();    
@@ -38,6 +39,10 @@ export default function Fire(props) {
     const chaseSpeed = 4.5; //Velocidad de persecución
 
     const [isChasing, setIsChasing] = useState(false); //Estado de persecución
+
+    useEffect(() => {
+        addFire(props.id, fireBodyRef.current)
+    }, [fireBodyRef?.current, addFire, props.id])
 
     // useFrame((_, delta) => {
     //     if (fireBodyRef.current) {
