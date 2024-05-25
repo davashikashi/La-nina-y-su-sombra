@@ -56,7 +56,7 @@ const Level2 = () => {
                         <Texts color="white" Position={[18.5, 2.5, -1.8]} Textto="cruzando la puerta final" rotation={[0, 5, 0]}
                         fontSize={.5}/>
 
-                        <Physics debug={true} timestep="vary">
+                        <Physics debug={false} timestep="vary">
 
                             <Map2 />
 
