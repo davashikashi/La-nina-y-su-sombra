@@ -42,7 +42,7 @@ const Level2 = () => {
                         <MapEnvironments />
                         <Torch position={[16, 1, -3.28]} rotation={[0, 0, 0]} />
 
-                        <Physics debug={true} timestep="vary">
+                        <Physics debug={false} timestep="vary">
 
                             <Map2 />
 

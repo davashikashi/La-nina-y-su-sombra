@@ -29,7 +29,7 @@ export default function Fire(props) {
 
     const bone = nodes.Bone
 
-    const speed = 1
+    const speed = 0.01
     const distance = 4
     const position  = [0,0,0]
     const directionVector = [1, 0, 0]
@@ -37,7 +37,7 @@ export default function Fire(props) {
 
     // Para el movimiento de persecucion
     const chaseDistance = 5; //Distancia de persecución
-    const chaseSpeed = 4.5; //Velocidad de persecución
+    const chaseSpeed = 3.5; //Velocidad de persecución
 
     const [isChasing, setIsChasing] = useState(false); //Estado de persecución
 
