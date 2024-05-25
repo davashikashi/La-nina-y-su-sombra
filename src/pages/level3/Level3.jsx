@@ -85,11 +85,12 @@ const Level3 = () => {
                         <Fire avatarReference={avatarRef} position={[10, 1, 35]} /> */}
                             {/* <Avatar avatarPosition={[0,10,0]} ref={avatarRef}/> */}
                             <Door placasPresionRequeridas={["plate1", "plate2"]} position={[0, 2, 4.3]} />
-                            <Spikes placasPresionRequeridas={["plate1"]} position={[-4, 0, 7]} />
+                            <Spikes alternating={true} placasPresionRequeridas={["plate1"]} position={[-4, 0, 7]} />
+                            <Spikes  placasPresionRequeridas={["plate1"]} position={[-4, 0, 14]} />
                             <Plate id={"plate1"} position={[-2, 0.1, 10]} />
                             <Plate id={"plate2"} position={[-2, 0.1, 8]} />
                             <Fire position={[0, 5, 0]} />
-                            <ShadowAvatar avatarPosition={[0, 10, -2]} />
+                            <ShadowAvatar avatarPosition={[-8, 10, -2]} />
                             <ShadowEnemy position={[-5, 3, -5]} boundsPosition={[0, 1, 35]} boundsArgs={[7.9, 1, 20]} rotation={[0, 1, 0]} />
                             <Tentacle position={[10, 0, 5]} />
                             <Tentacle position={[5, 0, -5]} />

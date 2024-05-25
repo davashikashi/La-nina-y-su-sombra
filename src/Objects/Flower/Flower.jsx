@@ -55,7 +55,7 @@ export default function Flower(props) {
 
   const handleIntersection = (event) => {
     if (event.colliderObject.name.toString() === 'character-capsule-collider') {
-      console.log("si choca");
+      //console.log("si choca");
       setPuntaje(prevPuntaje => prevPuntaje + 1);
       removeFlower(props.id)
       setVisible(false); // Ocultar el objeto
@@ -63,7 +63,7 @@ export default function Flower(props) {
   };
 
   useEffect(() => {
-    console.log("puntaje: ", puntaje);
+    //console.log("puntaje: ", puntaje);
   }, [puntaje]);
 
   return (

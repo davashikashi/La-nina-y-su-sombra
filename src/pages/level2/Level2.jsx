@@ -87,9 +87,9 @@ const Level2 = () => {
                             <Plate id={"plate4"} position={[76.5, .06, 7.2]} />
                             <Plate id={"plate5"} position={[90.5, .06, -6.2]} />
 
-                            {/* <ShadowEnemy id={"shadow1"} position={[15,1,0]} /> */}
+                            <ShadowEnemy id={"shadow1"} position={[15, 1, 0]} boundsPosition={[0, 1, 35]} boundsArgs={[7.9, 1, 20]} rotation={[0, 1, 0]} />
 
-                            <Perf position="top" />
+                            {/* <Perf position="top" /> */}
 
                             <Tentacle id={"tentacle1"} position={[26.5, 0, 2.5]} />
                             <Tentacle id={"tentacle2"} position={[32.5, 0, 2.5]} />
