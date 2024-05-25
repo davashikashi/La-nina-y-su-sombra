@@ -68,7 +68,6 @@ const Spikes = ({ alternating, palancasRequeridas, placasPresionRequeridas, posi
             rigidBodyRef.current.setTranslation(newPosition, true);
 
             if (isVulnerable && canTakeDamage) {
-                console.log(health);
                 hitEnemigo.volume = 0.3;
                 hitEnemigo.play();
                 setHealth(prevHealth => prevHealth - 1);
@@ -76,8 +75,6 @@ const Spikes = ({ alternating, palancasRequeridas, placasPresionRequeridas, posi
 
                 setTimeout(() => {
                     setIsVulnerable(true);
-                    console.log("Ha pasado 2 segundos");
-                    console.log(canTakeDamage);
                 }, 2000);
             }
         }

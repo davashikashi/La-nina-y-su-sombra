@@ -25,6 +25,7 @@ const Plate = ({id,position}) => {
             togglePlacaPresion(id, true);
             setIsActivate(true)
             plateSound.play()
+            console.log("placa activada")
         }
     };
 
@@ -33,9 +34,14 @@ const Plate = ({id,position}) => {
             togglePlacaPresion(id, false);
             setIsActivate(false)
             plateSound.play()
+            console.log("placa desactivada")
         }
         
       };
+
+    useEffect(() => {
+        setIsActivate(placasPresion[id])
+    }, [placasPresion])
 
 
     return(

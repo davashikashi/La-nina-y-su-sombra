@@ -13,7 +13,10 @@ export default function Flower(props) {
   const { puntaje, setPuntaje, health, setHealth } = useGameContext();
   const [visible, setVisible] = useState(true);
   const [time, setTime] = useState(0);
-  const { addFlower, removeFlower } = useGameContext()
+  const { addFlower, removeFlower, setFlower, flowers } = useGameContext()
+  const { flowerPositions } = useGameContext();
+
+  let isVisible
 
 
   const floatScale = 0.5; // Escala para ajustar el movimiento del modelo
@@ -44,20 +47,39 @@ export default function Flower(props) {
 
       // Rotar el modelo sobre su propio eje
       flowerModelRef.current.rotation.y += rotationAngle;
+      // console.log(visible, props.id)
+      // console.log(flowerModelRef?.current, props.id)
     }
   });
 
 
   useEffect(() => {
-    addFlower(props.id, flowerBodyRef.current)
+    addFlower(props.id, flowerBodyRef.current, visible)
   }, [flowerBodyRef?.current, addFlower, props.id])
 
+  useEffect(() => {
+        
+        if(flowerPositions){
+          for (const [id, position] of Object.entries(flowerPositions)){
+            if (id === props.id){
+              setVisible(flowerPositions[id].visible)
+              console.log("isVisible: ", visible, props.id)
+            }
+          }
+          // console.log("flowerPositions: ", flowerPositions)
+        }
+        
+    }, [flowerPositions])
+  
+    useEffect(() => {
+      // console.log("flowerPositions: ", flowerPositions)
+    }, [flowerBodyRef?.current]);
 
   const handleIntersection = (event) => {
     if (event.colliderObject.name.toString() === 'character-capsule-collider') {
       //console.log("si choca");
       setPuntaje(prevPuntaje => prevPuntaje + 1);
-      removeFlower(props.id)
+      removeFlower(props.id, false)
       setVisible(false); // Ocultar el objeto
     }
   };

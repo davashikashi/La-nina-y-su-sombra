@@ -21,6 +21,8 @@ import Door from "../../Objects/Door/Door"
 import Spikes from "../../Objects/Spikes/Spikes"
 import Fire from "../../characters/fire/fire"
 import ShadowEnemy from "../../characters/ShadowEnemy/ShadowEnemy"
+import Checkpoint from "../../Objects/Checkpoint/Checkpoint"
+import Texts from "./Texts/Texts"
 
 
 
@@ -37,10 +39,22 @@ const Level2 = () => {
                 <Canvas shadows={true}>
                     <BakeShadows />
                     <Suspense fallback={null}>
-                        {/* <OrbitControls makeDefault /> */}
+                        <OrbitControls makeDefault />
                         <Lights />
                         <MapEnvironments />
                         <Torch position={[16, 1, -3.28]} rotation={[0, 0, 0]} />
+                        <Texts color="white" Position={[4, 2.5, 0]} Textto="Bienvenido a la Segunda mazmorra!" rotation={[0, 5, 0]}
+                        fontSize={.5}/>
+                        <Texts color="white" Position={[8, 3, 0]} Textto="Como la sombra puedes empujar cajas" rotation={[0, 5, 0]}
+                        fontSize={.5}/>
+                        <Texts color="white" Position={[8, 2.5, 0]} Textto="Ataca con la tecla F" rotation={[0, 5, 0]}
+                        fontSize={.5}/>
+                        <Texts color="white" Position={[17, 1.5, 3]} Textto="Puedes Encogerte con la tecla Q" rotation={[0, 3.7, 0]}
+                        fontSize={.3}/>
+                        <Texts color="white" Position={[18.5, 3, -2]} Textto="Recuerda la meta esta" rotation={[0, 5, 0]}
+                        fontSize={.5}/>
+                        <Texts color="white" Position={[18.5, 2.5, -1.8]} Textto="cruzando la puerta final" rotation={[0, 5, 0]}
+                        fontSize={.5}/>
 
                         <Physics debug={true} timestep="vary">
 
@@ -56,6 +70,11 @@ const Level2 = () => {
                             <Flower id={"flower8"} position={[76.5, 1, 1]} />
                             <Flower id={"flower9"} position={[89.5, 1, 6.5]} />
                             <Flower id={"flower10"} position={[97, 1, 0]} />
+
+                            <Checkpoint id={"checkpoint1"} position={[43, 2.3, 10]} />
+                            <Checkpoint id={"checkpoint1"} position={[23, 0.3, 0]} />
+                            <Checkpoint id={"checkpoint1"} position={[58.5, 0.3, 0]} />
+                            <Checkpoint id={"checkpoint1"} position={[81.5, 0.3, 0]} />
 
                             {/* <Fire id={"fuego1"} position={[10,1,0]} /> */}
 
@@ -87,8 +106,6 @@ const Level2 = () => {
                             <Plate id={"plate4"} position={[76.5, .06, 7.2]} />
                             <Plate id={"plate5"} position={[90.5, .06, -6.2]} />
 
-                            <ShadowEnemy id={"shadow1"} position={[15, 1, 0]} boundsPosition={[0, 1, 35]} boundsArgs={[7.9, 1, 20]} rotation={[0, 1, 0]} />
-
                             {/* <Perf position="top" /> */}
 
                             <Tentacle id={"tentacle1"} position={[26.5, 0, 2.5]} />
@@ -97,11 +114,12 @@ const Level2 = () => {
                             <Tentacle id={"tentacle4"} position={[32.5, 0, 8.5]} />
                             <Tentacle id={"tentacle5"} position={[77, 0, 5.5]} />
 
-                            <ShadowEnemy position={[84.5, 3, 0]} boundsPosition={[87.5, 1, 0]}
+                            <ShadowEnemy id={"ShadowEnemy1"} position={[84.5, 3, 0]} boundsPosition={[87.5, 1, 0]}
                              boundsArgs={[5.5, 1, 4]} rotation={[0, 4, 0]}/>
 
-                            <Fire position={[50.5, 3, -0.5]} />
-                            <Fire position={[65.5, 3, -0.5]} rotation={[0, 1.55, 0]}/>
+                            <Fire position={[50.5, 3, -0.5]} id={"fire1"}/>
+                            <Fire position={[65.5, 3, -0.5]} rotation={[0, 1.55, 0]} id={"fire2"}/>
+                            {/* <Fire position={[10, 3, 0]} rotation={[0, 1.55, 0]} id={"fire3"}/> */}
 
                             <Door placasPresionRequeridas={["plate1"]} position={[0, 2, 20.5]} rotation={[0, 1.57, 0]} />
                             <Door placasPresionRequeridas={["plate2"]} position={[0, 2, 38.5]} rotation={[0, 1.57, 0]} />
@@ -113,7 +131,7 @@ const Level2 = () => {
                             <Spikes position={[64, 0, 3]} alternating={true} />
                             <Spikes position={[78, 0, 0]} placasPresionRequeridas={["plate4"]} />
 
-                            <ShadowAvatar avatarPosition={[1, 10, 1]} />
+                            {/* <ShadowAvatar avatarPosition={[1, 10, 1]} /> */}
                             <FinalDoor position={[99, 0.1, 0]} link="/level3" rotation={[0, 4.7, 0]}/>
                         </Physics>
                     </Suspense>
