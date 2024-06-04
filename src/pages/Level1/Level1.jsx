@@ -107,8 +107,8 @@ const Level1 = () => {
                           <Fire position={[-35, 1, -83]} />
                           <Fire position={[31, 1, -77]} />
                           <Fire position={[23, 1, -87]} />
-                          <Avatar avatarPosition={[0, 2, 98]} />
-                          {/* <Boar position={[8, 1, -36]} avatarReference={avatarRef}/> */}
+                          <Avatar avatarPosition={[-7, 2, -36]} />
+                          <Boar position={[8, 3, -36]} rotation={[0, 4.9, 0]}/>
                           <ShadowEnemy position={[-3, 3, 45]} boundsPosition={[0, 1, 35]} boundsArgs={[7.9, 1, 20]} rotation={[0, 1, 0]}/>
                           {/* <ShadowEnemy position={[15, 3, 40]} avatarReference={avatarRef}/> */}
                   </Physics>
