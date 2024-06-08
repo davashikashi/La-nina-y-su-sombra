@@ -18,7 +18,7 @@ export default function Texts(props) {
     };
 
     return (
-        <Text ref={TextRef} visible={props.visible} onClick={(event) => handleClick(event)} font="/assets/fonts/Young Man.otf" color={props.color} position={props.Position}>
+        <Text ref={TextRef} rotateY={props.rotateY} visible={props.visible} onClick={(event) => handleClick(event)} font="/assets/fonts/Young Man.otf" color={props.color} position={props.Position}>
             {props.Textto}
         </Text>
     )
