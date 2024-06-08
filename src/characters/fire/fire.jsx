@@ -35,7 +35,7 @@ export default function Fire(props) {
     const fireRotation = props.rotation || [0, 0, 0]
 
     // Para el movimiento de persecucion
-    const chaseSpeed = 2; //Velocidad de persecución
+    const chaseSpeed = 4; //Velocidad de persecución
 
     const [isChasing, setIsChasing] = useState(false); //Estado de persecución
 

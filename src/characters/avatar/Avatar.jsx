@@ -13,8 +13,14 @@ import { randFloatSpread } from "three/src/math/MathUtils.js";
 
 const Avatar = forwardRef((props, ref) =>{
     const avatarBodyRef = useRef();
-    // const avatarModelRef = useRef();
+    const avatarModelRef = useRef();
+    
+    
     // const { avatar, SetAvatar } = useAvatar();
+    
+
+
+
     const { isAttacking, setIsAttacking } = useGameContext()
     const { nodes, materials } = useGLTF('/assets/models/avatar/Girl.glb')
     //use states
@@ -130,6 +136,8 @@ const Avatar = forwardRef((props, ref) =>{
         { name: "run", keys: ["Shift"] },
         { name: "action4", keys: ["KeyF"] }//tecla para atacar
     ]
+
+
 
     return (
         <KeyboardControls map={keyboardMap}>
