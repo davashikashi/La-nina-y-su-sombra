@@ -135,7 +135,8 @@ const Level3 = () => {
                             <Spikes alternating={true} placasPresionRequeridas={["plate1"]} position={[-13.5, 0, -5.5]} />
 
                             <ShadowAvatar avatarPosition={[0, 10, 47]} />
-                            {/* <Avatar avatarPosition={[-8, 10, -2]} /> */}
+
+                            <Avatar avatarPosition={[-8, 10, -2]} />
                             <Tentacle position={[-13, 0, 44]} />
                             <Tentacle position={[0, 0, -5]} />
 
