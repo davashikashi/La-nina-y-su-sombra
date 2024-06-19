@@ -190,10 +190,12 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
         }
 
-        socket.emit("player-moving", {
-            translation: avatarBodyRef.current?.translation(),
-            rotation: avatarBodyRef.current?.rotation(),
-          });
+        window.setTimeout(() => {
+            socket.emit("player-moving", {
+              translation: avatarBodyRef.current?.translation(),
+              rotation: avatarBodyRef.current?.rotation(),
+            });
+          }, 100);
 
     })
     ////////////////////////////////////////////////////////////////
