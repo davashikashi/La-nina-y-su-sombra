@@ -5,7 +5,7 @@ import { useGameContext } from "../../context/GameContext";
 import { KeyboardControls, useAnimations, useGLTF } from "@react-three/drei";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import React, { forwardRef } from "react";
-import { CuboidCollider, RigidBody } from "@react-three/rapier";
+import { CuboidCollider, RigidBody, quat, vec3 } from "@react-three/rapier";
 import golpea from "../../Sounds/lanzaGolpe.mp3"
 import golpeado from "../../Sounds/hitEnemigo.mp3"
 import anda from "../../Sounds/shadowWalk.mp3"
@@ -76,23 +76,26 @@ const Avatar = forwardRef((props, ref) => {
 
     // };
 
-    useEffect(() => {
-        // Setup the WebSocket event listener for "player-moving"
-        socket.on("player-moving", (transforms) => {
-            const { translation, rotation } = transforms;
+    const movePlayer = (transforms) => {
+        const { translation, rotation } = transforms;
+    
+        const newTranslation = vec3(translation);
+        const newRotation = quat(rotation);
+    
+        avatarBodyRef.current?.setTranslation(newTranslation, true);
+        avatarBodyRef.current?.setRotation(newRotation, true);
+      };
+    
 
-            const newTranslation = new Vector3(...translation);
-            const newRotation = new Quaternion(...rotation);
-
-            avatarBodyRef.current?.setTranslation(newTranslation);
-            avatarBodyRef.current?.setRotation(newRotation);
-        });
-
+      useEffect(() => {
+        // Set up the WebSocket event listener for "player-moving"
+        socket.on("player-moving", (transforms) => movePlayer(transforms));
+    
         // Clean up the event listener on component unmount
         return () => {
-            socket.off("player-moving");
+          socket.off("player-moving", (transforms) => movePlayer(transforms));
         };
-    }, []);
+      }, []);
 
 
     // const handleKeyUp = (event) => {
