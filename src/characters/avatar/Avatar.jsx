@@ -168,7 +168,7 @@ const Avatar = forwardRef((props, ref) => {
 
     // useEffect(() => {
     //     //control de teclas
-        
+
 
     // }, [pequeño]);
 
@@ -217,21 +217,21 @@ const Avatar = forwardRef((props, ref) => {
 
 
 
-    // const handleHit = (event) => {
-    //     const nombreEnemigo = event.colliderObject.name;
-    //     if (enemigos.includes(nombreEnemigo) && canTakeDamage) {
-    //         setIsVulnerable(true);
-    //         setCanTakeDamage(false)
-    //     }
-    // };
+    const handleHit = (event) => {
+        const nombreEnemigo = event.colliderObject.name;
+        if (enemigos.includes(nombreEnemigo) && canTakeDamage) {
+            setIsVulnerable(true);
+            setCanTakeDamage(false)
+        }
+    };
 
-    // const handleSensorHit = (event) => {
-    //     const nombreEnemigo = event.colliderObject.name;
-    //     if (enemigos.includes(nombreEnemigo) && canTakeDamage) {
-    //         setIsVulnerable(true);
-    //         setCanTakeDamage(false)
-    //     }
-    // }
+    const handleSensorHit = (event) => {
+        const nombreEnemigo = event.colliderObject.name;
+        if (enemigos.includes(nombreEnemigo) && canTakeDamage) {
+            setIsVulnerable(true);
+            setCanTakeDamage(false)
+        }
+    }
 
     // useEffect(() => {
     //     console.log(health)
@@ -252,61 +252,21 @@ const Avatar = forwardRef((props, ref) => {
     //             Esta línea de código se ejecutará después de 3000 milisegundos (3 segundos)
     //             setCanTakeDamage(true);
     //             Esta línea de código se ejecutará después de 3000 milisegundos (3 segundos)
-                
+
     //             console.log("Ha pasado 3 segundos");
     //         }, 3000);
     //     }
     // }, [canTakeDamage]);
 
     return (
-        <KeyboardControls map={keyboardMap}>
-            <Ecctrl children ref={avatarBodyRef}
-                debug={false} animated springK={0} capsuleHalfHeight={pequeño ? 0 : 0.4} capsuleRadius={pequeño ? 0.3 : 0.3} autoBalance={false}
-                onIntersectionEnter={handleSensorHit} dampingC={0} onCollisionEnter={handleHit} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} >
-                <EcctrlAnimation
-                    characterURL={characterURL}
-                    animationSet={animationSet} >
-                    <group name="Scene">
-                        <group ref={avatarRef} scale={pequeño ? [0.5, 0.5, 0.5] : [1, 1, 1]} name="Armature" rotation={[0, 3.2, 0]} position={pequeño ? [0, -0.3, 0] : [0, -0.7, 0]} >
-                            <group name="Shadow">
-                                <skinnedMesh
-                                    name="Shadow_1"
-                                    geometry={nodes.Shadow_1.geometry}
-                                    material={materials.ShadowBody}
-                                    skeleton={nodes.Shadow_1.skeleton}
-                                />
-                                <skinnedMesh
-                                    name="Shadow_2"
-                                    geometry={nodes.Shadow_2.geometry}
-                                    material={materials.ShadowEyes}
-                                    skeleton={nodes.Shadow_2.skeleton}
-                                />
-                            </group>
-                            <primitive object={nodes.LowerBody} />
-                            <primitive object={nodes.RightArmIK} />
-                            <primitive object={nodes.HeadIK} />
-                            <primitive object={nodes.FingerAIK} />
-                            <primitive object={nodes.FingerBIK} />
-                            <primitive object={nodes.FingerCIK} />
-                            <primitive object={nodes.LeftArmIK} />
-                            <primitive object={nodes.FingerFIK} />
-                            <primitive object={nodes.FingerEIK} />
-                            <primitive object={nodes.FingerDIK} />
-                            <RigidBody name="puño" ref={handRefCollider} type="kinematicPosition" colliders="false">
-                                <CuboidCollider
-                                    name="puñocollider"
-                                    sensor={true}
-                                    position={pequeño ? [0,0,1] : [0, 0, 0.5]}
-                                    args={pequeño ? [0.1, 0.1, 0.2] :[0.1, 0.2, 0.3]}
-                                />
 
-                            </RigidBody>
 
-                        </group>
-                    </group>
-                </EcctrlAnimation>
-            </Ecctrl>
-        </KeyboardControls>
+        <RigidBody ref={avatarBodyRef} position={[0, 2, 5]}>
+            <mesh ref={avatarRef}>
+                <sphereGeometry args={[1, 64, 64]} />
+                <meshPhongMaterial color={0x960056} />
+            </mesh>
+        </RigidBody>
     )
 });
 
