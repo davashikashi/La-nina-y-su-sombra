@@ -9,6 +9,7 @@ import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import golpea from "../../Sounds/lanzaGolpe.mp3"
 import golpeado from "../../Sounds/hitEnemigo.mp3"
 import anda from "../../Sounds/shadowWalk.mp3"
+import { socket } from "../../socket/socket-manager"; // Importa el socket
 
 
 const ShadowAvatar = forwardRef((props, ref) => {
@@ -188,6 +189,11 @@ const ShadowAvatar = forwardRef((props, ref) => {
             });
 
         }
+
+        socket.emit("player-moving", {
+            translation: avatarBodyRef.current?.translation(),
+            rotation: avatarBodyRef.current?.rotation(),
+          });
 
     })
     ////////////////////////////////////////////////////////////////
