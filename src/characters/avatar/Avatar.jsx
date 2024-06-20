@@ -1,27 +1,42 @@
-import { useEffect, useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useFrame, useGraph } from "@react-three/fiber";
 import { Euler, Quaternion, Vector3 } from "three";
 import { useGameContext } from "../../context/GameContext";
 import { KeyboardControls, useAnimations, useGLTF } from "@react-three/drei";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import React, { forwardRef } from "react";
-import { CuboidCollider, RigidBody, quat, vec3 } from "@react-three/rapier";
+import { BallCollider, CapsuleCollider, CuboidCollider, RigidBody, quat, vec3, useRapier } from "@react-three/rapier";
 import golpea from "../../Sounds/lanzaGolpe.mp3"
 import golpeado from "../../Sounds/hitEnemigo.mp3"
 import anda from "../../Sounds/shadowWalk.mp3"
 import { socket } from "../../socket/socket-manager"; // Importa el socket
+import { SkeletonUtils } from "three/examples/jsm/Addons.js";
+
+
 
 
 const Avatar = forwardRef((props, ref) => {
+   
     const avatarBodyRef = useRef();
     const avatarRef = useRef();
     // const { avatar, SetAvatar } = useAvatar();
 
     const handRefCollider = useRef()
     const { isAttacking, setIsAttacking } = useGameContext()
-    const { nodes, materials } = useGLTF('/assets/models/shadowAvatar/Shadow.glb')
+
+
+    const { scene, materials, animations } = useGLTF('/assets/models/shadowAvatar/Shadow.glb')
+    const { actions } = useAnimations(animations, avatarRef);
     const { setShadowAvatar } = useGameContext();
     const [pequeño, setPequeño] = useState(false)
+
+    const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+    const { nodes } = useGraph(clone);
+    // Estado para controlar la acción actual del personaje
+    //const [currentAction, setCurrentAction] = useState("Idle");
+    const currentAction = useRef("Idle")
+    // Estado local para almacenar la velocidad
+
     //console.log("es pequeño concha su mare", pequeño)
 
     //use states
@@ -75,27 +90,103 @@ const Avatar = forwardRef((props, ref) => {
 
 
     // };
+    // const animationSet = {
+    //     idle: "Idle", // Animación de reposo
+    //     walk: "Walking", // Animación de caminar
+    //     run: "Running",
+    //     jump: "Jump", // Si no tienes animación de salto, usar un valor seguro
+    //     jumpIdle: "Jump",
+    //     jumpLand: "Jump",
+    //     fall: "Idle",
+    //     action4: "Attacking",
+    // };
+
+    // UseFrame para actualizar la velocidad
+    // Animaciones y acciones
+    const animationSet = {
+        idle: "Idle",
+        walk: "Walking",
+        jump: "Jump",
+        attacking: "Attacking",
+    };
+    
+    const [velocity, setVelocity] = useState(new Vector3(0, 0, 0));
 
     const movePlayer = (transforms) => {
+
         const { translation, rotation } = transforms;
-    
+
         const newTranslation = vec3(translation);
-        const newRotation = quat(rotation);
-    
+        const newRotation = new Euler().fromArray(rotation);
+        
+        //console.log("velocity: " + velocity.x,velocity.y,velocity.z)
+      
         avatarBodyRef.current?.setTranslation(newTranslation, true);
-        avatarBodyRef.current?.setRotation(newRotation, true);
-      };
+        avatarRef.current?.rotation.copy(newRotation);
+        
+    };
+
+    
+    // Determinar si el personaje está en movimiento
     
 
-      useEffect(() => {
+    useEffect(() => {
         // Set up the WebSocket event listener for "player-moving"
         socket.on("player-moving", (transforms) => movePlayer(transforms));
-    
+
         // Clean up the event listener on component unmount
         return () => {
-          socket.off("player-moving", (transforms) => movePlayer(transforms));
+            socket.off("player-moving", (transforms) => movePlayer(transforms));
         };
-      }, []);
+    }, []);
+
+    useEffect(() => {
+        const avatarBody = avatarBodyRef.current;
+    
+        if (avatarBody) {
+            const linvel = avatarBody.linvel();
+    
+            if (linvel.x !== 0 || linvel.z !== 0 && linvel.y === 0) {
+                setAnimationState("walk");
+            } else if (linvel.y > 0) {
+                setAnimationState("jump");
+            } else {
+                setAnimationState("idle");
+            }
+        }
+    }, [avatarBodyRef.current?.linvel().x, avatarBodyRef.current?.linvel().y, avatarBodyRef.current?.linvel().z]);
+    
+    
+
+    const hacerPequeno = (pequenho) => {
+        const { pequeno } = pequenho;
+
+        setPequeño(pequeno)
+    }
+
+    useEffect(() => {
+
+        // Set up the WebSocket event listener for "player-moving"
+        socket.on("player-pequeno", (pequenho) => hacerPequeno(pequenho));
+
+        // Clean up the event listener on component unmount
+        return () => {
+            socket.off("player-moving", (pequenho) => hacerPequeno(pequenho));
+        };
+    }, []);
+
+    const setAnimationState = (animacion) => {
+        // Verificar si existe la animación solicitada en el conjunto de animaciones
+        if (animationSet[animacion]) {
+            // Resetear y reproducir la animación correspondiente
+            actions[animationSet[animacion]]?.reset().play();
+        } else {
+            console.error(`La animación "${animacion}" no existe en el conjunto de animaciones.`);
+        }
+    };
+    
+
+
 
 
     // const handleKeyUp = (event) => {
@@ -130,29 +221,10 @@ const Avatar = forwardRef((props, ref) => {
 
     //keyboards y animationsets
 
-    const animationSet = {
-        idle: "Idle", // Animación de reposo
-        walk: "Walking", // Animación de caminar
-        run: "Running",
-        jump: "Jump", // Si no tienes animación de salto, usar un valor seguro
-        jumpIdle: "Jump",
-        jumpLand: "Jump",
-        fall: "Idle",
-        action4: "Attacking",
-    }
-
 
     const [speed, setSpeed] = useState(3.5);
 
-    const keyboardMap = [
-        { name: "forward", keys: ["ArrowUp", "KeyW"] },
-        { name: "backward", keys: ["ArrowDown", "KeyS"] },
-        { name: "leftward", keys: ["ArrowLeft", "KeyA"] },
-        { name: "rightward", keys: ["ArrowRight", "KeyD"] },
-        { name: "jump", keys: ["Space"] },
-        { name: "run", keys: ["Shift"] },
-        { name: "action4", keys: ["KeyF"] }//tecla para atacar
-    ]
+   
 
     // ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -177,46 +249,46 @@ const Avatar = forwardRef((props, ref) => {
 
 
 
-    // useFrame(() => {
+    useFrame(() => {
 
-    //     if (handRefCollider.current) {
-    //         Obtén la posición y rotación del props.props.rightHandBone
-    //         const worldPosition = rightHandBone.getWorldPosition(new Vector3());
-    //         const worldQuaternion = rightHandBone.getWorldQuaternion(new Quaternion());
+        if (handRefCollider.current) {
+            //Obtén la posición y rotación del props.props.rightHandBone
+            const worldPosition = rightHandBone.getWorldPosition(new Vector3());
+            const worldQuaternion = rightHandBone.getWorldQuaternion(new Quaternion());
 
-    //         const realtivePosition = handOffset.clone().applyQuaternion(worldQuaternion)
+            const realtivePosition = handOffset.clone().applyQuaternion(worldQuaternion)
 
-    //         Ajusta la posición y rotación del rigidbody del HandSword
-    //         const adjustedPosition = new Vector3(
-    //             worldPosition.x + realtivePosition.x,
-    //             worldPosition.y + realtivePosition.y,
-    //             worldPosition.z + realtivePosition.z
-    //         )
+            // Ajusta la posición y rotación del rigidbody del HandSword
+            const adjustedPosition = new Vector3(
+                worldPosition.x + realtivePosition.x,
+                worldPosition.y + realtivePosition.y,
+                worldPosition.z + realtivePosition.z
+            )
 
-    //         handRefCollider.current.setTranslation({
-    //             x: adjustedPosition.x,
-    //             y: adjustedPosition.y,
-    //             z: adjustedPosition.z
-    //         });
+            handRefCollider.current.setTranslation({
+                x: adjustedPosition.x,
+                y: adjustedPosition.y,
+                z: adjustedPosition.z
+            });
 
-    //         const adjustedRotation = worldQuaternion.clone().multiply(rotationOffset);
+            const adjustedRotation = worldQuaternion.clone().multiply(rotationOffset);
 
-    //         handRefCollider.current.setRotation({
-    //             x: adjustedRotation.x,
-    //             y: adjustedRotation.y,
-    //             z: adjustedRotation.z,
-    //             w: adjustedRotation.w,
-    //         });
+            handRefCollider.current.setRotation({
+                x: adjustedRotation.x,
+                y: adjustedRotation.y,
+                z: adjustedRotation.z,
+                w: adjustedRotation.w,
+            });
 
-    //     }
+        }
 
-    // })
+    })
     // //////////////////////////////////////////////////////////////
-    // const { health, setHealth } = useGameContext()
-    // const [isVulnerable, setIsVulnerable] = useState(false);
-    // const [canTakeDamage, setCanTakeDamage] = useState(true);
-    // const enemigos = ["tentaculoBody", "tentaculoHead","Boar" , "Fuego", "Spikes", "ShadowEnemy"];
-    // const hitEnemigo = new Audio(golpeado)
+    const { health, setHealth } = useGameContext()
+    const [isVulnerable, setIsVulnerable] = useState(false);
+    const [canTakeDamage, setCanTakeDamage] = useState(true);
+    const enemigos = ["tentaculoBody", "tentaculoHead", "Boar", "Fuego", "Spikes", "ShadowEnemy"];
+    const hitEnemigo = new Audio(golpeado)
 
 
 
@@ -236,39 +308,72 @@ const Avatar = forwardRef((props, ref) => {
         }
     }
 
-    // useEffect(() => {
-    //     console.log(health)
-    //     if (health <= 0) {
-    //         console.log("El jugador ha perdido toda su salud y ha muerto.");
-    //     }
-    // }, [health]);
+    useEffect(() => {
+        console.log(health)
+        if (health <= 0) {
+            console.log("El jugador ha perdido toda su salud y ha muerto.");
+        }
+    }, [health]);
 
-    // useEffect(() => {
-    //     if (isVulnerable) {
-    //         console.log(health)
-    //         hitEnemigo.volume = 0.3;
-    //         hitEnemigo.play();
-    //         setHealth(prevHealth => prevHealth - 1);
-    //         setIsVulnerable(false);
+    useEffect(() => {
+        if (isVulnerable) {
+            console.log(health)
+            hitEnemigo.volume = 0.3;
+            hitEnemigo.play();
+            setHealth(prevHealth => prevHealth - 1);
+            setIsVulnerable(false);
 
-    //         setTimeout(() => {
-    //             Esta línea de código se ejecutará después de 3000 milisegundos (3 segundos)
-    //             setCanTakeDamage(true);
-    //             Esta línea de código se ejecutará después de 3000 milisegundos (3 segundos)
+            setTimeout(() => {
 
-    //             console.log("Ha pasado 3 segundos");
-    //         }, 3000);
-    //     }
-    // }, [canTakeDamage]);
+                setCanTakeDamage(true);
 
+
+                console.log("Ha pasado 3 segundos");
+            }, 3000);
+        }
+    }, [canTakeDamage]);
     return (
+        <RigidBody colliders={false} ref={avatarBodyRef} position={[0, 2, 5]} enabledRotations={[false, false, false]}  >
+            <CapsuleCollider args={pequeño ? [0, 0.3] : [0.4, 0.3]} />
+            <group name="Scene">
+                <group ref={avatarRef} name="Armature" scale={pequeño ? [0.5, 0.5, 0.5] : [1, 1, 1]} rotation={[0, 3.2, 0]} position={pequeño ? [0, -0.3, 0] : [0, -0.7, 0]} >
+                    <group name="Avatar" >
+                        <skinnedMesh
+                            name="Shadow_1"
+                            geometry={nodes.Shadow_1.geometry}
+                            material={materials.ShadowBody}
+                            skeleton={nodes.Shadow_1.skeleton}
+                        />
+                        <skinnedMesh
+                            name="Shadow_2"
+                            geometry={nodes.Shadow_2.geometry}
+                            material={materials.ShadowEyes}
+                            skeleton={nodes.Shadow_2.skeleton}
+                        />
+                    </group>
+                    <primitive object={nodes.LowerBody} />
+                    <primitive object={nodes.RightArmIK} />
+                    <primitive object={nodes.HeadIK} />
+                    <primitive object={nodes.FingerAIK} />
+                    <primitive object={nodes.FingerBIK} />
+                    <primitive object={nodes.FingerCIK} />
+                    <primitive object={nodes.LeftArmIK} />
+                    <primitive object={nodes.FingerFIK} />
+                    <primitive object={nodes.FingerEIK} />
+                    <primitive object={nodes.FingerDIK} />
 
+                    <RigidBody name="puño" ref={handRefCollider} type="kinematicPosition" colliders="false">
+                        <CuboidCollider
+                            name="puñocollider"
+                            sensor={true}
+                            position={pequeño ? [0, 0, 1] : [0, 0, 0.5]}
+                            args={pequeño ? [0.1, 0.1, 0.2] : [0.1, 0.2, 0.3]}
+                        />
 
-        <RigidBody ref={avatarBodyRef} position={[0, 2, 5]}>
-            <mesh ref={avatarRef}>
-                <sphereGeometry args={[1, 64, 64]} />
-                <meshPhongMaterial color={0x960056} />
-            </mesh>
+                    </RigidBody>
+
+                </group>
+            </group>
         </RigidBody>
     )
 });

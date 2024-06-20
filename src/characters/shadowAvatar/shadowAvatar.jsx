@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useFrame, useGraph } from "@react-three/fiber";
 import { Euler, Quaternion, Vector3 } from "three";
 import { useGameContext } from "../../context/GameContext";
 import { KeyboardControls, useAnimations, useGLTF } from "@react-three/drei";
@@ -10,6 +10,7 @@ import golpea from "../../Sounds/lanzaGolpe.mp3"
 import golpeado from "../../Sounds/hitEnemigo.mp3"
 import anda from "../../Sounds/shadowWalk.mp3"
 import { socket } from "../../socket/socket-manager"; // Importa el socket
+import { SkeletonUtils } from "three/examples/jsm/Addons.js";
 
 
 const ShadowAvatar = forwardRef((props, ref) => {
@@ -19,9 +20,12 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
     const handRefCollider = useRef()
     const { isAttacking, setIsAttacking } = useGameContext()
-    const { nodes, materials } = useGLTF('/assets/models/shadowAvatar/Shadow.glb')
+    const { scene, materials } = useGLTF('/assets/models/shadowAvatar/Shadow.glb')
     const { setShadowAvatar } = useGameContext();
     const [pequeño, setPequeño] = useState(false)
+
+    const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+    const { nodes } = useGraph(clone);
     //console.log("es pequeño concha su mare", pequeño)
 
     //use states
@@ -47,6 +51,8 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
     //console.log("huesos", nodes.GirlModel.skeleton)
 
+    // Acceder a la matriz matrixWorld del objeto
+    const matrixWorld = avatarRef.current ? avatarRef.current.matrixWorld : undefined;
 
     //control de teclas
     const handleKeyDown = (event) => {
@@ -69,11 +75,9 @@ const ShadowAvatar = forwardRef((props, ref) => {
         }
         if (event.key.toLowerCase() === "q") {
 
-            setPequeño((prevPequeño) => !prevPequeño) //que bendicion papa Dios
-
+            setPequeño((prevPequeño) => !prevPequeño)
+            console.log("rotation", avatarRef.current?.rotation.toArray())//que bendicion papa Dios
         }
-
-
     };
 
 
@@ -136,24 +140,12 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // useEffect(() => {
-    //     setActualposition(avatarBodyRef.current?.translation())
-    //     setPlayerPosition(actualposition)
-
-    // },[avatarBodyRef.current?.translation()]);
 
     useEffect(() => {
         setShadowAvatar(
             avatarBodyRef.current
         )
     }, [avatarBodyRef?.current])
-
-
-    // useEffect(() => {
-    //     //control de teclas
-        
-
-    // }, [pequeño]);
 
 
 
@@ -191,18 +183,44 @@ const ShadowAvatar = forwardRef((props, ref) => {
         }
 
         window.setTimeout(() => {
+            const matrixWorld = avatarRef.current.matrixWorld;
+            const rotation = new Euler();
+            matrixWorld.decompose(new Vector3(), rotation, new Vector3());
+            const velocity = avatarBodyRef.current?.linvel();
+
+            // Obtener la rotación global como un array de números
+            const rotationArray = rotation.toArray();
             socket.emit("player-moving", {
-              translation: avatarBodyRef.current?.translation(),
-              rotation: avatarBodyRef.current?.rotation(),
+                translation: avatarBodyRef.current?.translation(),
+                rotation: rotationArray,
+                
             });
-          }, 100);
+        }, 100);
+
+        window.setTimeout(() => {
+            socket.emit("player-pequeno", {
+                pequeno: pequeño
+            });
+        }, 100);
 
     })
     ////////////////////////////////////////////////////////////////
+
+    const animation = (velocidad) =>{
+        // Determinar la acción actual (caminar, saltar, reposo)
+        if (velocidad.x !== 0 || velocidad.z !== 0) {
+            return "walk";
+        } else if (velocidad.y > 0) {
+            return "jump";
+        } else {
+            return "idle";
+        }
+    }
+
     const { health, setHealth } = useGameContext()
     const [isVulnerable, setIsVulnerable] = useState(false);
     const [canTakeDamage, setCanTakeDamage] = useState(true);
-    const enemigos = ["tentaculoBody", "tentaculoHead","Boar" , "Fuego", "Spikes", "ShadowEnemy"];
+    const enemigos = ["tentaculoBody", "tentaculoHead", "Boar", "Fuego", "Spikes", "ShadowEnemy"];
     const hitEnemigo = new Audio(golpeado)
 
 
@@ -286,8 +304,8 @@ const ShadowAvatar = forwardRef((props, ref) => {
                                 <CuboidCollider
                                     name="puñocollider"
                                     sensor={true}
-                                    position={pequeño ? [0,0,1] : [0, 0, 0.5]}
-                                    args={pequeño ? [0.1, 0.1, 0.2] :[0.1, 0.2, 0.3]}
+                                    position={pequeño ? [0, 0, 1] : [0, 0, 0.5]}
+                                    args={pequeño ? [0.1, 0.1, 0.2] : [0.1, 0.2, 0.3]}
                                 />
 
                             </RigidBody>

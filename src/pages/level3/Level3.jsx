@@ -26,11 +26,14 @@ import ShadowEnemy from "../../characters/ShadowEnemy/ShadowEnemy";
 import Map2 from "../level2/world/Map2";
 import FinalDoor from "../../Objects/FinalDoor/FinalDoor";
 import Checkpoint from "../../Objects/Checkpoint/Checkpoint";
+import { socket } from "../../socket/socket-manager"; // Importa el socket
 
 
 
 
 const Level3 = () => {
+
+    
 
     return (
 
@@ -48,7 +51,7 @@ const Level3 = () => {
                         
                         <Physics debug={false} timeStep="vary">
 
-                            <World />
+                            
 
                             
                             <Box id={"box1"} position={[0, 1, 6]} />
@@ -136,7 +139,8 @@ const Level3 = () => {
 
                             <ShadowAvatar avatarPosition={[0, 10, 47]} />
 
-                            <Avatar avatarPosition={[-8, 10, -2]} />
+                            <Avatar avatarPosition={[6, 10, 47]} />
+
                             <Tentacle position={[-13, 0, 44]} />
                             <Tentacle position={[0, 0, -5]} />
 
@@ -161,6 +165,7 @@ const Level3 = () => {
                             <Checkpoint position={[0, 1, 15]} />
                             <Checkpoint position={[0, 1.5, -15]} />
                             
+                            <World />
                             
                         <FinalDoor position={[0, 0, -49]} link="/level4" />
 
