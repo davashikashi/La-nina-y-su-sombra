@@ -22,7 +22,7 @@ export const GameContextProvider = ({ children }) => {
   const [puntaje, setPuntaje] = useState(0); //el puntaje es compartido 
   const [health, setHealth] = useState(3);  //vida del avatar (toca separar la vida del shadow conn la de la niña)
   const [shadowAvatar, setShadowAvatar] = useState(); //ref de el shadowAvatar
-  const [girlAvatar, setGirlAvatar] = useState(); // ref de la niña
+  const [Avatar, setAvatar] = useState(); // ref de la niña
   const [palancas, setPalancas] = useState({}); //diccionario palancas id : estado
   const [placasPresion, setPlacasPresion] = useState({}); //diccionario plates con id : estado
   const [tentacles, setTentacles] = useState({}) //diciconario tentaculos con id : ref
@@ -380,8 +380,8 @@ const setPlateStatus = (id, status) => {
         tentaclePositions,
         setTentaclePositions,
         setTentacles,
-        girlAvatar,
-        setGirlAvatar,
+        Avatar,
+        setAvatar,
         shadowAvatar,
         setShadowAvatar,
         health,
