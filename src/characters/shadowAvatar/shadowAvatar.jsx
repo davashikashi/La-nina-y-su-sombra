@@ -60,6 +60,16 @@ const ShadowAvatar = forwardRef((props, ref) => {
             //console.log("con colisiones")
             setIsAttacking(true)
             //console.log("colisiones") // Habilita colisiones
+
+
+            window.setTimeout(() => {
+                socket.emit("player-attack", {
+                    attacking: true,
+                    
+                });
+            }, 100);
+
+
             lanzaGolpe.volume = 0.1;
             lanzaGolpe.play();
             setCollisionEndTime(Date.now() + 1000); // Deshabilitar en 1.5 segundos
