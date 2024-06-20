@@ -16,7 +16,7 @@ import { SkeletonUtils } from "three/examples/jsm/Addons.js";
 
 
 const Avatar = forwardRef((props, ref) => {
-   
+
     const avatarBodyRef = useRef();
     const avatarRef = useRef();
     // const { avatar, SetAvatar } = useAvatar();
@@ -109,7 +109,7 @@ const Avatar = forwardRef((props, ref) => {
         jump: "Jump",
         attacking: "Attacking",
     };
-    
+
     const [velocity, setVelocity] = useState(new Vector3(0, 0, 0));
 
     const movePlayer = (transforms) => {
@@ -118,17 +118,17 @@ const Avatar = forwardRef((props, ref) => {
 
         const newTranslation = vec3(translation);
         const newRotation = new Euler().fromArray(rotation);
-        
+
         //console.log("velocity: " + velocity.x,velocity.y,velocity.z)
-      
+
         avatarBodyRef.current?.setTranslation(newTranslation, true);
         avatarRef.current?.rotation.copy(newRotation);
-        
+
     };
 
-    
+
     // Determinar si el personaje está en movimiento
-    
+
 
     useEffect(() => {
         // Set up the WebSocket event listener for "player-moving"
@@ -142,10 +142,10 @@ const Avatar = forwardRef((props, ref) => {
 
     useEffect(() => {
         const avatarBody = avatarBodyRef.current;
-    
+
         if (avatarBody) {
             const linvel = avatarBody.linvel();
-    
+
             if (linvel.x !== 0 || linvel.z !== 0 && linvel.y === 0) {
                 setAnimationState("walk");
             } else if (linvel.y > 0) {
@@ -155,8 +155,8 @@ const Avatar = forwardRef((props, ref) => {
             }
         }
     }, [avatarBodyRef.current?.linvel().x, avatarBodyRef.current?.linvel().y, avatarBodyRef.current?.linvel().z]);
-    
-    
+
+
 
     const hacerPequeno = (pequenho) => {
         const { pequeno } = pequenho;
@@ -175,6 +175,28 @@ const Avatar = forwardRef((props, ref) => {
         };
     }, []);
 
+    const playerAttack = (attack) => {
+        const { attacking } = attack;
+        if (attacking) {
+            setIsAttacking(true)
+            actions.attacking?.play()
+            lanzaGolpe.volume = 0.1;
+            lanzaGolpe.play();
+            setCollisionEndTime(Date.now() + 1000); // Deshabilitar en 1.5 segundos
+        }
+
+    }
+
+    useEffect(() => {
+        // Set up the WebSocket event listener for "player-moving"
+        socket.on("player-attack", (attack) => playerAttack(attack));
+
+        // Clean up the event listener on component unmount
+        return () => {
+            socket.off("player-attack", (attack) => playerAttack(attack));
+        };
+    }, []);
+
     const setAnimationState = (animacion) => {
         // Verificar si existe la animación solicitada en el conjunto de animaciones
         if (animationSet[animacion]) {
@@ -184,7 +206,7 @@ const Avatar = forwardRef((props, ref) => {
             console.error(`La animación "${animacion}" no existe en el conjunto de animaciones.`);
         }
     };
-    
+
 
 
 
@@ -224,7 +246,7 @@ const Avatar = forwardRef((props, ref) => {
 
     const [speed, setSpeed] = useState(3.5);
 
-   
+
 
     // ///////////////////////////////////////////////////////////////////////////////////////////////////
 
