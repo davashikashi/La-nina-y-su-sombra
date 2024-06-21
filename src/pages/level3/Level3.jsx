@@ -53,10 +53,11 @@ const Level3 = () => {
                             
 
                             
-                            <Box id={"box1"} position={[0, 1, 6]} />
-                            <Box id={"box2"} position={[4, 2.5, -7]} />
-                            <Box id={"box3"} position={[-7.5, 2.5, -6]} />
-                            <Box id={"box4"} position={[-7.5, 2.5, 19.5]} />
+                            <Box movement={false} id={"box1"} position={[0, 1, 6]} />
+                            <Box movement={true}id={"box2"} position={[4, 2.5, -7]} />
+                            <Box movement={true} id={"box3"} position={[-7.5, 2.5, -6]} />
+                            <Box movement={true} id={"box4"} position={[-7.5, 2.5, 19.5]} />
+                            <ShadowAvatar avatarPosition={[-8, 15, 25]} />
                             
                             {/* <Boar avatarReference={avatarRef} position={[-5, 2.5, 6]} />
                         <Boar avatarReference={avatarRef} position={[5, 2.5, 10]} />
@@ -93,16 +94,16 @@ const Level3 = () => {
                             
                             <Door placasPresionRequeridas={["plate1"]} position={[0, 2, 44.55]} />
                             <Plate id={"plate1"} position={[13, 0.1, 43]} />
-                            <Box  id={"box5"} position={[11, 1, 43]} />
+                            <Box movement={true}  id={"box5"} position={[11, 1, 43]} />
                             
                             <Door placasPresionRequeridas={["plate2"]}  position={[-48.5, 2, -9]} rotation={[0,1.56,0]}  />
                             <Door placasPresionRequeridas={["plate2"]}  position={[-48 , 2, 4.3]} rotation={[0,1.56,0]}  />
                             <Plate id={"plate2"} position={[-5, 0.1, 43]} />
-                            <Box id={"box6"} position={[-7, 2, 43]} />
+                            <Box movement={true} id={"box6"} position={[-7, 2, 43]} />
 
 
                             <Door placasPresionRequeridas={["plate3"]}  position={[0, 2, 17]}   />
-                            <Plate id={"plate3"} position={[-12, 0.1, 28]} />
+                            <Plate id={"plate3"} position={[-12, 0.1, 19]} />
 
                             <Door placasPresionRequeridas={["plate4"]}  position={[-12, 3, -8.25]}   />
                             <Plate id={"plate4"} position={[0, 0.1, 0]} />
@@ -133,7 +134,7 @@ const Level3 = () => {
                             <Spikes alternating={true} placasPresionRequeridas={["plate1"]} position={[-12, 0, -5.5]} />
                             <Spikes alternating={true} placasPresionRequeridas={["plate1"]} position={[-13.5, 0, -5.5]} />
 
-                            <ShadowAvatar avatarPosition={[0, 15, 47]} />
+                            {/* <ShadowAvatar avatarPosition={[0, 15, 47]} /> */}
 
                             
 
@@ -152,8 +153,8 @@ const Level3 = () => {
                             <Plate id={"plate5"} position={[4, 0.1, -40]} />
                             <Plate id={"plate6"} position={[-4, 0.1, -40]} />
 
-                            <Box id={"box7"} position={[-10, 1, -40]} />
-                            <Box id={"box8"} position={[10, 1, -40]} />
+                            <Box movement={true} id={"box7"} position={[-10, 1, -40]} />
+                            <Box movement={true} id={"box8"} position={[10, 1, -40]} />
 
 
                             <Checkpoint position={[-7, 1, 46]} />
