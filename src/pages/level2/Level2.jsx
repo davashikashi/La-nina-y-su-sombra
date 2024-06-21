@@ -39,7 +39,7 @@ const Level2 = () => {
                 <Canvas shadows={true}>
                     <BakeShadows />
                     <Suspense fallback={null}>
-                        <OrbitControls makeDefault />
+                        {/* <OrbitControls makeDefault /> */}
                         <Lights />
                         <MapEnvironments />
                         <Torch position={[16, 1, -3.28]} rotation={[0, 0, 0]} />
@@ -77,27 +77,27 @@ const Level2 = () => {
 
                             {/* <Fire id={"fuego1"} position={[10,1,0]} /> */}
 
-                            <Box id={"caja1"} position={[4, 1, 2.5]} />
-                            <Box id={"caja2"}  position={[4, 1, 1.4]} />
-                            <Box id={"caja3"}  position={[4, 1, 0.3]} />
-                            <Box id={"caja4"}  position={[4, 1, -.8]} />
-                            <Box id={"caja5"}  position={[4, 1, -1.9]} />
-                            <Box id={"caja6"}  position={[4, 1, -3]} />
-                            <Box id={"caja7"}  position={[16.5, 1, 5.5]} />
-                            <Box id={"caja8"}  position={[29.5, 1, 5.25]} />
-                            <Box id={"caja9"}  position={[39.5, 3, 10.5]} />
-                            <Box id={"caja10"}  position={[51.5, 3, 3.5]} />
-                            <Box id={"caja11"}  position={[78, 1, 7.2]} />
-                            <Box id={"caja12"}  position={[83.5, 1, -1.5]} />
-                            <Box id={"caja13"}  position={[85.5, 1, 2.5]} />
-                            <Box id={"caja14"}  position={[89.5, 1, 3.5]} />
-                            <Box id={"caja15"}  position={[91.5, 1, 2.5]} />
-                            <Box id={"caja16"}  position={[89.5, 1, .5]} />
-                            <Box id={"caja17"}  position={[86.5, 1, .5]} />
-                            <Box id={"caja18"}  position={[87.5, 1, -1.5]} />
-                            <Box id={"caja19"}  position={[84.5, 1, -3.5]} />
-                            <Box id={"caja20"}  position={[90.5, 1, -3.5]} />
-                            <Box id={"caja21"}  position={[89, 1, -5.5]} />
+                            <Box movement={true} id={"caja1"} position={[4, 1, 2.5]} />
+                            <Box id={"caja2"} movement={true} position={[4, 1, 1.4]} />
+                            <Box id={"caja3"} movement={true}  position={[4, 1, 0.3]} />
+                            <Box id={"caja4"} movement={true}  position={[4, 1, -.8]} />
+                            <Box id={"caja5"} movement={true}  position={[4, 1, -1.9]} />
+                            <Box id={"caja6"} movement={true}  position={[4, 1, -3]} />
+                            <Box id={"caja7"} movement={false}  position={[16.5, 1, 5.5]} />
+                            <Box id={"caja8"} movement={true} position={[29.5, 1, 10.25]} />
+                            <Box id={"caja9"} movement={true} position={[39.5, 3, 10.5]} />
+                            <Box id={"caja10"} movement={true}  position={[51.5, 3, 3.5]} />
+                            <Box id={"caja11"} movement={true}  position={[78, 1, 7.2]} />
+                            <Box id={"caja12"} movement={true} position={[83.5, 1, -1.5]} />
+                            <Box id={"caja13"} movement={true} position={[85.5, 1, 2.5]} />
+                            <Box id={"caja14"} movement={true} position={[89.5, 1, 3.5]} />
+                            <Box id={"caja15"} movement={true}  position={[91.5, 1, 2.5]} />
+                            <Box id={"caja16"} movement={true} position={[89.5, 1, .5]} />
+                            <Box id={"caja17"} movement={true} position={[86.5, 1, .5]} />
+                            <Box id={"caja18"} movement={true} position={[87.5, 1, -1.5]} />
+                            <Box id={"caja19"} movement={true}  position={[84.5, 1, -3.5]} />
+                            <Box id={"caja20"} movement={true}  position={[90.5, 1, -3.5]} />
+                            <Box id={"caja21"}  movement={true} position={[89, 1, -5.5]} />
 
                             <Plate id={"plate1"} position={[16.5, 0.06, 8]} />
                             <Plate id={"plate2"} position={[44.4, 2.06, 11]} />
@@ -130,7 +130,8 @@ const Level2 = () => {
                             <Spikes position={[64, 0, 3]} alternating={true} />
                             <Spikes position={[78, 0, 0]} placasPresionRequeridas={["plate4"]} />
 
-                            <ShadowAvatar avatarPosition={[2, 15, 1]} />
+                            {/* <ShadowAvatar avatarPosition={[2, 15, 1]} /> */}
+                            <ShadowAvatar avatarPosition={[89, 15, 0]} />
                             <FinalDoor position={[99, 0.1, 0]} link="/level3" rotation={[0, 4.7, 0]}/>
                         </Physics>
                     </Suspense>

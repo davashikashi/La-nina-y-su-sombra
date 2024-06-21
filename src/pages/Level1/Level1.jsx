@@ -97,16 +97,16 @@ const Level1 = () => {
                                    <Flower position={[7, 1, -79]} />
 
                                    <Door placasPresionRequeridas={["plate1"]} position={[0, 2, -21.7]} />
-                                   <Box id={"caja21"} position={[-34, 1, -23]} />
+                                   <Box movement={false} id={"caja21"} position={[-34, 1, -23]} />
 
                                    <Plate id={"plate1"} position={[-34, 0.1, -26]} />
 
                                    <Door placasPresionRequeridas={["plate2","plate3"]} position={[3, 2, -90.2]} />
                                    <Plate id={"plate2"} position={[15, 0.1, -70]} />
-                                   <Box id={"caja1"} position={[10, 1, -70]} />
+                                   <Box movement={true} id={"caja1"} position={[10, 1, -70]} />
 
                                    <Plate id={"plate3"} position={[-18, 0.1, -80]} />
-                                   <Box id={"caja2"} position={[-15, 1, -80]} />
+                                   <Box movement={true} id={"caja2"} position={[-15, 1, -80]} />
 
                                    <ShadowAvatar avatarPosition={[0, 15, 97]} />
 
