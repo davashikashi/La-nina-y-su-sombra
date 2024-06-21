@@ -35,7 +35,7 @@ const Level4 = () => {
 
                 <Canvas shadows={true} camera={{ position: [0, 20, 49] }} >
                     {/* <Perf position="top-left" /> */}
-                    {/* <OrbitControls makeDefault /> */}
+                    <OrbitControls makeDefault />
                     <Suspense fallback={null}>
                         <Lights4 />
                         <Environment4 />
@@ -177,9 +177,11 @@ const Level4 = () => {
                             <ShadowAvatar avatarPosition={[0, 15, -45]} />
 
                             <Avatar avatarPosition={[6, 10, -47]} />
+                            {/* <ShadowAvatar avatarPosition={[15, 15, 50]} />  */}
 
                             <World4 />
 
+                            <FinalDoor position={[15, 4.1, 60]} link="/congrats"/>
 
 
                         </Physics>

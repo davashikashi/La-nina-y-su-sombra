@@ -4,12 +4,14 @@ import Level1 from "../pages/Level1/Level1"
 import Login from "../pages/login/Login"
 import Level2 from "../pages/level2/Level2"
 import Level4 from "../pages/level4/Level4"
+import Congrats from "../pages/Congrats/Congrats"
 
 export default function RoutesLaNinaYSuSombra(){ 
     return(
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login/>}/>
+                <Route path="/congrats" element={<Congrats/>} />
                 <Route path="/level4" element={<Level4/>} />
                 <Route path="/level3" element={<Level3/>} />
                 <Route path="/level1" element={<Level1/>} />
