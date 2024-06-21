@@ -1,4 +1,3 @@
-
 import World from "./world/World";
 import Environments from "./Environment/Environments";
 import Lights from "./Lights/Lights";
@@ -92,12 +91,9 @@ const Level3 = () => {
                             {/* <Avatar avatarPosition={[0,10,0]} ref={avatarRef}/> */}
                             
                             
-                            
-                            
-                            
                             <Door placasPresionRequeridas={["plate1"]} position={[0, 2, 44.55]} />
                             <Plate id={"plate1"} position={[13, 0.1, 43]} />
-                            <Box id={"box5"} position={[11, 1, 43]} />
+                            <Box  id={"box5"} position={[11, 1, 43]} />
                             
                             <Door placasPresionRequeridas={["plate2"]}  position={[-48.5, 2, -9]} rotation={[0,1.56,0]}  />
                             <Door placasPresionRequeridas={["plate2"]}  position={[-48 , 2, 4.3]} rotation={[0,1.56,0]}  />
@@ -137,9 +133,9 @@ const Level3 = () => {
                             <Spikes alternating={true} placasPresionRequeridas={["plate1"]} position={[-12, 0, -5.5]} />
                             <Spikes alternating={true} placasPresionRequeridas={["plate1"]} position={[-13.5, 0, -5.5]} />
 
-                            <ShadowAvatar avatarPosition={[0, 10, 47]} />
+                            <ShadowAvatar avatarPosition={[0, 15, 47]} />
 
-                            <Avatar avatarPosition={[6, 10, 47]} />
+                            
 
                             <Tentacle position={[-13, 0, 44]} />
                             <Tentacle position={[0, 0, -5]} />

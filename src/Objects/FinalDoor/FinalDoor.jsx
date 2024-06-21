@@ -26,7 +26,7 @@ export default function FinalDoor(props) {
     // } 
     if (girlAvatar || shadowAvatar) {
       if(wentThrough){
-        navigate(link);
+        window.location.href = link;
       }
     }
 });

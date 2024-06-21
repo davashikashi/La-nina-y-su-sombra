@@ -125,7 +125,7 @@ const deleteAllCheckpoints = async () => {
   });
 
   const handleIntersection = (event) => {
-    if (event.colliderObject.name.toString() === 'character-capsule-collider') {
+    if (event.colliderObject.name.toString() === 'character-capsule-collider' ){
 
         // if (checkpointID) {
         //     // El checkpointId existe, por lo tanto, podemos intentar borrar el checkpoint

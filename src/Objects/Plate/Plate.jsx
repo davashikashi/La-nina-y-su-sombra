@@ -26,6 +26,7 @@ const Plate = ({id,position}) => {
             setIsActivate(true)
             plateSound.play()
             console.log("placa activada")
+            
         }
     };
 
@@ -35,6 +36,7 @@ const Plate = ({id,position}) => {
             setIsActivate(false)
             plateSound.play()
             console.log("placa desactivada")
+            
         }
         
       };
@@ -53,7 +55,7 @@ const Plate = ({id,position}) => {
             sensor={true}
         >
             <mesh position={[0, 0, 0]}>
-                <boxGeometry args={[1, 0.1, 1]} />
+                <boxGeometry args={[2, 0.1, 2]} />
                 <meshStandardMaterial {...propsPlateTexture} />
             </mesh>
         </RigidBody>

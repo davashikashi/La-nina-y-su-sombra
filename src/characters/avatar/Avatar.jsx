@@ -23,6 +23,7 @@ const Avatar = forwardRef((props, ref) => {
 
     const handRefCollider = useRef()
     const { isAttacking, setIsAttacking } = useGameContext()
+    const [attacAnim, setAttackAnim] = useState(false)
 
 
     const { scene, materials, animations } = useGLTF('/assets/models/shadowAvatar/Shadow.glb')
@@ -127,9 +128,6 @@ const Avatar = forwardRef((props, ref) => {
     };
 
 
-    // Determinar si el personaje está en movimiento
-
-
     useEffect(() => {
         // Set up the WebSocket event listener for "player-moving"
         socket.on("player-moving", (transforms) => movePlayer(transforms));
@@ -140,23 +138,7 @@ const Avatar = forwardRef((props, ref) => {
         };
     }, []);
 
-    useEffect(() => {
-        const avatarBody = avatarBodyRef.current;
-
-        if (avatarBody) {
-            const linvel = avatarBody.linvel();
-
-            if (linvel.x !== 0 || linvel.z !== 0 && linvel.y === 0) {
-                setAnimationState("walk");
-            } else if (linvel.y > 0) {
-                setAnimationState("jump");
-            } else {
-                setAnimationState("idle");
-            }
-        }
-    }, [avatarBodyRef.current?.linvel().x, avatarBodyRef.current?.linvel().y, avatarBodyRef.current?.linvel().z]);
-
-
+   
 
     const hacerPequeno = (pequenho) => {
         const { pequeno } = pequenho;
@@ -175,17 +157,63 @@ const Avatar = forwardRef((props, ref) => {
         };
     }, []);
 
+    const doaction= (animat) => {
+        const { anim } = animat;
+        if (anim === "walk") {
+            actions.Idle?.stop()
+            actions.Walking?.play()
+        }else if (anim === "idle"){
+            actions.Walking?.stop()
+            actions.Idle?.play()
+        }
+    }
+
+    useEffect(() => {
+
+        // Set up the WebSocket event listener for "player-moving"
+        socket.on("player-action", (animat) => doaction(animat));
+
+        // Clean up the event listener on component unmount
+        return () => {
+            socket.off("player-action", (animat) => doaction(animat));
+        };
+    }, []);
+
     const playerAttack = (attack) => {
         const { attacking } = attack;
+        setAttackAnim(attacking)
         if (attacking) {
+            actions.Idle?.stop()
+            actions.Walking?.stop()
+            actions.Attacking?.play()
             setIsAttacking(true)
-            actions.attacking?.play()
             lanzaGolpe.volume = 0.1;
             lanzaGolpe.play();
             setCollisionEndTime(Date.now() + 1000); // Deshabilitar en 1.5 segundos
+            
+            setTimeout(() => {
+                actions.Attacking?.stop()
+                actions.Idle?.play()
+                setAttackAnim(false)
+              }, 800);
+            
         }
 
+        
+
     }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (collisionEndTime && Date.now() > collisionEndTime) {
+                //console.log("sin colisiones")
+                setIsAttacking(false);
+                setCollisionEndTime(null);
+            }
+        }, 100);
+
+        return () => clearInterval(interval);
+    }, [collisionEndTime]);
 
     useEffect(() => {
         // Set up the WebSocket event listener for "player-moving"
@@ -211,34 +239,6 @@ const Avatar = forwardRef((props, ref) => {
 
 
 
-    // const handleKeyUp = (event) => {
-    //     if (event.key.toLowerCase() === "w" || event.key.toLowerCase() === "a" || event.key.toLowerCase() === "s" || event.key.toLowerCase() === "d") {
-    //         andando.pause();
-    //         andando.currentTime = 0;
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     window.addEventListener("keydown", handleKeyDown);
-    //     window.addEventListener("keyup", handleKeyUp);
-
-    //     return () => {
-    //         window.removeEventListener("keydown", handleKeyDown);
-    //         window.removeEventListener("keyup", handleKeyUp);
-    //     };
-    // }, []);
-
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         if (collisionEndTime && Date.now() > collisionEndTime) {
-    //             //console.log("sin colisiones")
-    //             setIsAttacking(false);
-    //             setCollisionEndTime(null);
-    //         }
-    //     }, 100);
-
-    //     return () => clearInterval(interval);
-    // }, [collisionEndTime]);
 
 
     //keyboards y animationsets
@@ -305,58 +305,11 @@ const Avatar = forwardRef((props, ref) => {
         }
 
     })
-    // //////////////////////////////////////////////////////////////
-    const { health, setHealth } = useGameContext()
-    const [isVulnerable, setIsVulnerable] = useState(false);
-    const [canTakeDamage, setCanTakeDamage] = useState(true);
-    const enemigos = ["tentaculoBody", "tentaculoHead", "Boar", "Fuego", "Spikes", "ShadowEnemy"];
-    const hitEnemigo = new Audio(golpeado)
-
-
-
-    const handleHit = (event) => {
-        const nombreEnemigo = event.colliderObject.name;
-        if (enemigos.includes(nombreEnemigo) && canTakeDamage) {
-            setIsVulnerable(true);
-            setCanTakeDamage(false)
-        }
-    };
-
-    const handleSensorHit = (event) => {
-        const nombreEnemigo = event.colliderObject.name;
-        if (enemigos.includes(nombreEnemigo) && canTakeDamage) {
-            setIsVulnerable(true);
-            setCanTakeDamage(false)
-        }
-    }
-
-    useEffect(() => {
-        console.log(health)
-        if (health <= 0) {
-            console.log("El jugador ha perdido toda su salud y ha muerto.");
-        }
-    }, [health]);
-
-    useEffect(() => {
-        if (isVulnerable) {
-            console.log(health)
-            hitEnemigo.volume = 0.3;
-            hitEnemigo.play();
-            setHealth(prevHealth => prevHealth - 1);
-            setIsVulnerable(false);
-
-            setTimeout(() => {
-
-                setCanTakeDamage(true);
-
-
-                console.log("Ha pasado 3 segundos");
-            }, 3000);
-        }
-    }, [canTakeDamage]);
+    
+   
     return (
-        <RigidBody colliders={false} ref={avatarBodyRef} position={[0, 2, 5]} enabledRotations={[false, false, false]}  >
-            <CapsuleCollider args={pequeño ? [0, 0.3] : [0.4, 0.3]} />
+        <RigidBody   mass={60} colliders={false} ref={avatarBodyRef} position={[0, 2, 5]} enabledRotations={[false, false, false]}  >
+            <CapsuleCollider  name="avatar" args={pequeño ? [0, 0.3] : [0.4, 0.3]} />
             <group name="Scene">
                 <group ref={avatarRef} name="Armature" scale={pequeño ? [0.5, 0.5, 0.5] : [1, 1, 1]} rotation={[0, 3.2, 0]} position={pequeño ? [0, -0.3, 0] : [0, -0.7, 0]} >
                     <group name="Avatar" >
@@ -389,7 +342,7 @@ const Avatar = forwardRef((props, ref) => {
                             name="puñocollider"
                             sensor={true}
                             position={pequeño ? [0, 0, 1] : [0, 0, 0.5]}
-                            args={pequeño ? [0.1, 0.1, 0.2] : [0.1, 0.2, 0.3]}
+                            args={pequeño ? [0.2, 0.2, 0.3] : [0.1, 0.4, 0.3]}
                         />
 
                     </RigidBody>

@@ -1,9 +1,11 @@
 import { useGLTF, useTexture } from "@react-three/drei"
-import { RigidBody } from "@react-three/rapier"
+import { RigidBody, vec3 } from "@react-three/rapier"
 import { useEffect, useRef, useState } from "react"
-import { RepeatWrapping } from "three"
+import { RepeatWrapping, Vector3 } from "three"
 import { useGameContext } from "../../context/GameContext"
 import morir from "../../Sounds/morirEnemigo.mp3"
+import { useFrame } from "@react-three/fiber"
+import { socket } from "../../socket/socket-manager"; // Importa el socket
 
 export default function Box(props) {
 
@@ -35,8 +37,33 @@ export default function Box(props) {
     propsBoxTexture.diplacementMap.wrapS = propsBoxTexture.diplacementMap.wrapT = RepeatWrapping;
 
     useEffect(() => {
-        addCaja(props.id, cajaBodyRef.current)
-    }, [cajaBodyRef?.current, addCaja, props.id])
+        addCaja(props.id, cajaBodyRef.current);
+    }, [addCaja, props.id]);
+
+    // Escucha actualizaciones desde el servidor
+    useEffect(() => {
+        const handleUpdatePosition = (data) => {
+            if (data.id === props.id) {
+                const newPosition = new Vector3().fromArray(data.position);
+                cajaBodyRef.current?.setTranslation(newPosition, true);
+            }
+        };
+
+        socket.on("updateBoxPosition", handleUpdatePosition);
+
+        return () => {
+            socket.off("updateBoxPosition", handleUpdatePosition);
+        };
+    }, [props.id]);
+
+    // Envía las actualizaciones de posición al servidor cuando la caja se mueve
+    const sendPositionUpdate = () => {
+        if (cajaBodyRef.current) {
+            const newPosition = cajaBodyRef.current.translation();
+            socket.emit("updateBoxPosition", { id: props.id, position: newPosition.toArray() });
+        }
+    };
+
 
     return (
         <RigidBody
@@ -44,10 +71,13 @@ export default function Box(props) {
             name="rigid caja"
             type="dynamic"
             colliders="cuboid"
-            mass={100}
+            density={0.5}
             linearDamping={0.1}
             angularDamping={0.1}
             position={props.position}
+            enabledRotations={[false, false, false]}
+            enabledTranslations={props.movement ? [true,true,false] : [false,true,true]}
+            angularFactor={[0, 0, 0]}
         >
             <group>
                 <mesh castShadow={true} geometry={nodes.Box.geometry}  >
