@@ -7,6 +7,7 @@ import { Vector3, Quaternion, Object3D } from "three";
 import { SkeletonUtils } from "three/examples/jsm/Addons.js";
 import hit from "../../Sounds/hit.mp3";
 import morir from "../../Sounds/morirEnemigo.mp3";
+import { socket } from "../../socket/socket-manager"; // Importa el socket
 
 export default function Tentacle(props) {
     const bodyRefCollider = useRef();
@@ -40,9 +41,6 @@ export default function Tentacle(props) {
     const dead = new Audio(morir);
 
 
-    useEffect(() => {
-        addTentacle(props.id, tentacleModel.current, visible, health)
-    }, [tentacleModel?.current, addTentacle, props.id])
 
 
 
@@ -147,7 +145,9 @@ export default function Tentacle(props) {
             Hit.volume = 0.3;
             Hit.play();
             setIsAttacking(false);
-            setHealth(prevHealth => prevHealth - 1)
+            const newHealth = health - 1;
+            setHealth(newHealth);
+            
         }
     };
 

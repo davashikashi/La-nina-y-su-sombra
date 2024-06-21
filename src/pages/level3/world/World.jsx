@@ -16,13 +16,6 @@ export default function World(props) {
     //ruta texturas para paredes
     const WallsPATH = "/assets/textures/walls/";
 
-
-
-
-
-
-
-
     const { shadowAvatar, setHealth } = useGameContext();
 
   

@@ -51,8 +51,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
     //console.log("huesos", nodes.GirlModel.skeleton)
 
-    // Acceder a la matriz matrixWorld del objeto
-    const matrixWorld = avatarRef.current ? avatarRef.current.matrixWorld : undefined;
+
 
     //control de teclas
     const handleKeyDown = (event) => {
@@ -65,7 +64,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
             window.setTimeout(() => {
                 socket.emit("player-attack", {
                     attacking: true,
-                    
+
                 });
             }, 100);
 
@@ -75,13 +74,11 @@ const ShadowAvatar = forwardRef((props, ref) => {
             setCollisionEndTime(Date.now() + 1000); // Deshabilitar en 1.5 segundos
         }
 
-        if (event.key.toLowerCase() === "w"
-            || event.key.toLowerCase() === "a"
-            || event.key.toLowerCase() === "s"
-            || event.key.toLowerCase() === "d") {
-            andando.loop = true
+        if (["w", "a", "s", "d"].includes(event.key.toLowerCase())) {
+            andando.loop = true;
             andando.volume = 0.2;
             andando.play();
+            socket.emit("player-action", { anim: "walk" }); // Envía el mensaje al servidor cuando se mueve
         }
         if (event.key.toLowerCase() === "q") {
 
@@ -93,12 +90,15 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
 
     const handleKeyUp = (event) => {
-        if (event.key.toLowerCase() === "w" || event.key.toLowerCase() === "a" || event.key.toLowerCase() === "s" || event.key.toLowerCase() === "d") {
-            andando.pause();
-            andando.currentTime = 0;
+        if (["w", "a", "s", "d"].includes(event.key.toLowerCase())) {
+            const keysPressed = ["w", "a", "s", "d"].filter((key) =>
+                event.getModifierState(key)
+            );
+            if (keysPressed.length === 0) {
+                socket.emit("player-action", { anim: "idle" });
+            }
         }
     };
-
     useEffect(() => {
         window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keyup", handleKeyUp);
@@ -160,72 +160,71 @@ const ShadowAvatar = forwardRef((props, ref) => {
 
 
     useFrame(() => {
+        try{
+            if (handRefCollider.current) {
+                // Obtén la posición y rotación del props.props.rightHandBone
+                const worldPosition = rightHandBone.getWorldPosition(new Vector3());
+                const worldQuaternion = rightHandBone.getWorldQuaternion(new Quaternion());
 
-        if (handRefCollider.current) {
-            // Obtén la posición y rotación del props.props.rightHandBone
-            const worldPosition = rightHandBone.getWorldPosition(new Vector3());
-            const worldQuaternion = rightHandBone.getWorldQuaternion(new Quaternion());
+                const realtivePosition = handOffset.clone().applyQuaternion(worldQuaternion)
 
-            const realtivePosition = handOffset.clone().applyQuaternion(worldQuaternion)
+                // Ajusta la posición y rotación del rigidbody del HandSword
+                const adjustedPosition = new Vector3(
+                    worldPosition.x + realtivePosition.x,
+                    worldPosition.y + realtivePosition.y,
+                    worldPosition.z + realtivePosition.z
+                )
 
-            // Ajusta la posición y rotación del rigidbody del HandSword
-            const adjustedPosition = new Vector3(
-                worldPosition.x + realtivePosition.x,
-                worldPosition.y + realtivePosition.y,
-                worldPosition.z + realtivePosition.z
-            )
+                handRefCollider.current.setTranslation({
+                    x: adjustedPosition.x,
+                    y: adjustedPosition.y,
+                    z: adjustedPosition.z
+                });
 
-            handRefCollider.current.setTranslation({
-                x: adjustedPosition.x,
-                y: adjustedPosition.y,
-                z: adjustedPosition.z
-            });
+                const adjustedRotation = worldQuaternion.clone().multiply(rotationOffset);
 
-            const adjustedRotation = worldQuaternion.clone().multiply(rotationOffset);
+                handRefCollider.current.setRotation({
+                    x: adjustedRotation.x,
+                    y: adjustedRotation.y,
+                    z: adjustedRotation.z,
+                    w: adjustedRotation.w,
+                });
 
-            handRefCollider.current.setRotation({
-                x: adjustedRotation.x,
-                y: adjustedRotation.y,
-                z: adjustedRotation.z,
-                w: adjustedRotation.w,
-            });
+            }
 
+            if (avatarBodyRef.current && avatarRef.current) {
+                window.setTimeout(() => {
+                    const matrixWorld = avatarRef.current?.matrixWorld;
+                    const rotation = new Euler();
+                    matrixWorld?.decompose(new Vector3(), rotation, new Vector3());
+
+
+                    // Obtener la rotación global como un array de números
+                    const rotationArray = rotation.toArray();
+                    socket.emit("player-moving", {
+                        translation: avatarBodyRef.current?.translation(),
+                        rotation: rotationArray,
+
+                    });
+                }, 100);
+
+                window.setTimeout(() => {
+                    socket.emit("player-pequeno", {
+                        pequeno: pequeño
+                    });
+                }, 100);
+            }
+        } catch (error) {
+            if (error.message.includes("null pointer passed to rust")) {
+                console.warn("Null pointer error capturado en useFrame.");
+            } else {
+                console.error("Error inesperado en useFrame:", error);
+            }
+            // Puedes manejar el error de manera personalizada aquí
         }
-
-        window.setTimeout(() => {
-            const matrixWorld = avatarRef.current.matrixWorld;
-            const rotation = new Euler();
-            matrixWorld.decompose(new Vector3(), rotation, new Vector3());
-            const velocity = avatarBodyRef.current?.linvel();
-
-            // Obtener la rotación global como un array de números
-            const rotationArray = rotation.toArray();
-            socket.emit("player-moving", {
-                translation: avatarBodyRef.current?.translation(),
-                rotation: rotationArray,
-                
-            });
-        }, 100);
-
-        window.setTimeout(() => {
-            socket.emit("player-pequeno", {
-                pequeno: pequeño
-            });
-        }, 100);
-
     })
     ////////////////////////////////////////////////////////////////
 
-    const animation = (velocidad) =>{
-        // Determinar la acción actual (caminar, saltar, reposo)
-        if (velocidad.x !== 0 || velocidad.z !== 0) {
-            return "walk";
-        } else if (velocidad.y > 0) {
-            return "jump";
-        } else {
-            return "idle";
-        }
-    }
 
     const { health, setHealth } = useGameContext()
     const [isVulnerable, setIsVulnerable] = useState(false);
@@ -280,7 +279,7 @@ const ShadowAvatar = forwardRef((props, ref) => {
         <KeyboardControls map={keyboardMap}>
             <Ecctrl children ref={avatarBodyRef}
                 debug={false} animated springK={0} capsuleHalfHeight={pequeño ? 0 : 0.4} capsuleRadius={pequeño ? 0.3 : 0.3} autoBalance={false}
-                onIntersectionEnter={handleSensorHit} dampingC={0} onCollisionEnter={handleHit} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} >
+                onIntersectionEnter={handleSensorHit} dampingC={0} onCollisionEnter={handleHit} mass={60} maxVelLimit={speed} jumpVel={3} sprintMult={1.5} dragDampingC={0.15} position={props.avatarPosition} >
                 <EcctrlAnimation
                     characterURL={characterURL}
                     animationSet={animationSet} >

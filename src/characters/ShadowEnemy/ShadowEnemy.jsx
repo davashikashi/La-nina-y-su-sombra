@@ -17,7 +17,7 @@ export default function Model(props) {
   const ShadowEnemyModelRef = useRef();
   const {addShadow , removeShadow} = useGameContext()
 
-  const { girlAvatar, isAttacking, setIsAttacking, shadowPositions, setShadowPositions } = useGameContext();
+  const { shadowAvatar, isAttacking, setIsAttacking, shadowPositions, setShadowPositions } = useGameContext();
 
   const { scene, materials, animations } = useGLTF('/assets/models/shadowEnemy/ShadowEnemy.glb')
   const { actions } = useAnimations(animations, ShadowEnemyModelRef);
@@ -45,10 +45,10 @@ export default function Model(props) {
 
   useFrame((_, delta) => {
 
-    if (girlAvatar && ShadowEnemyBodyRef.current && referenceExists) {
+    if (shadowAvatar && ShadowEnemyBodyRef.current && referenceExists) {
 
       if (isChasing && !outOfBounds) {
-        const avatarPosition = girlAvatar?.translation();
+        const avatarPosition = shadowAvatar?.translation();
         const currentPosition = ShadowEnemyBodyRef.current?.translation();
         const currentPositionVector = new Vector3(currentPosition?.x,
           currentPosition?.y, currentPosition?.z);

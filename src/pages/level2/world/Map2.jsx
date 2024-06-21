@@ -31,7 +31,7 @@ export default function Map2(props) {
       document.removeEventListener('click', playAudio);
       cancionTheme.pause();
     };
-  }, [shadowAvatar]);
+  }, [shadowAvatar]); 
 
   const handleFalling = (event) => {
     if (event.colliderObject.name === "character-capsule-collider") {

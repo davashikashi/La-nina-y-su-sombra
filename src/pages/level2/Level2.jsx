@@ -45,8 +45,7 @@ const Level2 = () => {
                         <Torch position={[16, 1, -3.28]} rotation={[0, 0, 0]} />
                         <Texts color="white" Position={[4, 2.5, 0]} Textto="Bienvenido a la Segunda mazmorra!" rotation={[0, 5, 0]}
                         fontSize={.5}/>
-                        <Texts color="white" Position={[8, 3, 0]} Textto="Como la sombra puedes empujar cajas" rotation={[0, 5, 0]}
-                        fontSize={.5}/>
+                       
                         <Texts color="white" Position={[8, 2.5, 0]} Textto="Ataca con la tecla F" rotation={[0, 5, 0]}
                         fontSize={.5}/>
                         <Texts color="white" Position={[17, 1.5, 3]} Textto="Puedes Encogerte con la tecla Q" rotation={[0, 3.7, 0]}
@@ -131,7 +130,7 @@ const Level2 = () => {
                             <Spikes position={[64, 0, 3]} alternating={true} />
                             <Spikes position={[78, 0, 0]} placasPresionRequeridas={["plate4"]} />
 
-                            <ShadowAvatar avatarPosition={[1, 10, 1]} />
+                            <ShadowAvatar avatarPosition={[2, 15, 1]} />
                             <FinalDoor position={[99, 0.1, 0]} link="/level3" rotation={[0, 4.7, 0]}/>
                         </Physics>
                     </Suspense>
