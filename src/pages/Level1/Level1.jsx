@@ -23,10 +23,13 @@ import Door from "../../Objects/Door/Door";
 import Plate from "../../Objects/Plate/Plate";
 import Box from "../../Objects/Box/Box";
 import Checkpoint from "../../Objects/Checkpoint/Checkpoint";
+import { useAuth } from "../../context/AuthContext";
+// import Logout from "../../logout/Logout";
 
 
 const Level1 = () => {
      //     const avatarRef = useRef();
+     const auth = useAuth();
 
      return (
           <GameContextProvider>

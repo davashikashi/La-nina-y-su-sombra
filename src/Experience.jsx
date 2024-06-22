@@ -1,10 +1,13 @@
 
 import RoutesLaNinaYSuSombra from "./routes/RoutesLaNinaYSuSombra";
+import AuthProvider from "./context/AuthContext"
 
 const Experience = () => {
     return (
-
-        <RoutesLaNinaYSuSombra />
+        <AuthProvider>
+            <RoutesLaNinaYSuSombra />
+        </AuthProvider>
+        
 
     )
 }
