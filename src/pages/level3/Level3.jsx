@@ -57,7 +57,7 @@ const Level3 = () => {
                             <Box movement={true}id={"box2"} position={[4, 2.5, -7]} />
                             <Box movement={true} id={"box3"} position={[-7.5, 2.5, -6]} />
                             <Box movement={true} id={"box4"} position={[-7.5, 2.5, 19.5]} />
-                            <ShadowAvatar avatarPosition={[-8, 15, 25]} />
+                            {/* <ShadowAvatar avatarPosition={[-8, 15, 25]} /> */}
                             
                             {/* <Boar avatarReference={avatarRef} position={[-5, 2.5, 6]} />
                         <Boar avatarReference={avatarRef} position={[5, 2.5, 10]} />
@@ -134,7 +134,7 @@ const Level3 = () => {
                             <Spikes alternating={true} placasPresionRequeridas={["plate1"]} position={[-12, 0, -5.5]} />
                             <Spikes alternating={true} placasPresionRequeridas={["plate1"]} position={[-13.5, 0, -5.5]} />
 
-                            {/* <ShadowAvatar avatarPosition={[0, 15, 47]} /> */}
+                            <ShadowAvatar avatarPosition={[0, 15, 47]} />
 
                             
 
