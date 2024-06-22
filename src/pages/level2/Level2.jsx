@@ -39,7 +39,7 @@ const Level2 = () => {
                 <Canvas shadows={true}>
                     <BakeShadows />
                     <Suspense fallback={null}>
-                        <OrbitControls makeDefault />
+                        {/* <OrbitControls makeDefault /> */}
                         <Lights />
                         <MapEnvironments />
                         <Torch position={[16, 1, -3.28]} rotation={[0, 0, 0]} />
