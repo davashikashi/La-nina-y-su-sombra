@@ -130,8 +130,8 @@ const Level2 = () => {
                             <Spikes position={[64, 0, 3]} alternating={true} />
                             <Spikes position={[78, 0, 0]} placasPresionRequeridas={["plate4"]} />
 
-                            {/* <ShadowAvatar avatarPosition={[2, 15, 1]} /> */}
-                            <ShadowAvatar avatarPosition={[89, 15, 0]} />
+                            <ShadowAvatar avatarPosition={[2, 15, 1]} />
+                            {/* <ShadowAvatar avatarPosition={[89, 15, 0]} /> */}
                             <FinalDoor position={[99, 0.1, 0]} link="/level3" rotation={[0, 4.7, 0]}/>
                         </Physics>
                     </Suspense>
