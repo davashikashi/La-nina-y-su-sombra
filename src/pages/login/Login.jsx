@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import './Login.css';
+import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const auth = useAuth();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     //  lógica para validar el usuario o redirigir
-    console.log('Usuario:', username);
-    console.log('Contraseña:', password);
-    alert(`Bienvenido, ${username}!`);
+    // console.log('Usuario:', username);
+    // console.log('Contraseña:', password);
+    // alert(`Bienvenido, ${username}!`);
+    // window.location.href = '/level1';
+    await auth.loginWithinGoogle().then((res) => {
+      window.location.href = '/level1';
+    }).catch((error) => {
+       console.error('Error:', error)
+      });
   };
 
   return (
@@ -17,26 +25,9 @@ const Login = () => {
       <h1>
         LA NIÑA Y SU SOMBRA
         </h1>
-      <div className="login-form">
-        <label htmlFor="username">Usuario:</label>
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        
-        <label htmlFor="password">Contraseña:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
         
         <button onClick={handleLogin}>Iniciar sesión</button>
       </div>
-    </div>
   );
 };
 
