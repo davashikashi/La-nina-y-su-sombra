@@ -35,7 +35,7 @@ const Level4 = () => {
 
                 <Canvas shadows={true} camera={{ position: [0, 20, 49] }} >
                     {/* <Perf position="top-left" /> */}
-                    <OrbitControls makeDefault />
+                    {/* <OrbitControls makeDefault /> */}
                     <Suspense fallback={null}>
                         <Lights4 />
                         <Environment4 />
