@@ -97,7 +97,7 @@ export default function Lights() {
                 decay={2}
             />
             <pointLight
-                ref={pointLightRef}
+                // ref={pointLightRef}
                 position={[0, 2, 25]}
                 castShadow={true}
                 intensity={15}
